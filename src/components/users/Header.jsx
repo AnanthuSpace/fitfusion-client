@@ -1,5 +1,5 @@
 // import { useState } from 'react';
-import '../../assets/Header.css'
+import '../../assets/styles/Header.css'
 
 function Header() {
     // const [page, setPage] = useState('')

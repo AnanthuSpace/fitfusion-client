@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/users/LoginPage";
-import Signup from "./components/users/Signup";
-import LoginVerification from "./components/users/LoginVerification";
-import "./assets/App.css";
+import SignupPage from "./pages/users/SignupPage";
+import LoginVerification from "./components/users/singUpVerification";
+import "./assets/styles/App.css";
 
 function App() {
   return (
@@ -11,7 +11,7 @@ function App() {
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<Signup />} />
+          <Route path="/signup" element={<SignupPage />} />
           <Route path="/verify-otp" element={<LoginVerification />} />
         </Routes>
       </Router>
