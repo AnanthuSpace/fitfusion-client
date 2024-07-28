@@ -1,11 +1,37 @@
 import { useNavigate } from "react-router-dom";
 import "../../assets/styles/LoginPage.css";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { userLogin } from "../../redux/users/userThunk";
+import { toast, ToastContainer } from "react-toastify";
 
 function Login() {
   const navigate = useNavigate();
-  
+  const dispatch = useDispatch()
+  const { isLoading } = useSelector((state) => state.user)
+  const [email, setEmail] = useState("");
+
+  const handleSubmit = async () => {
+    const emailId = email.toLowerCase()  
+    dispatch(userLogin({
+      email: emailId,
+      toast
+    })).then((responds)=>{
+      if(responds.meta.arg.email){
+        navigate("/login-verify")
+      }
+    })
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleSubmit();
+    }
+  };
+
   return (
     <>
+    <ToastContainer />
       <div className="login-page">
         <div className="nav-bar">
           <div className="logo">
@@ -19,8 +45,12 @@ function Login() {
             </ul>
           </div>
           <div className="btns">
-            <div className="signin-btn" onClick={() => navigate("/login")}>Sign in</div>
-            <div className="signup-btn" onClick={() => navigate("/signup")}>Sign Up</div>
+            <div className="signin-btn" onClick={() => navigate("/login")}>
+              Sign in
+            </div>
+            <div className="signup-btn" onClick={() => navigate("/signup")}>
+              Sign Up
+            </div>
           </div>
         </div>
 
@@ -37,8 +67,22 @@ function Login() {
             </p>
             <div className="last">
               <div className="input">
-                <input type="text" placeholder="email" className="emailid" />
-                <button className="user" onClick={()=> navigate('/verify-otp')}>Get Started</button>
+                <input
+                  type="text"
+                  placeholder="email"
+                  className="emailid"
+                  onChange={(e) => setEmail(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                />
+                {!isLoading ? (
+                <button className="user" onClick={handleSubmit}>
+                  Get Started
+                </button>
+                ) : (
+                  <button className="user" >
+                  Loding...
+                </button>
+                )}
               </div>
               <button className="trainer">Login as a Trainer</button>
             </div>

@@ -1,11 +1,11 @@
 import "../../assets/styles/Verification.css";
 import { useState, useRef } from "react";
-import { signupVerification } from "../../redux/users/userThunk";
+import { loginVerification } from "../../redux/users/userThunk";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
-function SignUpVerification() {
+function LoginVerification() {
   const [otp, setOtp] = useState(["", "", "", ""]);
   const inputRefs = useRef([]);
   const navigate = useNavigate();
@@ -27,13 +27,13 @@ function SignUpVerification() {
 
   const handleSubmit = async () => {
     const completeOtp = otp.join("");
-    dispatch(signupVerification({
+    dispatch(loginVerification({
       completeOtp,
       toast,
       temperoryEmail
     })).then((result) => {
       if (result.meta.requestStatus === "fulfilled") {
-        console.log("Redirect to the home page");
+        console.log("redirect to home page");
       }
     });
   };
@@ -82,4 +82,4 @@ function SignUpVerification() {
   );
 }
 
-export default SignUpVerification;
+export default LoginVerification;

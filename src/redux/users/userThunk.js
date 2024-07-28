@@ -1,11 +1,13 @@
 import axios from "axios";
 import { localhostURL } from "../../utils/url";
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 
 
+// Registration Thunk
 export const registration = createAsyncThunk(
     "userSlice/registration",
-    async ({ name, email, password, confirmPass, toast }, { rejectWithValue }) => {
+    async ({ name, email, password, confirmPass }, { rejectWithValue }) => {
         name = name.trim();
         email = email.trim();
         password = password.trim();
@@ -15,54 +17,92 @@ export const registration = createAsyncThunk(
         const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
 
         if (name === "" || email === "" || password === "" || confirmPass === "") {
-            toast.warning("All the fields are required!", { hideProgressBar: true, autoClose: 3000 });
             return rejectWithValue("All the fields are required!");
         } else if (!nameRegex.test(name)) {
-            toast.warning("Name must be between 3 to 20 characters and contain only letters!", { hideProgressBar: true, autoClose: 3000 });
             return rejectWithValue("Name must be between 3 to 20 characters and contain only letters!");
         } else if (!emailRegex.test(email)) {
-            toast.warning("Invalid email address!", { hideProgressBar: true, autoClose: 3000 });
             return rejectWithValue("Invalid email address!");
         } else if (password.length < 6) {
-            toast.warning("Password must be at least 6 characters long!", { hideProgressBar: true, autoClose: 3000 });
             return rejectWithValue("Password must be at least 6 characters long!");
         } else if (password !== confirmPass) {
-            toast.warning("Password and confirm password do not match!", { hideProgressBar: true, autoClose: 3000 });
             return rejectWithValue("Password and confirm password do not match!");
         } else {
             try {
                 const response = await axios.post(`${localhostURL}/signup`, { name, email, password });
-                if (response.data === "UserExist") {
-                    toast.error("User already exist", { hideProgressBar: true, autoClose: 3000 });
-                    return rejectWithValue("User already exist");
+                if (response.data.message === "User already exists") {
+                    return rejectWithValue("User already exists");
                 } else {
-                    toast.success("Registration completed successfully", { hideProgressBar: true, autoClose: 2500 });
-                    return "success";
+                    return "OTP sent to your email";
                 }
             } catch (error) {
-                toast.error("Registration failed", { hideProgressBar: true, autoClose: 2500 });
-                return rejectWithValue("Registration failed");
+                return rejectWithValue("Registration failed, try again");
             }
         }
     }
 );
 
+// Signup Verification Thunk
 export const signupVerification = createAsyncThunk(
     "userSlice/signupVerification",
-
-    async ({ completeOtp, toast }) => {
-        console.log("Thunk", completeOtp);
+    async ({ completeOtp, temperoryEmail }, { rejectWithValue }) => {
         if (completeOtp.length < 4) {
-            toast.warning("All the fields are required!", { hideProgressBar: true, autoClose: 3000 });
             return rejectWithValue("All the fields are required!");
         } else {
             try {
-                const response = await axios.post(`${localhostURL}/verify`, { completeOtp });
-                toast.success("Registration completed successfully", { hideProgressBar: true, autoClose: 2500 });
-                return "success";
+                const response = await axios.post(`${localhostURL}/verify`, { completeOtp, temperoryEmail });
+                if (response.data.message === "OTP verified") {
+                    return response.data.userData;
+                } else {
+                    return rejectWithValue(response.data.message);
+                }
             } catch (error) {
-                toast.error("Veification failed try again", { hideProgressBar: true, autoClose: 2500 });
-                return rejectWithValue("Registration failed");
+                return rejectWithValue("Verification failed, try again");
+            }
+        }
+    }
+
+);
+
+export const userLogin = createAsyncThunk(
+    "userSlice/userLogin",
+    async ({ email }, { rejectWithValue }) => {
+        try {
+            email = email.trim();
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+
+                return rejectWithValue("Please enter a valid email address");
+            } else {
+                const response = await axios.post(`${localhostURL}/login`, { email });
+                console.log(response);
+                if (response.data === "Invalid email") {
+                    return rejectWithValue("Invalid email");
+                } else {
+                    return response.data;
+                }
+            }
+        } catch (error) {
+            toast.error("Login failed, please try again later", { hideProgressBar: true, autoClose: 3000 });
+            return rejectWithValue(error.message);
+        }
+    }
+
+)
+export const loginVerification = createAsyncThunk(
+    "userSlice/loginVerification",
+    async ({ completeOtp, temperoryEmail }, { rejectWithValue }) => {
+        if (completeOtp.length < 4) {
+            return rejectWithValue("All the fields are required!");
+        } else {
+            try {
+                const response = await axios.post(`${localhostURL}/login-verify`, { completeOtp, temperoryEmail });
+                if (response.data.message === "OTP verified") {
+                    return response.data.userData;
+                } else {
+                    return rejectWithValue(response.data.message);
+                }
+            } catch (error) {
+                return rejectWithValue("Verification failed, try again");
             }
         }
     }
