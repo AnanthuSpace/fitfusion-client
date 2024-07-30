@@ -4,13 +4,14 @@ import SignupPage from "./pages/users/SignupPage";
 import SignUpVerification from "./components/users/SingUpVerification";
 import LoginVerification from "./components/users/LoginVerification";
 import "./assets/styles/App.css";
+import HomePage from "./pages/users/HomePage";
 
 function App() {
   return (
     <>
       <Router>
         <Routes>
-          <Route path="/" element={<LoginPage />} />
+          <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/verify-otp" element={<SignUpVerification />} />

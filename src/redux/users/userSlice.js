@@ -45,12 +45,12 @@ const userSlice = createSlice({
 
       // User Login
       .addCase(userLogin.pending, (state) => {
-          state.isLoading = true;
-        })
-        .addCase(userLogin.fulfilled, (state, action) => {
-          state.temperoryEmail = action.meta.arg.email;
+        state.isLoading = true;
+        state.error = null; // Clear previous errors
+      })
+      .addCase(userLogin.fulfilled, (state, action) => {
+        state.temperoryEmail = action.meta.arg.email;
         state.isLoading = false;
-        toast.success("OTP sent to your email", { hideProgressBar: true, autoClose: 3000 });
       })
       .addCase(userLogin.rejected, (state, action) => {
         state.error = action.payload;

@@ -1,25 +1,25 @@
 // import { useState } from 'react';
-import '../../assets/styles/Header.css'
+import "../../assets/styles/Header.css";
 
 function Header() {
-    // const [page, setPage] = useState('')
+  // const [page, setPage] = useState('')
 
   return (
     <>
-      <div className="nav-bar">
-        <div className="logo">
+      <div className="signup-nav-bar">
+        <div className="signup-logo">
           <h1>FitFusion</h1>
         </div>
-        <div className="nav-list">
-            <ul>
-                <li>Home</li>
-                <li>About</li>
-                <li>Contact</li>
-            </ul>
+        <div className="signup-nav-list">
+          <ul>
+            <li>Home</li>
+            <li>Class</li>
+            <li>Trainers</li>
+            <li>Conatct</li>
+          </ul>
         </div>
-        <div className="btns">
-            <div className="signin-btn">Sign in</div>
-            <div className="signup-btn">Sign Up</div>
+        <div className="signinButtn">
+          <button>Sign in</button>
         </div>
       </div>
     </>

@@ -1,0 +1,73 @@
+.home-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100vw;
+    height: 100%;
+    background-color: #F5F5F5;
+}
+
+.enrty-container {
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    width: 97%;
+    height: 44rem;
+    background-color: #222222;
+    border-radius: 3rem;
+    display: flex;
+    justify-content: center;
+}
+
+.signup-nav-bar {
+    margin-top: 1rem;
+    background-color: transparent;
+    width: 95%;
+    color: white;
+}
+
+.signinButtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 2rem;
+}
+
+.signinButtn button {
+    background-color: #FF7906;
+    color: white;
+    border-radius: 2rem;
+    border: none;
+    width: 7rem;
+    height: 2.5rem;
+}
+
+.progress {
+    width: 97%;
+    background-color: #222222;
+    height: 10rem;
+    margin-bottom: 2rem;
+    border-radius: 5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.progress-count {
+    width: 25%;
+    display: flex;
+    justify-content: center;
+    color: white;
+    flex-direction: column;
+}
+
+.count-div {
+    display: flex;
+    align-items: center;
+    width: 85%;
+    margin-left: 8rem;
+}
+
+.count-div h1 {
+    margin-bottom: 0;
+}
+

@@ -1,15 +1,11 @@
-body {
-    overflow: hidden;
-    margin: 0;
-    background-color: #F0F0F0;
-    padding-top: 1rem;
-}
-
 .login-page {
+    overflow-x: hidden;
+    overflow-y: hidden; 
     width: 100vw;
     height: 100vh;
     display: flex;
     flex-direction: column;
+    margin-top: 1rem;
 }
 
 .nav-bar {
@@ -18,7 +14,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #F0F0F0;
+    background-color: white;
 }
 
 .logo h1 {

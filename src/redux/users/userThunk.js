@@ -63,31 +63,30 @@ export const signupVerification = createAsyncThunk(
 
 );
 
+// User Login
 export const userLogin = createAsyncThunk(
     "userSlice/userLogin",
     async ({ email }, { rejectWithValue }) => {
-        try {
-            email = email.trim();
-            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailPattern.test(email)) {
-
-                return rejectWithValue("Please enter a valid email address");
-            } else {
-                const response = await axios.post(`${localhostURL}/login`, { email });
-                console.log(response);
-                if (response.data === "Invalid email") {
-                    return rejectWithValue("Invalid email");
-                } else {
-                    return response.data;
-                }
-            }
-        } catch (error) {
-            toast.error("Login failed, please try again later", { hideProgressBar: true, autoClose: 3000 });
-            return rejectWithValue(error.message);
+      try {
+        email = email.trim();
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(email)) {
+          return rejectWithValue("Please enter a valid email address");
         }
+  
+        const response = await axios.post(`${localhostURL}/login`, { email });
+        if (response.data.success === false) {
+          return rejectWithValue("Invalid email");
+        } else {
+          return response.data;
+        }
+      } catch (error) {
+        return rejectWithValue(error.response?.data?.message || error.message);
+      }
     }
+  );
 
-)
+
 export const loginVerification = createAsyncThunk(
     "userSlice/loginVerification",
     async ({ completeOtp, temperoryEmail }, { rejectWithValue }) => {

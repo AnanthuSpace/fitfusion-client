@@ -1,0 +1,34 @@
+.be-a-member {
+    width: 100%;
+    height: 25rem; 
+    background-image: url('/fit.avif'); 
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    text-align: center;
+    flex-direction: column;
+    margin-bottom: 5rem;
+}
+
+.be-a-member h1 {
+    color: white;
+}
+
+
+.be-a-member p {
+    color: white;
+}
+
+.be-a-member button {
+    background-color: #FF7906;
+    color: white;
+    border-radius: 2rem;
+    border: none;
+    width: 7rem;
+    height: 2.5rem;
+    margin-top: 2rem;
+}
+

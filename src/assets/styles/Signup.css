@@ -1,15 +1,11 @@
-body {
-    overflow: hidden;
-    margin: 0;
-    background-color: #F0F0F0;
-    padding-top: 1rem;
-}
-
 .signup-page {
+    overflow-x: hidden;
+    overflow-y: auto; 
     width: 100vw;
-    height: 100vh;
+    height: 100%;
     display: flex;
     flex-direction: column;
+    margin-top: 1rem;
 }
 
 .signup-nav-bar {
@@ -18,7 +14,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #F0F0F0;
+    background-color: white;
 }
 
 .signup-logo h1 {
@@ -69,6 +65,7 @@ body {
 }
 
 .signup-body-container {
+    margin-top: 2rem;
     width: 100%;
     height: 100%;
     overflow: hidden;
