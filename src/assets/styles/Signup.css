@@ -3,9 +3,10 @@
     overflow-y: auto; 
     width: 100vw;
     height: 100%;
-    display: flex;
     flex-direction: column;
-    margin-top: 1rem;
+    margin-top: 0.7rem;
+    display: flex;
+    align-items: center;
 }
 
 .signup-nav-bar {
@@ -34,6 +35,7 @@
 
 .signup-nav-list li {
     padding: 0 2.5rem;
+    color: black;
 }
 
 .signup-btns {
@@ -54,6 +56,7 @@
 .signup-signin-btn {
     width: 4rem;
     height: 3rem;
+    color: black;
 }
 
 .signup-signup-btn {
@@ -95,7 +98,7 @@
     color: #373737;
 }
 
-.signupform {
+.signup-signupform {
     width: 26%;
     height: 35rem;
     background-color: #F0F0F0;
@@ -107,7 +110,7 @@
     flex-direction: column;
 }
 
-.input-text {
+.signup-input-text {
     border-top: none;
     border-left: none;
     border-right: none;
@@ -117,7 +120,7 @@
     outline: none;
 }
 
-.join {
+.signup-join {
     width: 69%;
     height: 2rem;
     margin-top: 1rem;
@@ -128,7 +131,7 @@
     cursor: pointer;
 }
 
-.google {
+.signup-google {
     width: 69%;
     height: 2rem;
     margin-top: 1rem;
@@ -137,7 +140,7 @@
     cursor: pointer;
 }
 
-.allready {
+.signup-allready {
     color: #474242;
     cursor: pointer;
 }

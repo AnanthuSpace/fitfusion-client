@@ -39,29 +39,29 @@ function Login() {
       <ToastContainer />
       {/* <div className="login-div"> */}
         <div className="login-page">
-          <div className="nav-bar">
-            <div className="logo">
+          <div className="login-nav-bar">
+            <div className="login-logo">
               <h1>FitFusion</h1>
             </div>
-            <div className="nav-list">
+            <div className="login-nav-list">
               <ul>
                 <li>Home</li>
                 <li>About</li>
                 <li>Contact</li>
               </ul>
             </div>
-            <div className="btns">
-              <div className="signin-btn" onClick={() => navigate("/login")}>
+            <div className="login-btns">
+              <div className="login-signin-btn" onClick={() => navigate("/login")}>
                 Sign in
               </div>
-              <div className="signup-btn" onClick={() => navigate("/signup")}>
+              <div className="login-signup-btn" onClick={() => navigate("/signup")}>
                 Sign Up
               </div>
             </div>
           </div>
 
-          <div className="body-container">
-            <div className="heading">
+          <div className="login-body-container">
+            <div className="login-heading">
               <span>
                 Let’s build <br /> the physical you
               </span>
@@ -71,8 +71,8 @@ function Login() {
                 adieus nature day course for common. My little <br />
                 garret repair to desire he esteem.
               </p>
-              <div className="last">
-                <div className="input">
+              <div className="login-last">
+                <div className="login-input">
                   <input
                     type="text"
                     placeholder="email"
@@ -81,14 +81,14 @@ function Login() {
                     onKeyDown={handleKeyDown}
                   />
                   {!isLoading ? (
-                    <button className="user" onClick={handleSubmit}>
+                    <button className="login-user" onClick={handleSubmit}>
                       Get Started
                     </button>
                   ) : (
-                    <button className="user">Loading...</button>
+                    <button className="login-user">Loading...</button>
                   )}
                 </div>
-                <button className="trainer">Login as a Trainer</button>
+                <button className="login-trainer">Login as a Trainer</button>
               </div>
             </div>
           </div>

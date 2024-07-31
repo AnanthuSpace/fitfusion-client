@@ -16,13 +16,8 @@
     border-radius: 3rem;
     display: flex;
     justify-content: center;
-}
-
-.signup-nav-bar {
-    margin-top: 1rem;
-    background-color: transparent;
-    width: 95%;
-    color: white;
+    flex-direction: column;
+    align-items: center;
 }
 
 .signinButtn {
@@ -71,3 +66,78 @@
     margin-bottom: 0;
 }
 
+.home-div {
+    margin-top: 2rem;
+    height: 25%;
+    width: 90%;
+    color: #F5F5F5;
+}
+
+.home-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    margin-bottom: -4rem;
+}
+
+.beamember,.learn{
+    margin-bottom: 0;
+    margin-right: 1rem;
+    height: 3rem;
+    width: 10rem;
+    border-radius: 2rem;
+    color: white;
+}
+
+.beamember {
+    background-color: #FF7906;
+    border: none;
+}
+
+.learn {
+    border: 1px solid #FF7906;
+    background-color: transparent;
+}
+
+.images {
+    display: flex;
+    justify-content: space-between;
+    width: 85%;
+    height: 50%;
+    margin-top: 1rem;
+    margin-left: -4rem;
+}
+
+.small-img {
+    width: 30%;
+    margin-right: 2rem;
+    display: flex;
+    flex-direction: column;
+    color: white;
+}
+
+.small-img p {
+    margin-top: 3rem;
+}
+
+.small-img img{
+    height: 50%;
+    width: 100%;
+    border-radius: 2rem;
+}
+
+.big-img {
+    width: 70%;
+}
+
+.big-img img {
+    width: 100%;
+    height: 100%;
+    border-radius: 2rem;
+}

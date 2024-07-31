@@ -1,25 +1,38 @@
-// import { useState } from 'react';
 import "../../assets/styles/Header.css";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 
 function Header() {
-  // const [page, setPage] = useState('')
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleSignIn = () => {
+    navigate("/login");
+  };
 
   return (
     <>
-      <div className="signup-nav-bar">
-        <div className="signup-logo">
+      <div className="nav-bar">
+        <div className="header-logo">
           <h1>FitFusion</h1>
         </div>
-        <div className="signup-nav-list">
+        <div className="header-nav-list">
           <ul>
-            <li>Home</li>
-            <li>Class</li>
-            <li>Trainers</li>
-            <li>Conatct</li>
+            <li className={location.pathname === "/" ? "active" : ""}>
+              <Link to="/">Home</Link>
+            </li>
+            <li className={location.pathname === "/class" ? "active" : ""}>
+              <Link to="/class">Class</Link>
+            </li>
+            <li className={location.pathname === "/trainers" ? "active" : ""}>
+              <Link to="/trainers">Trainers</Link>
+            </li>
+            <li className={location.pathname === "/contact" ? "active" : ""}>
+              <Link to="/contact">Contact</Link>
+            </li>
           </ul>
         </div>
         <div className="signinButtn">
-          <button>Sign in</button>
+          <button onClick={handleSignIn}>Sign in</button>
         </div>
       </div>
     </>

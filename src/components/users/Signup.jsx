@@ -36,6 +36,7 @@ function Signup() {
     <>
       <ToastContainer />
       <div className="signup-page">
+        
         <div className="signup-nav-bar">
           <div className="signup-logo">
             <h1>FitFusion</h1>
@@ -75,38 +76,38 @@ function Signup() {
               garret repair to desire he esteem.
             </p>
           </div>
-          <div className="signupform">
+          <div className="signup-signupform">
             <h2 style={{ color: "#FF7906" }}>Sign Up</h2>
             <input
               type="text"
-              className="input-text"
+              className="signup-input-text"
               placeholder="Full Name"
               onChange={(e) => setFullName(e.target.value)}
             />
             <input
               type="text"
-              className="input-text"
+              className="signup-input-text"
               placeholder="Email"
               onChange={(e) => setEmail(e.target.value)}
             />
             <input
               type="password"
-              className="input-text"
+              className="signup-input-text"
               placeholder="Password"
               onChange={(e) => setPassword(e.target.value)}
             />
             <input
               type="password"
-              className="input-text"
+              className="signup-input-text"
               placeholder="Confirm Password"
               onChange={(e) => setConfirmPass(e.target.value)}
             />
             {!isLoading ? (
-              <button className="join" onClick={handleSubmit}>
+              <button className="signup-join" onClick={handleSubmit}>
                 Join
               </button>
             ) : (
-              <button className="join" disabled>
+              <button className="signup-join" disabled>
                 Loading...
               </button>
             )}
@@ -115,11 +116,11 @@ function Signup() {
               privacy policy & Terms of Service.
             </p>
             OR
-            <button className="google">
+            <button className="signup-google">
               <FcGoogle />
               SIGN UP WITH GOOGLE
             </button>
-            <p className="allready" onClick={() => navigate("/login")}>
+            <p className="signup-allready" onClick={() => navigate("/login")}>
               Already have an account?
             </p>
           </div>
