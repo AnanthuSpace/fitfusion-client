@@ -1,0 +1,146 @@
+.signup-page {
+    overflow-x: hidden;
+    overflow-y: auto; 
+    width: 100vw;
+    height: 100%;
+    flex-direction: column;
+    margin-top: 0.7rem;
+    display: flex;
+    align-items: center;
+}
+
+.signup-nav-bar {
+    width: 100%;
+    height: 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+}
+
+.signup-logo h1 {
+    color: #FF7906;
+    font-family: 'Montagu Slab', serif;
+    margin: 0 3rem;
+}
+
+.signup-nav-list ul {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.signup-nav-list li {
+    padding: 0 2.5rem;
+    color: black;
+}
+
+.signup-btns {
+    margin-right: 6rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.signup-signin-btn,
+.signup-signup-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.signup-signin-btn {
+    width: 4rem;
+    height: 3rem;
+    color: black;
+}
+
+.signup-signup-btn {
+    width: 6rem;
+    height: 3rem;
+    border-radius: 0.5rem;
+    background-color: #313131;
+    color: white;
+}
+
+.signup-body-container {
+    margin-top: 2rem;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.signup-heading {
+    width: 50%;
+    height: 65%;
+    display: flex;
+    flex-direction: column;
+}
+
+.signup-heading span {
+    color: #FF7906;
+    font-size: 4rem;
+}
+
+.signup-heading h2 {
+    color: #373737;
+    font-size: 2rem;
+}
+
+.signup-heading p {
+    color: #373737;
+}
+
+.signup-signupform {
+    width: 26%;
+    height: 35rem;
+    background-color: #F0F0F0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.signup-input-text {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    background-color: #F0F0F0;
+    padding-top: 1rem;
+    width: 65%;
+    outline: none;
+}
+
+.signup-join {
+    width: 69%;
+    height: 2rem;
+    margin-top: 1rem;
+    border-radius: 1rem;
+    color: white;
+    background-color: #FF7906;
+    border: none;
+    cursor: pointer;
+}
+
+.signup-google {
+    width: 69%;
+    height: 2rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 1rem;
+    cursor: pointer;
+}
+
+.signup-allready {
+    color: #474242;
+    cursor: pointer;
+}

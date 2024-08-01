@@ -1,12 +1,20 @@
-import "../../assets/styles/Header.css";
+import React, { useState } from "react";
+import "../../assets/styles/users/Header.css";
 import { useLocation, Link, useNavigate } from "react-router-dom";
+import Sidebar from "./Sidebar";
 
 function Header() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const token = sessionStorage.getItem("userAccessToken");
 
   const handleSignIn = () => {
     navigate("/login");
+  };
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
   };
 
   return (
@@ -31,10 +39,17 @@ function Header() {
             </li>
           </ul>
         </div>
-        <div className="signinButtn">
-          <button onClick={handleSignIn}>Sign in</button>
-        </div>
+        {!token ? (
+          <div className="signinButtn">
+            <button onClick={handleSignIn}>Sign in</button>
+          </div>
+        ) : (
+          <div className="icon-div" onClick={toggleSidebar}>
+            <img src="/profile-icon.jpg" alt="Profile" />
+          </div>
+        )}
       </div>
+      <Sidebar isOpen={sidebarOpen} onClose={toggleSidebar} />
     </>
   );
 }

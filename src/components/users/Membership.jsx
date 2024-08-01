@@ -1,5 +1,5 @@
 import React from "react";
-import "../../assets/styles/Membership.css";
+import "../../assets/styles/users/Membership.css";
 
 function Membership() {
   return (

@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import "../../assets/styles/LoginPage.css";
+import "../../assets/styles/users/LoginPage.css";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { userLogin } from "../../redux/users/userThunk";
@@ -37,7 +37,6 @@ function Login() {
   return (
     <>
       <ToastContainer />
-      {/* <div className="login-div"> */}
         <div className="login-page">
           <div className="login-nav-bar">
             <div className="login-logo">
@@ -45,7 +44,7 @@ function Login() {
             </div>
             <div className="login-nav-list">
               <ul>
-                <li>Home</li>
+                <li onClick={() => navigate("/")}>Home</li>
                 <li>About</li>
                 <li>Contact</li>
               </ul>
@@ -93,7 +92,6 @@ function Login() {
             </div>
           </div>
         </div>
-      {/* </div> */}
     </>
   );
 }

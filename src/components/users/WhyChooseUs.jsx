@@ -1,5 +1,5 @@
 import React from "react";
-import "../../assets/styles/whyChooseUs.css";
+import "../../assets/styles/users/whyChooseUs.css";
 
 function WhyChooseUs() {
   return (

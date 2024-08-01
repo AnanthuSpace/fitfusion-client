@@ -1,5 +1,5 @@
 import React from "react";
-import "../../assets/styles/TrainerContainer.css";
+import "../../assets/styles/users/TrainerContainer.css";
 
 function TrainerContainer() {
   return (

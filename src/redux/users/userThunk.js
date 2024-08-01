@@ -1,7 +1,6 @@
 import axios from "axios";
 import { localhostURL } from "../../utils/url";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { toast } from "react-toastify";
 
 
 // Registration Thunk
@@ -51,6 +50,9 @@ export const signupVerification = createAsyncThunk(
             try {
                 const response = await axios.post(`${localhostURL}/verify`, { completeOtp, temperoryEmail });
                 if (response.data.message === "OTP verified") {
+                    const { accessToken, refreshToken } = response.data;
+                    sessionStorage.setItem("userAccessToken", accessToken);
+                    localStorage.setItem("userRefreshToken", refreshToken);
                     return response.data.userData;
                 } else {
                     return rejectWithValue(response.data.message);
@@ -67,24 +69,24 @@ export const signupVerification = createAsyncThunk(
 export const userLogin = createAsyncThunk(
     "userSlice/userLogin",
     async ({ email }, { rejectWithValue }) => {
-      try {
-        email = email.trim();
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailPattern.test(email)) {
-          return rejectWithValue("Please enter a valid email address");
+        try {
+            email = email.trim();
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                return rejectWithValue("Please enter a valid email address");
+            }
+
+            const response = await axios.post(`${localhostURL}/login`, { email });
+            if (response.data.success === false) {
+                return rejectWithValue("Invalid email");
+            } else {
+                return response.data;
+            }
+        } catch (error) {
+            return rejectWithValue(error.response?.data?.message || error.message);
         }
-  
-        const response = await axios.post(`${localhostURL}/login`, { email });
-        if (response.data.success === false) {
-          return rejectWithValue("Invalid email");
-        } else {
-          return response.data;
-        }
-      } catch (error) {
-        return rejectWithValue(error.response?.data?.message || error.message);
-      }
     }
-  );
+);
 
 
 export const loginVerification = createAsyncThunk(
@@ -96,6 +98,9 @@ export const loginVerification = createAsyncThunk(
             try {
                 const response = await axios.post(`${localhostURL}/login-verify`, { completeOtp, temperoryEmail });
                 if (response.data.message === "OTP verified") {
+                    const { accessToken, refreshToken } = response.data;
+                    sessionStorage.setItem("userAccessToken", accessToken);
+                    localStorage.setItem("userRefreshToken", refreshToken);
                     return response.data.userData;
                 } else {
                     return rejectWithValue(response.data.message);

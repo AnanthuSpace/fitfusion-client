@@ -1,4 +1,4 @@
-import "../../assets/styles/Verification.css";
+import "../../assets/styles/users/Verification.css";
 import { useState, useRef } from "react";
 import { loginVerification } from "../../redux/users/userThunk";
 import { useDispatch, useSelector } from "react-redux";
@@ -33,7 +33,7 @@ function LoginVerification() {
       temperoryEmail
     })).then((result) => {
       if (result.meta.requestStatus === "fulfilled") {
-        console.log("redirect to home page");
+        navigate("/")
       }
     });
   };

@@ -5,7 +5,7 @@ import { registration } from "../../redux/users/userThunk";
 import { ToastContainer, toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import "react-toastify/dist/ReactToastify.css";
-import "../../assets/styles/Signup.css";
+import "../../assets/styles/users/Signup.css";
 
 function Signup() {
   const [name, setFullName] = useState("");
