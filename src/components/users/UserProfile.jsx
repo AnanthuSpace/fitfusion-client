@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { editUserData } from "../../redux/users/userThunk";
 import { useNavigate } from "react-router-dom";
 import UserChangePassword from "./UserChangePassword";
+import PasswordModal from "./PasswordModal";
 
 function UserProfile() {
   const userData = useSelector((state) => state.user.userData);
@@ -14,6 +15,7 @@ function UserProfile() {
   const [gender, setGender] = useState(userData.gender || "Male");
   const [isEditing, setIsEditing] = useState(false);
   const [isRePass, setIsRePass] = useState(false);
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false); // State for the password modal
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -23,8 +25,18 @@ function UserProfile() {
   const handleGenderChange = (e) => setGender(e.target.value);
 
   const handleSave = () => {
+    setIsPasswordModalOpen(true); 
+  };
+
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+
+  const handlePasswordSubmit = (password) => {
+    
     dispatch(
       editUserData({
+        password,
         name,
         phone,
         address,
@@ -36,10 +48,7 @@ function UserProfile() {
       }
     });
     setIsEditing(false);
-  };
-
-  const handleEdit = () => {
-    setIsEditing(true);
+    setIsPasswordModalOpen(false); 
   };
 
   return (
@@ -158,6 +167,12 @@ function UserProfile() {
         </div>
         {isRePass && <UserChangePassword isRePass={isRePass} setIsRePass={setIsRePass} />}
       </div>
+      {isPasswordModalOpen && (
+        <PasswordModal
+          onClose={() => setIsPasswordModalOpen(false)}
+          onSubmit={handlePasswordSubmit}
+        />
+      )}
     </>
   );
 }

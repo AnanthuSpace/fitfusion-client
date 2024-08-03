@@ -119,21 +119,27 @@ export const loginVerification = createAsyncThunk(
 // Edit user data
 export const editUserData = createAsyncThunk(
     "userSlice/editUserData",
-    async ({ name, phone, address, gender }, { rejectWithValue }) => {
+    async ({ name, phone, address, gender, password }, { rejectWithValue }) => {
 
         name = name.trim();
         phone = phone.trim();
         address = address.trim();
         gender = gender.trim();
+        password = password.trim();
         const phoneRegex = /^\d{10}$/;
 
+        if(password.length < 6){
+            return rejectWithValue("Password must be at least 6 characters long!");
+        }
+        // console.log(password)
+        // const result = await userAxiosInstance.post("/verify-password", {password})
         if (name === "" || phone === "" || address === "" || gender === "") {
             return rejectWithValue("All the fields are required!");
         } else if (!phoneRegex.test(phone)) {
             return rejectWithValue("Invalid phone number. It should be a 10-digit number.");
         } else {
             try {
-                const response = await userAxiosInstance.put("/edit-user", { name, phone, address, gender });
+                const response = await userAxiosInstance.put("/edit-user", { name, phone, address, gender, password });
                 sessionStorage.setItem(`userData.name`, name)
                 sessionStorage.setItem(`userData.phone`, phone)
                 sessionStorage.setItem(`userData.address`, address)
@@ -142,7 +148,9 @@ export const editUserData = createAsyncThunk(
             } catch (error) {
                 if (error.response && error.response.status === 401) {
                     sessionStorage.removeItem("userAccessToken")
-                    return rejectWithValue("Unauthorized: Invalid or expired token");
+                    return rejectWithValue("Invalid or expired token");
+                } else if (error.response && error.response.status === 403){
+                    return rejectWithValue("Invalid password");
                 }
                 return rejectWithValue("Update failed, try again");
             }
