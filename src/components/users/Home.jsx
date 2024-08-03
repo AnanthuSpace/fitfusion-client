@@ -5,12 +5,11 @@ import TrainerContainer from "./TrainerContainer";
 import ReviewList from "./ReviewList";
 import Membership from "./Membership";
 import Header from "./Header";
-import { toast, ToastContainer } from "react-toastify";
+
 
 function Home() {
   return (
     <>
-    <ToastContainer/>
       <div className="home-container">
         <div className="enrty-container">
           <Header />

@@ -3,7 +3,7 @@ import { useState, useRef } from "react";
 import { loginVerification } from "../../redux/users/userThunk";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 function LoginVerification() {
   const [otp, setOtp] = useState(["", "", "", ""]);
@@ -27,20 +27,21 @@ function LoginVerification() {
 
   const handleSubmit = async () => {
     const completeOtp = otp.join("");
-    dispatch(loginVerification({
-      completeOtp,
-      toast,
-      temperoryEmail
-    })).then((result) => {
+    dispatch(
+      loginVerification({
+        completeOtp,
+        toast,
+        temperoryEmail,
+      })
+    ).then((result) => {
       if (result.meta.requestStatus === "fulfilled") {
-        navigate("/")
+        navigate("/");
       }
     });
   };
 
   return (
     <div>
-      <ToastContainer />
       <div className="signup-nav-bar">
         <div className="signup-logo">
           <h1>FitFusion</h1>

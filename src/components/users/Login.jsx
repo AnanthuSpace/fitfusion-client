@@ -3,7 +3,7 @@ import "../../assets/styles/users/LoginPage.css";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { userLogin } from "../../redux/users/userThunk";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 
 function Login() {
   const navigate = useNavigate();
@@ -36,7 +36,6 @@ function Login() {
 
   return (
     <>
-      <ToastContainer />
         <div className="login-page">
           <div className="login-nav-bar">
             <div className="login-logo">

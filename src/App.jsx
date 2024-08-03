@@ -7,13 +7,15 @@ import UserProtecter from "./components/protucters/UserProtector";
 import "./assets/styles/App.css";
 import HomePage from "./pages/users/HomePage";
 import ProfilePage from "./pages/users/ProfilePage";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
     <>
       <Router>
+        <ToastContainer />
         <Routes>
-
           {/* User Routes */}
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />

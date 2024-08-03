@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registration, signupVerification, userLogin, loginVerification } from "./userThunk";
+import { registration, signupVerification, userLogin, loginVerification, editUserData, changeUserPassword } from "./userThunk";
 import { toast } from "react-toastify";
 
 const userData = localStorage.getItem("userData") ? JSON.parse(localStorage.getItem("userData")) : null;
@@ -46,7 +46,7 @@ const userSlice = createSlice({
       })
       .addCase(signupVerification.fulfilled, (state, action) => {
         state.userData = action.payload;
-        localStorage.setItem('userData', JSON.stringify(state.userData)); 
+        localStorage.setItem('userData', JSON.stringify(state.userData));
         toast.success("Registration completed successfully", { hideProgressBar: true, autoClose: 3000 });
         state.isLoading = false;
       })
@@ -60,7 +60,7 @@ const userSlice = createSlice({
       // User Login
       .addCase(userLogin.pending, (state) => {
         state.isLoading = true;
-        state.error = null; // Clear previous errors
+        state.error = null;
       })
       .addCase(userLogin.fulfilled, (state, action) => {
         state.temperoryEmail = action.meta.arg.email;
@@ -78,7 +78,7 @@ const userSlice = createSlice({
       })
       .addCase(loginVerification.fulfilled, (state, action) => {
         state.userData = action.payload;
-        localStorage.setItem('userData', JSON.stringify(state.userData)); 
+        localStorage.setItem('userData', JSON.stringify(state.userData));
         toast.success("Login verification completed successfully", { hideProgressBar: true, autoClose: 3000 });
         state.isLoading = false;
       })
@@ -88,7 +88,23 @@ const userSlice = createSlice({
         state.isLoading = false;
       })
 
-       
+
+      // Edit user Data
+      .addCase(editUserData.rejected, (state, action) => {
+        toast.error(action.payload || "Updat error", { hideProgressBar: true, autoClose: 3000 });
+      })
+      .addCase(editUserData.fulfilled, (state, action) => {
+        state.userData.name = sessionStorage.getItem(`userData.name`)
+        state.userData.phone = sessionStorage.getItem(`userData.phone`)
+        state.userData.address = sessionStorage.getItem(`userData.address`)
+        state.userData.gender = sessionStorage.getItem(`userData.gender`)
+        toast.success("Update successfully", { hideProgressBar: true, autoClose: 3000 });
+      })
+
+      // Change password
+      .addCase(changeUserPassword.rejected, (state, action) => {
+        toast.error(action.payload || "Reset error", { hideProgressBar: true, autoClose: 3000 });
+      })
   },
 });
 

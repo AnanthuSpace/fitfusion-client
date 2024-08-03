@@ -3,7 +3,7 @@ import { useState, useRef } from "react";
 import { signupVerification } from "../../redux/users/userThunk";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 function SignUpVerification() {
   const [otp, setOtp] = useState(["", "", "", ""]);
@@ -40,7 +40,6 @@ function SignUpVerification() {
 
   return (
     <div>
-      <ToastContainer />
       <div className="signup-nav-bar">
         <div className="signup-logo">
           <h1>FitFusion</h1>

@@ -14,7 +14,7 @@
     width: 90%;
     display: flex;
     justify-content: center;
-    gap: 3rem;
+    gap: 1.5rem;
 }
 
 .profile-div {
@@ -101,4 +101,18 @@
     width: 95%;
     padding: .5rem;
     border-bottom: 1px solid #FF7906;
+}
+
+.edit-profile-btn {
+    background-color: #FF7906;
+    color: white;
+    border: none;
+    width: 9rem;
+    height: 2rem;
+    border-radius: .5rem;
+    margin-top: .5rem;
+}
+
+.ptag {
+    width: 61%;
 }

@@ -2,9 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { registration } from "../../redux/users/userThunk";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import "react-toastify/dist/ReactToastify.css";
 import "../../assets/styles/users/Signup.css";
 
 function Signup() {
@@ -34,7 +33,6 @@ function Signup() {
 
   return (
     <>
-      <ToastContainer />
       <div className="signup-page">
         
         <div className="signup-nav-bar">
