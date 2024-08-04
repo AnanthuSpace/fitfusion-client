@@ -4,11 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { changeUserPassword } from "../../redux/users/userThunk";
 
-function UserChangePassword({ isRePass, setIsRePass }) {
-  // () => setIsRePass(false)
+function UserChangePassword({ setIsRePass }) {
   const [oldPass, setOldPass] = useState("");
   const [newPass, setNewPass] = useState("");
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleChangePass = () => {
@@ -17,7 +15,8 @@ function UserChangePassword({ isRePass, setIsRePass }) {
         oldPass,
         newPass,
       })
-    );
+    )
+    setIsRePass(false)
   };
 
   return (

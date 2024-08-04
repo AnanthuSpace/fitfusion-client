@@ -15,7 +15,7 @@ function UserProfile() {
   const [gender, setGender] = useState(userData.gender || "Male");
   const [isEditing, setIsEditing] = useState(false);
   const [isRePass, setIsRePass] = useState(false);
-  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false); // State for the password modal
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false); 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -165,7 +165,7 @@ function UserProfile() {
             )}
           </div>
         </div>
-        {isRePass && <UserChangePassword isRePass={isRePass} setIsRePass={setIsRePass} />}
+        {isRePass && <UserChangePassword setIsRePass={setIsRePass} />}
       </div>
       {isPasswordModalOpen && (
         <PasswordModal

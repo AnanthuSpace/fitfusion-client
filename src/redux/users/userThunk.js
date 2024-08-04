@@ -131,8 +131,6 @@ export const editUserData = createAsyncThunk(
         if(password.length < 6){
             return rejectWithValue("Password must be at least 6 characters long!");
         }
-        // console.log(password)
-        // const result = await userAxiosInstance.post("/verify-password", {password})
         if (name === "" || phone === "" || address === "" || gender === "") {
             return rejectWithValue("All the fields are required!");
         } else if (!phoneRegex.test(phone)) {
@@ -177,6 +175,7 @@ export const changeUserPassword = createAsyncThunk(
         } else {
             try {
                 const responds = await userAxiosInstance.patch("/change-userpass", { oldPassword, newPassword })
+                return responds;
             } catch (error) {
                 if (error.response && error.response.status === 401) {
                     sessionStorage.removeItem("userAccessToken")

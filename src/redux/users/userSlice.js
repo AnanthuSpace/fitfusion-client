@@ -102,9 +102,13 @@ const userSlice = createSlice({
       })
 
       // Change password
-      .addCase(changeUserPassword.rejected, (state, action) => {
-        toast.error(action.payload || "Reset error", { hideProgressBar: true, autoClose: 3000 });
+      .addCase(changeUserPassword.fulfilled, (state) => {
+        toast.success("Password updated successfully", { hideProgressBar: true, autoClose: 3000 });
       })
+      .addCase(changeUserPassword.rejected, (state, action) => {
+        state.error = action.payload;
+        toast.error(action.payload || "Reset error", { hideProgressBar: true, autoClose: 3000 });
+      });
   },
 });
 
