@@ -13,6 +13,7 @@ import TrainerLogin from "./components/trainers/TrainerLogin";
 import TrainerSignup from "./components/trainers/TrainerSignup";
 import AdminLogingPage from "./pages/admin/AdminLogingPage";
 import AdminDashBoardPage from "./pages/admin/AdminDashBoardPage";
+import TrainerOtpVerification from "./components/trainers/TrainerOtpVerification";
 
 function App() {
   return (
@@ -30,8 +31,9 @@ function App() {
 
 
           {/* Trainer Routes */}
-          <Route path="/trainer-login" element={<TrainerLogin />} />
+          <Route path="/trainer" element={<TrainerLogin />} />
           <Route path="/trainer-signup" element={<TrainerSignup />} />
+          <Route path="/trainer-otp" element={<TrainerOtpVerification />} />
 
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminLogingPage />} />

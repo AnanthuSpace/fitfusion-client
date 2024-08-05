@@ -86,7 +86,7 @@ function Login() {
                     <button className="login-user">Loading...</button>
                   )}
                 </div>
-                <button className="login-trainer" onClick={()=> navigate("/trainer-login")}>Login as a Trainer</button>
+                <button className="login-trainer" onClick={()=> navigate("/trainer")}>Login as a Trainer</button>
               </div>
             </div>
           </div>
