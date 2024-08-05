@@ -14,7 +14,7 @@ function TrainerLogin() {
         <div className="trainer-login-div">
           <div className="trainer-login-icon">
             <img src="/Login-image.png" alt="" />
-            <p  onClick={()=>navigate("/trainer-signup")}>Create an account</p>
+            <u><p  onClick={()=>navigate("/trainer-signup")}>Create an account</p></u>
           </div>
           <div className="trainner-login-form">
             <h1>Sign in</h1>
@@ -33,7 +33,7 @@ function TrainerLogin() {
             </button>
 
             <div className="orlogin">
-              <p>Or login with </p>
+              <u><p>Or login with </p></u>
               <FcGoogle />
             </div>
           </div>

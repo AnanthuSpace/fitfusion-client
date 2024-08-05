@@ -11,6 +11,8 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import TrainerLogin from "./components/trainers/TrainerLogin";
 import TrainerSignup from "./components/trainers/TrainerSignup";
+import AdminLogingPage from "./pages/admin/AdminLogingPage";
+import AdminDashBoardPage from "./pages/admin/AdminDashBoardPage";
 
 function App() {
   return (
@@ -31,6 +33,9 @@ function App() {
           <Route path="/trainer-login" element={<TrainerLogin />} />
           <Route path="/trainer-signup" element={<TrainerSignup />} />
 
+          {/* Admin Routes */}
+          <Route path="/admin" element={<AdminLogingPage />} />
+          <Route path="/admin-dashboard" element={<AdminDashBoardPage />} />
         </Routes>
       </Router>
     </>

@@ -12,7 +12,7 @@ function TrainerSignup() {
         <div className="trainer-signup-div">
           <div className="trainer-signup-icon">
             <img src="/Trainer-signup.jpg" alt="" />{" "}
-            <p onClick={()=>navigate("/trainer-login")}>Already have an account ?</p>
+            <u><p onClick={()=>navigate("/trainer-login")}>Already have an account ?</p></u>
           </div>
           <div className="trainer-signup-form">
             <h1>Sign up</h1>
@@ -47,7 +47,7 @@ function TrainerSignup() {
             </button>
 
             <div className="or-signup">
-              <p>Or sign up with </p>{" "}
+              <u><p>Or sign up with </p></u>
               <FcGoogle />
             </div>
           </div>
