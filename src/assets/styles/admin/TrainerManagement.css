@@ -1,8 +1,59 @@
-.trainermanagement-div{
-    width: 95%;
-    height: 85%;
+.trainermanagement-div {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .trainermanagemet-table {
+    width: 90%;
+    height: auto;
     background-color: #222222;
-    margin-top: 5rem;
-    border-radius: 1rem;
-    box-shadow: 8px 0 10px rgba(0, 0, 0, 0.2);
-}
+    box-shadow: 0 0 10px 5px #ffffff;
+    color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .trainermanagemet-table table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .trainermanagemet-table th,
+  .trainermanagemet-table td {
+    border: 1px solid #ffffff;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  .trainermanagemet-table th {
+    background-color: #333333;
+  }
+  
+  .trainermanagemet-table button {
+    padding: 5px 10px;
+    margin: 2px;
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .trainermanagemet-table .block-button {
+    background-color: #ff6347; /* Tomato */
+  }
+  
+  .trainermanagemet-table .unblock-button {
+    background-color: #32cd32; /* LimeGreen */
+  }
+  
+  .trainermanagemet-table .approval-button {
+    background-color: #1e90ff; /* DodgerBlue */
+  }
+  
+  .trainermanagemet-table .rejection-button {
+    background-color: #dc143c; /* Crimson */
+  }
+  

@@ -67,7 +67,7 @@ function UserProfile() {
               Full Name
               {isEditing ? (
                 <input
-                  className="input-text"
+                  className="user-input-text"
                   type="text"
                   value={name}
                   onChange={handleNameChange}
@@ -82,7 +82,7 @@ function UserProfile() {
               Phone
               {isEditing ? (
                 <input
-                  className="input-text"
+                  className="user-input-text"
                   type="text"
                   value={phone}
                   onChange={handlePhoneChange}
@@ -98,7 +98,7 @@ function UserProfile() {
               Address
               {isEditing ? (
                 <input
-                  className="input-text"
+                  className="user-input-text"
                   type="text"
                   value={address}
                   onChange={handleAddressChange}

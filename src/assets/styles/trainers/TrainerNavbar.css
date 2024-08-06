@@ -1,0 +1,10 @@
+.trainer-navbar {
+    width: 100%;
+    height: 4rem;
+    box-shadow: 0 8px 8px rgba(0, 0, 0, 0.1);
+    background-color: #222222;
+}
+
+.trainer-short-icon {
+    color: #FF7906;
+}

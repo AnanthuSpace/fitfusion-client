@@ -1,0 +1,44 @@
+.trainer-profile-container {
+  width: 95%;
+  background-color: #222222;
+  color: white;
+  display: flex; 
+}
+
+.trainer-profile-img {
+  border: 1px solid #FF7906;
+  border-radius: 1rem;
+}
+
+.trainerprofilecontainer {
+  margin-top: 8rem;
+  width: 100%; 
+}
+
+.form-label {
+  color: white;
+}
+
+.form-control {
+  background-color: #444444;
+  border: none;
+  color: white;
+}
+
+.form-control:focus {
+  background-color: #444444;
+  color: white;
+  box-shadow: none;
+  border-color: transparent;
+}
+
+.trainer-profile-btn {
+  width: 8rem;
+  background-color: #313131;
+  color: white;
+  height: 3rem;
+}
+
+.trainer-profile-btn:hover {
+  background-color: #222222;
+}

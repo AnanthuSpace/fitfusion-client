@@ -16,7 +16,12 @@ function TrainerLogin() {
 
   const handleSubmit = async () => {
     const emailId = email.toLowerCase();
-    dispatch(trainerLogin({ email: emailId, password }));
+    dispatch(trainerLogin({ email: emailId, password }))
+    .then((result) => {
+      if (result.meta.requestStatus === "fulfilled") {
+        navigate("/trainer-console");
+      }
+    });
   };
 
   return (
@@ -29,7 +34,7 @@ function TrainerLogin() {
               <p onClick={() => navigate("/trainer-signup")}>Create an account</p>
             </u>
           </div>
-          <div className="trainer-login-form">
+          <div className="trainner-login-form">
             <h1>Sign in</h1>
             <div className="input-and-icon">
               <HiMiniUser />

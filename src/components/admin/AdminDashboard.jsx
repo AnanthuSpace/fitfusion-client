@@ -22,7 +22,6 @@ function AdminDashboard() {
 
   return (
     <>
-      <AdminNavBar />
       <div className="admin-dashboard-container">
         <div className="admin-sidebar-home">
           <AdminSideBar setActiveComponent={setActiveComponent} activeComponent={activeComponent} />

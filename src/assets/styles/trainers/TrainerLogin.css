@@ -39,7 +39,6 @@
   flex-direction: column;
   width: 60%;
   height: 100%;
-  padding-top: 10%;
 }
 
 .trainer-login-input {
@@ -71,7 +70,7 @@ hr {
   margin-top: 2rem;
 }
 
-.orlogin {
+.or-login {
   display: flex;
   align-items: center;
   justify-content: space-between;

@@ -14,6 +14,7 @@ import TrainerSignup from "./components/trainers/TrainerSignup";
 import AdminLogingPage from "./pages/admin/AdminLogingPage";
 import AdminDashBoardPage from "./pages/admin/AdminDashBoardPage";
 import TrainerOtpVerification from "./components/trainers/TrainerOtpVerification";
+import TrainerConsole from "./components/trainers/TrainerConsole";
 
 function App() {
   return (
@@ -29,15 +30,15 @@ function App() {
           <Route path="/login-verify" element={<LoginVerification />} />
           <Route path="/profile" element={<UserProtecter><ProfilePage /></UserProtecter>} />
 
-
           {/* Trainer Routes */}
           <Route path="/trainer" element={<TrainerLogin />} />
           <Route path="/trainer-signup" element={<TrainerSignup />} />
           <Route path="/trainer-otp" element={<TrainerOtpVerification />} />
+          <Route path="/trainer-console" element={<TrainerConsole />} />
 
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminLogingPage />} />
-          <Route path="/admin-dashboard" element={<AdminDashBoardPage />} />
+          <Route path="/admin-console" element={<AdminDashBoardPage />} />
         </Routes>
       </Router>
     </>

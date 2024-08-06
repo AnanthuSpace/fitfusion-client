@@ -8,16 +8,19 @@
     align-items: center;
     box-shadow: 0 8px 10px rgba(0, 0, 0, 0.2);
     position: fixed;
-    /* z-index: 9999; */
     top: 0;
 }
 
-.admin-navbar-logo, .admin-navbar-heading {
+.admin-navbar-logo,
+.admin-navbar-heading {
     width: 13rem;
     height: 4rem;
     display: flex;
     align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
 }
+
 
 .admin-navbar-logo {
     justify-content: end;

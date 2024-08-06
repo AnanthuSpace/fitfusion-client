@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AdminNavBar from "./AdminNavBar";
 import "../../assets/styles/admin/AdminLogin.css";
 import { useDispatch } from "react-redux";
 import { adminLogin } from "../../redux/admin/adminThunk";
@@ -19,7 +18,6 @@ function AdminLogin() {
   };
   return (
     <>
-    <AdminNavBar />
       <div className="admin-login-container">
         <div className="admin-login-div">
           <h1>Admin Login</h1>
