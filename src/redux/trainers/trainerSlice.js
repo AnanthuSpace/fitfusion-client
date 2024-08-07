@@ -45,7 +45,6 @@ const trainerSlice = createSlice({
                 state.isLoading = true;
             })
             .addCase(trainerVerification.fulfilled, (state, action) => {
-                state.userData = action.payload;
                 localStorage.setItem('userData', JSON.stringify(state.userData));
                 toast.success("Registration completed successfully", { hideProgressBar: true, autoClose: 3000 });
                 state.isLoading = false;
@@ -60,7 +59,7 @@ const trainerSlice = createSlice({
                 state.isLoading = true;
             })
             .addCase(trainerLogin.fulfilled, (state, action) => {
-                state.trainerData = action.payload;
+                state.trainerData = action.payload.trainerData;
                 localStorage.setItem('trainerData', JSON.stringify(state.trainerData));
                 toast.success("Login successfully", { hideProgressBar: true, autoClose: 3000 });
                 state.isLoading = false;

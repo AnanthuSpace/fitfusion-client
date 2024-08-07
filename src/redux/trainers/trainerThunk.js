@@ -13,12 +13,11 @@ export const trainerRegistration = createAsyncThunk(
         email = email.trim();
         password = password.trim();
         confirmPass = confirmPass.trim();
-        
+
 
         const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
 
         if (name === "" || email === "" || password === "" || confirmPass === "") {
-            console.log("trigerd");
             return rejectWithValue("All the fields are required!");
         } else if (name.length < 3 || name.length > 20) {
             return rejectWithValue("Name must be between 3 to 20 characters and contain only letters!");
@@ -54,9 +53,6 @@ export const trainerVerification = createAsyncThunk(
                 const response = await axios.post(`${localhostURL}/trainer/verify`, { completeOtp, temperoryEmail });
                 if (response.data.message === "OTP verified") {
                     console.log(response.data)
-                    const { accessToken, refreshToken } = response.data;
-                    sessionStorage.setItem("trainerAccessToken", accessToken);
-                    localStorage.setItem("trainerRefreshToken", refreshToken);
                     return response.data.trainerData;
                 } else {
                     return rejectWithValue(response.data.message);
@@ -70,7 +66,7 @@ export const trainerVerification = createAsyncThunk(
 
 export const trainerLogin = createAsyncThunk(
     "trainerSlice/trainerLogin",
-    async({email, password}, { rejectWithValue}) => {
+    async ({ email, password }, { rejectWithValue }) => {
         try {
             email = email.trim()
             password = password.trim()
@@ -78,7 +74,7 @@ export const trainerLogin = createAsyncThunk(
             const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailPattern.test(email)) {
                 return rejectWithValue("Please enter a valid email address");
-            } else if(password.length < 6){
+            } else if (password.length < 6) {
                 return rejectWithValue("Password must be at least 6 characters long!");
             }
 
@@ -86,6 +82,9 @@ export const trainerLogin = createAsyncThunk(
             if (response.data.success === false) {
                 return rejectWithValue("Invalid email and password");
             } else {
+                const { accessToken, refreshToken } = response.data;
+                sessionStorage.setItem("trainerAccessToken", accessToken);
+                localStorage.setItem("trainerRefreshToken", refreshToken);
                 return response.data;
             }
         } catch (error) {

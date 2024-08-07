@@ -2,7 +2,7 @@
   width: 95%;
   background-color: #222222;
   color: white;
-  display: flex; 
+  display: flex;
 }
 
 .trainer-profile-img {
@@ -11,8 +11,7 @@
 }
 
 .trainerprofilecontainer {
-  margin-top: 8rem;
-  width: 100%; 
+  width: 100%;
 }
 
 .form-label {
@@ -41,4 +40,8 @@
 
 .trainer-profile-btn:hover {
   background-color: #222222;
+}
+
+.trainer-profile-container .form-control::placeholder {
+  color: white;
 }

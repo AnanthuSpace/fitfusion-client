@@ -9,12 +9,12 @@ function TrainerConsole() {
   return (
     <>
       <div className="row">
-        <div className="col-2 p-0">
+        <div className="col-2 p-0 bg-dark">
           <TrainerSideBar />
         </div>
-        <div className="col-10 p-0">
+        <div className="col-10 p-0 bg-dark">
           <TrainerNavbar />
-          <img  className="col-12 p-0 bakcgroundimage" src="/background-cover.jpg" alt="" />
+          <img  className="col-12 p-0 mt-0 bakcgroundimage" src="/background-cover.jpg" alt="" />
           <TrainerProfileComponent />
         </div>
       </div>
