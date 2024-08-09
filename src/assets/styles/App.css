@@ -29,3 +29,10 @@ html, body, #root, .container-fluid, .row {
 .shadow-xl {
   box-shadow: 0 23px 45px -11px rgba(20, 20, 20, 0.25) !important;
 }
+
+.gradient-blue-white {
+  background: linear-gradient(to right, #4B63DD 0%, #0524BF 99%);
+  border: none;
+  color: white;
+}
+

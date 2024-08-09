@@ -1,36 +1,11 @@
-import React, { useState } from 'react';
-import "../../assets/styles/admin/AdminDashBoard.css";
-import AdminNavBar from './AdminNavBar';
-import AdminSideBar from './AdminSideBar';
-import AdminDashbordContainer from './AdminDashbordContainer';
-import UserManagement from './UserManagement';
-import TrainerManagement from './TrainerManagement';
+import React from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function AdminDashboard() {
-  const [activeComponent, setActiveComponent] = useState('dashboard');
-
-  const renderActiveComponent = () => {
-    switch (activeComponent) {
-      case 'userManagement':
-        return <UserManagement />;
-      case 'trainerManagement':
-        return <TrainerManagement />;
-      default:
-        return <AdminDashbordContainer />;
-    }
-  };
-
   return (
-    <>
-      <div className="admin-dashboard-container">
-        <div className="admin-sidebar-home">
-          <AdminSideBar setActiveComponent={setActiveComponent} activeComponent={activeComponent} />
-        </div>
-        <div className="content-indashboard">
-          {renderActiveComponent()}
-        </div>
-      </div>
-    </>
+    <div className="flex-grow-1 p-3 bg-black text-white">
+      <h2>Welcome to the Admin Dashboard</h2>
+    </div>
   );
 }
 

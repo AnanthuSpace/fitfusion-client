@@ -21,8 +21,8 @@ const adminSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(adminLogin.fulfilled, (state) => {
-                toast.success("Login successfully", { hideProgressBar: true, autoClose: 3000 });
+            .addCase(adminLogin.fulfilled, (state,action) => {
+                toast.success(action.payload , { hideProgressBar: true, autoClose: 3000 });
             })
             .addCase(adminLogin.rejected, (state, action) => {
                 console.log(action)

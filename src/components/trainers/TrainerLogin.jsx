@@ -60,8 +60,6 @@ function TrainerLogin() {
               {isLoading ? "Loading..." : "Login"}
             </button>
 
-            {error && <p className="error-message">{error}</p>}
-
             <div className="or-login">
               <u>
                 <p>Or login with</p>

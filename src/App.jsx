@@ -10,11 +10,14 @@ import ProfilePage from "./pages/users/ProfilePage";
 import { ToastContainer } from "react-toastify"; 
 import "react-toastify/dist/ReactToastify.css";
 import TrainerLogin from "./components/trainers/TrainerLogin";
-import TrainerSignup from "./components/trainers/TrainerSignup";
-import AdminLogingPage from "./pages/admin/AdminLogingPage";
-import AdminDashBoardPage from "./pages/admin/AdminDashBoardPage";
+import AdminLoginPage from "./components/admin/AdminLogin";
 import TrainerOtpVerification from "./components/trainers/TrainerOtpVerification";
 import TrainerConsole from "./components/trainers/TrainerConsole";
+import SignupCopy from "./components/trainers/SignupCopy";
+import AdminConsole from "./pages/admin/AdminConsole";
+import AdminTrainerPage from "./pages/admin/AdminTrainerPage";
+import AdminUserPage from "./pages/admin/AdminUserPage";
+
 
 function App() {
   return (
@@ -32,13 +35,15 @@ function App() {
 
           {/* Trainer Routes */}
           <Route path="/trainer" element={<TrainerLogin />} />
-          <Route path="/trainer-signup" element={<TrainerSignup />} />
+          <Route path="/trainer-signup" element={<SignupCopy />} />
           <Route path="/trainer-otp" element={<TrainerOtpVerification />} />
           <Route path="/trainer-console" element={<TrainerConsole />} />
 
           {/* Admin Routes */}
-          <Route path="/admin" element={<AdminLogingPage />} />
-          <Route path="/admin-console" element={<AdminDashBoardPage />} />
+          <Route path="/admin" element={<AdminLoginPage />} />
+          <Route path="/admin-console" element={<AdminConsole />} />
+          <Route path="/admin-trainer" element={<AdminTrainerPage />} />
+          <Route path="/admin-user" element={<AdminUserPage />} />
         </Routes>
       </Router>
     </>

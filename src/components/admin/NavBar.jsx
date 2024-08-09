@@ -1,6 +1,6 @@
 import React from "react";
 
-function AdminSideNav() {
+function NavBar() {
   return (
     <nav className="navbar navbar-dark bg-dark border-bottom border-secondary">
       <div className="container-fluid">
@@ -11,4 +11,4 @@ function AdminSideNav() {
   );
 }
 
-export default AdminSideNav;
+export default NavBar;

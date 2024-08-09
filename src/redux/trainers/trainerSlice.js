@@ -9,14 +9,14 @@ const trainerData = localStorage.getItem("trainerData") ? JSON.parse(localStorag
 const trainerSlice = createSlice({
     name: "trainerSlice",
     initialState: {
-        trainerData: trainerData,
+        trainerData: null,
         isLoading: false,
         error: null,
         temperoryEmail: " ",
     },
     reducers: {
         trainerLogout: (state) => {
-            state.userData = null;
+            state.trainerData = null;
             sessionStorage.removeItem("trainerAccessToken");
             localStorage.removeItem("trainerRefreshToken");
             localStorage.removeItem('trainerData');
@@ -46,7 +46,7 @@ const trainerSlice = createSlice({
             })
             .addCase(trainerVerification.fulfilled, (state, action) => {
                 localStorage.setItem('userData', JSON.stringify(state.userData));
-                toast.success("Registration completed successfully", { hideProgressBar: true, autoClose: 3000 });
+                toast.success(action.payload , { hideProgressBar: true, autoClose: 3000 });
                 state.isLoading = false;
             })
             .addCase(trainerVerification.rejected, (state, action) => {
@@ -55,11 +55,14 @@ const trainerSlice = createSlice({
                 state.isLoading = false;
             })
 
+
+            // Trainer Login
             .addCase(trainerLogin.pending, (state) => {
                 state.isLoading = true;
             })
             .addCase(trainerLogin.fulfilled, (state, action) => {
                 state.trainerData = action.payload.trainerData;
+                console.log(action.payload.trainerData);
                 localStorage.setItem('trainerData', JSON.stringify(state.trainerData));
                 toast.success("Login successfully", { hideProgressBar: true, autoClose: 3000 });
                 state.isLoading = false;
@@ -68,7 +71,7 @@ const trainerSlice = createSlice({
                 state.error = action.payload;
                 toast.error(action.payload || "Authentication failed", { hideProgressBar: true, autoClose: 3000 });
                 state.isLoading = false;
-              })
+            })
     }
 })
 

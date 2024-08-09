@@ -1,6 +1,6 @@
 import axios from "axios";
 import { localhostURL } from "../../utils/url";
-import { createAction, createAsyncThunk, isRejectedWithValue } from "@reduxjs/toolkit";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import adminAxiosInstance from "../../config/axiosAdminConfig";
 
 

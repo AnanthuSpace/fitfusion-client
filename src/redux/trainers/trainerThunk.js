@@ -70,17 +70,19 @@ export const trainerLogin = createAsyncThunk(
         try {
             email = email.trim()
             password = password.trim()
-
+            
             const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailPattern.test(email)) {
                 return rejectWithValue("Please enter a valid email address");
             } else if (password.length < 6) {
                 return rejectWithValue("Password must be at least 6 characters long!");
             }
-
+            
             const response = await axios.post(`${localhostURL}/trainer/login`, { email, password });
+            console.log("start");
+            
             if (response.data.success === false) {
-                return rejectWithValue("Invalid email and password");
+                return rejectWithValue(response.data.message);
             } else {
                 const { accessToken, refreshToken } = response.data;
                 sessionStorage.setItem("trainerAccessToken", accessToken);
