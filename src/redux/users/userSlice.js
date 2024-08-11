@@ -18,7 +18,7 @@ const userSlice = createSlice({
       sessionStorage.removeItem("userAccessToken");
       localStorage.removeItem("userRefreshToken");
       localStorage.removeItem('userData');
-      toast.error("Logout successfully", { hideProgressBar: true, autoClose: 3000 });
+      toast.success("Logout successfully", { hideProgressBar: true, autoClose: 3000 });
     },
   },
   extraReducers: (builder) => {

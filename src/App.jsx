@@ -17,6 +17,7 @@ import SignupCopy from "./components/trainers/SignupCopy";
 import AdminConsole from "./pages/admin/AdminConsole";
 import AdminTrainerPage from "./pages/admin/AdminTrainerPage";
 import AdminUserPage from "./pages/admin/AdminUserPage";
+import AdminProtector from "./components/protucters/AdminProtector";
 
 
 function App() {
@@ -41,9 +42,9 @@ function App() {
 
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminLoginPage />} />
-          <Route path="/admin-console" element={<AdminConsole />} />
-          <Route path="/admin-trainer" element={<AdminTrainerPage />} />
-          <Route path="/admin-user" element={<AdminUserPage />} />
+          <Route path="/admin-console" element={<AdminProtector><AdminConsole /></AdminProtector>} />
+          <Route path="/admin-trainer" element={<AdminProtector><AdminTrainerPage /></AdminProtector>} />
+          <Route path="/admin-user" element={<AdminProtector><AdminUserPage /></AdminProtector>} />
         </Routes>
       </Router>
     </>

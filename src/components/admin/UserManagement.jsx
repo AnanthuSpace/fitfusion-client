@@ -1,79 +1,53 @@
-import React, { useState } from 'react';
-import { FaCheck, FaTimes } from 'react-icons/fa';
-
-const users = [
-  { id: 1, name: 'John Doe', email: 'john.doe@example.com', status: 'pending' },
-  { id: 2, name: 'Jane Smith', email: 'jane.smith@example.com', status: 'true' },
-  { id: 3, name: 'Mark Johnson', email: 'mark.johnson@example.com', status: 'pending' },
-];
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { handleUnblockUser, handleBlockUser } from "../../redux/admin/adminThunk";
 
 function UserManagement() {
-  const [userList, setUserList] = useState(users);
+  const dispatch = useDispatch();
+  const usersData = useSelector((state) => state.admin.usersData);
 
-  const handleVerify = (id, newStatus) => {
-    setUserList(prevUsers =>
-      prevUsers.map(user =>
-        user.id === id ? { ...user, status: newStatus } : user
-      )
-    );
-  };
-
-  const handleToggleBlock = (id) => {
-    setUserList(prevUsers =>
-      prevUsers.map(user =>
-        user.id === id
-          ? { ...user, blocked: !user.blocked }
-          : user
-      )
-    );
+  const handleToggleBlock = (user) => {
+    if (user.isBlocked) {
+      dispatch(handleUnblockUser({ userId: user.userId }));
+    } else {
+      dispatch(handleBlockUser({ userId: user.userId }));
+    }
   };
 
   return (
-    <div className="container-fluid p-3 flex-column" style={{ backgroundColor: 'black', color: 'white' }}>
-      <h2>User Management</h2>
+    <div
+      className="container-fluid p-3 flex-column"
+      style={{ backgroundColor: "black", color: "white" }}
+    >
+      <h2 style={{ color: "#4285F4" }}>User Management</h2>
       <table className="table table-dark table-hover">
         <thead>
           <tr>
             <th scope="col">#</th>
             <th scope="col">Name</th>
             <th scope="col">Email</th>
-            <th scope="col">Status</th>
+            <th scope="col">Gender</th>
+            <th scope="col">Phone</th>
             <th scope="col">Actions</th>
           </tr>
         </thead>
         <tbody>
-          {userList.map((user, index) => (
-            <tr key={user.id}>
+          {usersData.map((user, index) => (
+            <tr key={user.userId}>
               <th scope="row">{index + 1}</th>
               <td>{user.name}</td>
               <td>{user.email}</td>
-              <td>
-                {user.status === 'pending' ? (
-                  <>
-                    <FaCheck
-                      className="text-success me-3"
-                      style={{ cursor: 'pointer' }}
-                      onClick={() => handleVerify(user.id, 'true')}
-                    />
-                    <FaTimes
-                      className="text-danger"
-                      style={{ cursor: 'pointer' }}
-                      onClick={() => handleVerify(user.id, 'false')}
-                    />
-                  </>
-                ) : (
-                  <span className={`badge ${user.status === 'true' ? 'bg-success' : 'bg-danger'}`}style={{ width: '100px' }}>
-                    {user.status === 'true' ? 'Verified' : 'Rejected'}
-                  </span>
-                )}
-              </td>
+              <td>{user.gender || "Not updated"}</td>
+              <td>{user.phone || "Not updated"}</td>
               <td>
                 <button
-                  className={`btn ${user.blocked ? 'btn-danger' : 'btn-secondary'}`}
-                  style={{ width: '100px' }} 
-                  onClick={() => handleToggleBlock(user.id)}
+                  className={`btn ${
+                    user.isBlocked ? "gradient-red-white" : "gradient-blue-white"
+                  }`}
+                  style={{ width: "100px", color: "white" }}
+                  onClick={() => handleToggleBlock(user)}
                 >
-                  {user.blocked ? 'Unblock' : 'Block'}
+                  {user.isBlocked ? "Unblock" : "Block"}
                 </button>
               </td>
             </tr>

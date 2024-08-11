@@ -1,80 +1,102 @@
-import React, { useState } from 'react';
-import { FaCheck, FaTimes } from 'react-icons/fa';
+import React, { useEffect } from "react";
+import { FaCheck, FaTimes, FaEdit } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  handleBlockTrainer,
+  handleUnblockTrainer,
+} from "../../redux/admin/adminThunk";
 
-const trainers = [
-  { id: 1, name: 'John Doe', email: 'john.doe@example.com', status: 'pending' },
-  { id: 2, name: 'Jane Smith', email: 'jane.smith@example.com', status: 'true' },
-  { id: 3, name: 'Mark Johnson', email: 'mark.johnson@example.com', status: 'pending' },
-];
+const TrainerManagement = () => {
+  const dispatch = useDispatch();
+  const trainersData = useSelector((state) => state.admin.trainersData);
 
-function TrainerManagement() {
-  const [trainerList, setTrainerList] = useState(trainers);
+  const handleVerify = (id, newStatus) => {};
 
-  const handleVerify = (id, newStatus) => {
-    setTrainerList(prevTrainers =>
-      prevTrainers.map(trainer =>
-        trainer.id === id ? { ...trainer, status: newStatus } : trainer
-      )
-    );
+  const handleToggleBlock = (trainer) => {
+    if (trainer.isBlocked) {
+      dispatch(handleUnblockTrainer({ trainerId: trainer.trainerId }));
+    } else {
+      dispatch(handleBlockTrainer({ trainerId: trainer.trainerId }));
+    }
   };
+  
 
-  const handleToggleBlock = (id) => {
-    setTrainerList(prevTrainers =>
-      prevTrainers.map(trainer =>
-        trainer.id === id
-          ? { ...trainer, blocked: !trainer.blocked }
-          : trainer
-      )
-    );
+  const handleEdit = (id) => {
+    console.log("Edit trainer with id:", id);
   };
 
   return (
-    <div className="container-fluid p-3 flex-column" style={{ backgroundColor: 'black', color: 'white' }}>
-      <h2>Trainer Management</h2>
+    <div
+      className="container-fluid p-3 flex-column"
+      style={{ backgroundColor: "black", color: "white" }}
+    >
+      <h2 style={{ color: "#4285F4" }}>Trainer Management</h2>
       <table className="table table-dark table-hover">
         <thead>
           <tr>
             <th scope="col">#</th>
             <th scope="col">Name</th>
             <th scope="col">Email</th>
+            <th scope="col">Gender</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Level</th>
             <th scope="col">Status</th>
             <th scope="col">Actions</th>
+            <th scope="col">Edit</th>
           </tr>
         </thead>
         <tbody>
-          {trainerList.map((trainer, index) => (
-            <tr key={trainer.id}>
+          {trainersData.map((trainer, index) => (
+            <tr key={trainer.trainerId}>
               <th scope="row">{index + 1}</th>
               <td>{trainer.name}</td>
               <td>{trainer.email}</td>
+              <td>{trainer.gender || "Not mentioned"}</td>
+              <td>{trainer.phone || "Not mentioned"}</td>
+              <td>{trainer.level || "Not mentioned"}</td>
               <td>
-                {trainer.status === 'pending' ? (
+                {trainer.verified === "pending" ? (
                   <>
                     <FaCheck
                       className="text-success me-3"
-                      style={{ cursor: 'pointer' }}
-                      onClick={() => handleVerify(trainer.id, 'true')}
+                      style={{ cursor: "pointer" }}
+                      onClick={() => handleVerify(trainer.trainerId, true)}
                     />
                     <FaTimes
                       className="text-danger"
-                      style={{ cursor: 'pointer' }}
-                      onClick={() => handleVerify(trainer.id, 'false')}
+                      style={{ cursor: "pointer" }}
+                      onClick={() => handleVerify(trainer.trainerId, false)}
                     />
                   </>
                 ) : (
-                  <span className={`badge ${trainer.status === 'true' ? 'bg-success' : 'bg-danger'}`}>
-                    {trainer.status === 'true' ? 'Verified' : 'Rejected'}
+                  <span
+                    className={`badge ${
+                      trainer.verified === true ? "bg-success" : "bg-danger"
+                    }`}
+                  >
+                    {trainer.verified ? "Verified" : "Rejected"}
                   </span>
                 )}
               </td>
               <td>
                 <button
-                  className={`btn ${trainer.blocked ? 'btn-danger' : 'btn-secondary'}`}
-                  style={{ width: '100px' }} // Fixed width for consistency
-                  onClick={() => handleToggleBlock(trainer.id)}
+                  className={`btn ${
+                    trainer.isBlocked
+                      ? "gradient-red-white"
+                      : "gradient-blue-white"
+                  }`}
+                  style={{ width: "100px", color: "white" }}
+                  onClick={() => handleToggleBlock(trainer)}
                 >
-                  {trainer.blocked ? 'Unblock' : 'Block'}
+                  {trainer.isBlocked ? "Unblock" : "Block"}
                 </button>
+              </td>
+              <td>
+                <FaEdit
+                  className="text-primary"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => handleEdit(trainer.trainerId)}
+                />
               </td>
             </tr>
           ))}
@@ -82,6 +104,6 @@ function TrainerManagement() {
       </table>
     </div>
   );
-}
+};
 
 export default TrainerManagement;

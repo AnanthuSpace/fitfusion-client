@@ -1,11 +1,14 @@
-
 body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
 }
 
-html, body, #root, .container-fluid, .row {
+html,
+body,
+#root,
+.container-fluid,
+.row {
   height: 100%;
 }
 
@@ -27,7 +30,7 @@ html, body, #root, .container-fluid, .row {
 }
 
 .shadow-xl {
-  box-shadow: 0 23px 45px -11px rgba(20, 20, 20, 0.25) !important;
+  box-shadow: 0 23px 45px -11px rgba(20, 20, 20, 0.25) !important;
 }
 
 .gradient-blue-white {
@@ -36,3 +39,18 @@ html, body, #root, .container-fluid, .row {
   color: white;
 }
 
+.gradient-red-white {
+  background: linear-gradient(to right, #DD4B4B 0%, #BF0505 99%);
+  border: none;
+  color: white;
+}
+
+.badge-verified {
+  background-color: #343a40;
+  color: #28a745 !important;
+}
+
+.badge-rejected {
+  background-color: #343a40;
+  color: #dc3545 !important;
+}
