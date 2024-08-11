@@ -1,9 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-import { adminLogin, handleBlockTrainer, handleUnblockTrainer,handleBlockUser, handleUnblockUser } from "./adminThunk";
+import { adminLogin, handleBlockTrainer, handleUnblockTrainer, handleBlockUser, handleUnblockUser, verifyTrainer } from "./adminThunk";
 
-const usersData = localStorage.getItem("usersData") ? JSON.parse(localStorage.getItem("usersData")) : [];
-const trainersData = localStorage.getItem("trainersData") ? JSON.parse(localStorage.getItem("trainersData")) : [];
+const usersDataString = localStorage.getItem("usersData");
+const usersData = usersDataString ? JSON.parse(usersDataString) : [];
+
+const trainersDataString = localStorage.getItem("trainersData");
+const trainersData = trainersDataString ? JSON.parse(trainersDataString) : [];
 
 const adminSlice = createSlice({
     name: "admin",
@@ -37,16 +40,16 @@ const adminSlice = createSlice({
             .addCase(handleBlockTrainer.fulfilled, (state, action) => {
                 const updatedTrainerId = action.payload.trainerId;
                 state.trainersData = state.trainersData.map((trainer) =>
-                  trainer.trainerId === updatedTrainerId
-                    ? { ...trainer, isBlocked: true } 
-                    : trainer
+                    trainer.trainerId === updatedTrainerId
+                        ? { ...trainer, isBlocked: true }
+                        : trainer
                 );
                 toast.success("Trainer blocked successfully", { hideProgressBar: true, autoClose: 3000 });
-              })
+            })
 
 
             .addCase(handleBlockTrainer.rejected, (state, action) => {
-                console.log("action : ",action);
+                console.log("action : ", action);
                 state.error = action.payload || "Something went wrong while blocking the trainer";
                 toast.error(state.error, { hideProgressBar: true, autoClose: 3000 });
             })
@@ -55,31 +58,31 @@ const adminSlice = createSlice({
             .addCase(handleUnblockTrainer.fulfilled, (state, action) => {
                 const updatedTrainerId = action.payload.trainerId;
                 state.trainersData = state.trainersData.map((trainer) =>
-                  trainer.trainerId === updatedTrainerId
-                    ? { ...trainer, isBlocked: false } 
-                    : trainer
+                    trainer.trainerId === updatedTrainerId
+                        ? { ...trainer, isBlocked: false }
+                        : trainer
                 );
                 toast.success("Trainer unblocked successfully", { hideProgressBar: true, autoClose: 3000 });
-              })
+            })
             .addCase(handleUnblockTrainer.rejected, (state, action) => {
                 state.error = action.payload || "Something went wrong while unblocking the trainer";
                 toast.error(state.error, { hideProgressBar: true, autoClose: 3000 });
             })
-            
+
 
             .addCase(handleBlockUser.fulfilled, (state, action) => {
                 const updatedUserId = action.payload.userId;
                 state.usersData = state.usersData.map((user) =>
-                  user.userId === updatedUserId
-                    ? { ...user, isBlocked: true } 
-                    : user
+                    user.userId === updatedUserId
+                        ? { ...user, isBlocked: true }
+                        : user
                 );
                 toast.success("Trainer blocked successfully", { hideProgressBar: true, autoClose: 3000 });
-              })
+            })
 
 
             .addCase(handleBlockUser.rejected, (state, action) => {
-                console.log("action : ",action);
+                console.log("action : ", action);
                 state.error = action.payload || "Something went wrong while blocking the trainer";
                 toast.error(state.error, { hideProgressBar: true, autoClose: 3000 });
             })
@@ -89,16 +92,30 @@ const adminSlice = createSlice({
             .addCase(handleUnblockUser.fulfilled, (state, action) => {
                 const updatedUserId = action.payload.userId;
                 state.usersData = state.usersData.map((user) =>
-                  user.userId === updatedUserId
-                    ? { ...user, isBlocked: false } 
-                    : user
+                    user.userId === updatedUserId
+                        ? { ...user, isBlocked: false }
+                        : user
                 );
                 toast.success("Trainer unblocked successfully", { hideProgressBar: true, autoClose: 3000 });
-              })
+            })
             .addCase(handleUnblockUser.rejected, (state, action) => {
                 state.error = action.payload || "Something went wrong while unblocking the trainer";
                 toast.error(state.error, { hideProgressBar: true, autoClose: 3000 });
-            });
+            })
+
+
+            .addCase(verifyTrainer.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.trainersData = state.trainersData.map((trainer) =>
+                    trainer.trainerId === action.payload.trainerId
+                        ? { ...trainer, verified: action.payload.isVerified }
+                        : trainer
+                );
+            })
+            .addCase(verifyTrainer.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload;
+            })
     }
 });
 

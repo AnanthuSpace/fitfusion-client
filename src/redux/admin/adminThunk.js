@@ -82,3 +82,17 @@ export const handleBlockTrainer = createAsyncThunk(
     }
   );
   
+
+  export const verifyTrainer = createAsyncThunk(
+      
+      "admin/verifyTrainer",
+      async ({ trainerId, isVerified}, {rejectWithValue}) => {
+        console.log("start")
+        try {
+            const response = await adminAxiosInstance.patch(`${localhostURL}/admin/isverify`, { trainerId, isVerified})
+            return { data: response.data, trainerId, isVerified };
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+  )

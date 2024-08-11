@@ -1,67 +1,95 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-import { adminLogin, handleBlockTrainer, handleUnblockTrainer } from "../admin/adminThunk";
+import { trainerRegistration, trainerVerification, trainerLogin, editTrainer } from "./trainerThunk";
 
-const usersData = localStorage.getItem("usersData") ? JSON.parse(localStorage.getItem("usersData")) : [];
-const trainersData = localStorage.getItem("trainersData") ? JSON.parse(localStorage.getItem("trainersData")) : [];
 
-const adminSlice = createSlice({
-    name: "admin",
+const trainerData = localStorage.getItem("trainerData") ? JSON.parse(localStorage.getItem("trainerData")) : null;
+
+
+const trainerSlice = createSlice({
+    name: "trainerSlice",
     initialState: {
-        usersData: usersData,
-        trainersData: trainersData,
+        trainerData: trainerData,
+        isLoading: false,
         error: null,
+        temperoryEmail: " ",
     },
     reducers: {
-        adminLogout: (state) => {
-            sessionStorage.removeItem("adminAccessToken");
-            localStorage.removeItem("adminRefreshToken");
-            state.usersData = [];
-            state.trainersData = [];
-            toast.error("Logged out successfully", { hideProgressBar: true, autoClose: 3000 });
-        }
+        trainerLogout: (state) => {
+            state.trainerData = null;
+            sessionStorage.removeItem("trainerAccessToken");
+            localStorage.removeItem("trainerRefreshToken");
+            localStorage.removeItem('trainerData');
+            toast.error("Logout successfully", { hideProgressBar: true, autoClose: 3000 });
+        },
     },
     extraReducers: (builder) => {
         builder
-            .addCase(adminLogin.fulfilled, (state, action) => {
-                state.usersData = action.payload.usersData;
-                state.trainersData = action.payload.trainersData;
-                toast.success("Login successful!", { hideProgressBar: true, autoClose: 3000 });
+            .addCase(trainerRegistration.pending, (state) => {
+                state.isLoading = true;
             })
-            .addCase(adminLogin.rejected, (state, action) => {
-                state.error = action.payload || "Login failed";
-                toast.error(state.error, { hideProgressBar: true, autoClose: 3000 });
+            .addCase(trainerRegistration.fulfilled, (state, action) => {
+                state.temperoryEmail = action.meta.arg.email;
+                toast.success(action.payload, { hideProgressBar: true, autoClose: 3000 });
+                state.isLoading = false;
             })
-
-            .addCase(handleBlockTrainer.fulfilled, (state, action) => {
-                const updatedTrainer = action.payload;
-                state.trainersData = state.trainersData.map((trainer) =>
-                    trainer.trainerId === updatedTrainer.trainerId
-                        ? { ...trainer, isBlocked: true } 
-                        : trainer
-                );
-                toast.success("Trainer blocked successfully", { hideProgressBar: true, autoClose: 3000 });
-            })
-            .addCase(handleBlockTrainer.rejected, (state, action) => {
-                state.error = action.payload || "Something went wrong while blocking the trainer";
-                toast.error(state.error, { hideProgressBar: true, autoClose: 3000 });
+            .addCase(trainerRegistration.rejected, (state, action) => {
+                state.error = action.payload;
+                toast.error(action.payload || "Registration failed", { hideProgressBar: true, autoClose: 3000 });
+                state.isLoading = false;
             })
 
-            .addCase(handleUnblockTrainer.fulfilled, (state, action) => {
-                const updatedTrainer = action.payload;
-                state.trainersData = state.trainersData.map((trainer) =>
-                    trainer.trainerId === updatedTrainer.trainerId
-                        ? { ...trainer, isBlocked: false }  // Update isBlocked to false
-                        : trainer
-                );
-                toast.success("Trainer unblocked successfully", { hideProgressBar: true, autoClose: 3000 });
+
+            // Signup verification
+            .addCase(trainerVerification.pending, (state) => {
+                state.isLoading = true;
             })
-            .addCase(handleUnblockTrainer.rejected, (state, action) => {
-                state.error = action.payload || "Something went wrong while unblocking the trainer";
-                toast.error(state.error, { hideProgressBar: true, autoClose: 3000 });
-            });
+            .addCase(trainerVerification.fulfilled, (state, action) => {
+                state.trainerData = action.payload;
+                localStorage.setItem('trainerData', JSON.stringify(state.trainerData));
+                toast.success(action.payload, { hideProgressBar: true, autoClose: 3000 });
+                state.isLoading = false;
+            })
+            .addCase(trainerVerification.rejected, (state, action) => {
+                state.error = action.payload;
+                toast.error(action.payload, { hideProgressBar: true, autoClose: 3000 });
+                state.isLoading = false;
+            })
+
+            .addCase(trainerLogin.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(trainerLogin.fulfilled, (state, action) => {
+                state.trainerData = action.payload.trainerData;
+                localStorage.setItem('trainerData', JSON.stringify(state.trainerData));
+                toast.success("Login successfully", { hideProgressBar: true, autoClose: 3000 });
+                state.isLoading = false;
+            })
+            .addCase(trainerLogin.rejected, (state, action) => {
+                state.error = action.payload;
+                toast.error(action.payload || "Authentication failed", { hideProgressBar: true, autoClose: 3000 });
+                state.isLoading = false;
+            })
+
+
+
+            .addCase(editTrainer.rejected, (state, action) => {
+                toast.error(action.payload || "Updat error", { hideProgressBar: true, autoClose: 3000 });
+            })
+            .addCase(editTrainer.fulfilled, (state, action) => {
+                console.log(action.payload);
+                
+                state.trainerData.name = sessionStorage.getItem(`trainerData.name`)
+                state.trainerData.phone = sessionStorage.getItem(`trainerData.phone`)
+                state.trainerData.address = sessionStorage.getItem(`trainerData.address`)
+                state.trainerData.gender = sessionStorage.getItem(`trainerData.gender`)
+                state.trainerData.qualification = sessionStorage.getItem(`trainerData.qualification`)
+                state.trainerData.achivements = sessionStorage.getItem(`trainerData.achivements`)
+                toast.success(action.payload.message, { hideProgressBar: true, autoClose: 3000 });
+            })
     }
-});
+})
 
-export const { adminLogout } = adminSlice.actions;
-export default adminSlice.reducer;
+
+export const { trainerLogout } = trainerSlice.actions;
+export default trainerSlice.reducer;

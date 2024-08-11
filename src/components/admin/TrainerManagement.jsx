@@ -1,16 +1,19 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { FaCheck, FaTimes, FaEdit } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import {
   handleBlockTrainer,
   handleUnblockTrainer,
+  verifyTrainer,
 } from "../../redux/admin/adminThunk";
 
 const TrainerManagement = () => {
   const dispatch = useDispatch();
   const trainersData = useSelector((state) => state.admin.trainersData);
 
-  const handleVerify = (id, newStatus) => {};
+  const handleVerify = (trainerId, isVerified) => {
+    dispatch(verifyTrainer({ trainerId, isVerified }));
+  };
 
   const handleToggleBlock = (trainer) => {
     if (trainer.isBlocked) {
@@ -19,7 +22,6 @@ const TrainerManagement = () => {
       dispatch(handleBlockTrainer({ trainerId: trainer.trainerId }));
     }
   };
-  
 
   const handleEdit = (id) => {
     console.log("Edit trainer with id:", id);
@@ -60,22 +62,22 @@ const TrainerManagement = () => {
                     <FaCheck
                       className="text-success me-3"
                       style={{ cursor: "pointer" }}
-                      onClick={() => handleVerify(trainer.trainerId, true)}
+                      onClick={() =>
+                        handleVerify(trainer.trainerId, "verified")
+                      }
                     />
                     <FaTimes
                       className="text-danger"
                       style={{ cursor: "pointer" }}
-                      onClick={() => handleVerify(trainer.trainerId, false)}
+                      onClick={() =>
+                        handleVerify(trainer.trainerId, "rejected")
+                      }
                     />
                   </>
+                ) : trainer.verified === "verified" ? (
+                  <span className="badge bg-success">Verified</span>
                 ) : (
-                  <span
-                    className={`badge ${
-                      trainer.verified === true ? "bg-success" : "bg-danger"
-                    }`}
-                  >
-                    {trainer.verified ? "Verified" : "Rejected"}
-                  </span>
+                  <span className="badge bg-danger">Rejected</span>
                 )}
               </td>
               <td>

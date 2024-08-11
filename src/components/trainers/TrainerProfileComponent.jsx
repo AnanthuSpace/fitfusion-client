@@ -1,16 +1,34 @@
 import React, { useState } from "react";
 import "../../assets/styles/trainers/TrainerProfileComponent.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { editTrainer } from "../../redux/trainers/trainerThunk";
 
 function TrainerProfileComponent() {
   const trainer = useSelector((state) => state.trainer.trainerData);
+  const dispatch = useDispatch();
 
-  const [name, setName] = useState(trainer.name || "");
-  const [gender, setGender] = useState(trainer.gender || "");
-  const [phone, setPhone] = useState(trainer.phone || "");
-  const [address, setAddress] = useState(trainer.address || "");
-  const [qualification, setQualification] = useState(trainer.qualification || "");
-  const [achivements, setAchivements] = useState(trainer.achivements || "");
+
+  const [name, setName] = useState(trainer?.name || "");
+  const [gender, setGender] = useState(trainer?.gender || "");
+  const [phone, setPhone] = useState(trainer?.phone || "");
+  const [address, setAddress] = useState(trainer?.address || "");
+  const [qualification, setQualification] = useState(
+    trainer?.qualification || ""
+  );
+  const [achivements, setAchivements] = useState(trainer?.achivements || "");
+
+  const handleUpdate = () => {
+    dispatch(
+      editTrainer({
+        name: name,
+        gender: gender,
+        phone: phone,
+        address: address,
+        qualification: qualification,
+        achivements: achivements,
+      })
+    );
+  };
 
   return (
     <div className="mt-5 d-flex justify-content-center trainerprofilecontainer">
@@ -20,9 +38,15 @@ function TrainerProfileComponent() {
           alt="Profile"
           className="trainer-profile-img col-6 p-0"
         />
-        <b><p className="pt-4">{name}</p></b>
-        <b><p className="pt-2">{address}</p></b>
-        <b><p className="pt-2">Level: {trainer.level}</p></b>
+        <b>
+          <p className="pt-4">{name}</p>
+        </b>
+        <b>
+          <p className="pt-2">{address}</p>
+        </b>
+        <b>
+          <p className="pt-2">Level: {trainer?.level}</p>
+        </b>
       </div>
       <div className="mt-3 trainer-profile-container col-8 d-flex align-items-center">
         <div className="col-6 my-5">
@@ -33,7 +57,7 @@ function TrainerProfileComponent() {
             type="text"
             id="name"
             className="form-control"
-            value={name}
+            value={name} 
             placeholder="Enter full name"
             onChange={(e) => setName(e.target.value)}
           />
@@ -44,7 +68,7 @@ function TrainerProfileComponent() {
             type="text"
             id="gender"
             className="form-control"
-            value={gender}
+            value={gender} 
             placeholder="Enter gender"
             onChange={(e) => setGender(e.target.value)}
           />
@@ -55,11 +79,13 @@ function TrainerProfileComponent() {
             type="text"
             id="qualification"
             className="form-control"
-            value={qualification}
+            value={qualification} 
             placeholder="Enter qualification"
             onChange={(e) => setQualification(e.target.value)}
           />
-          <button className="mt-5 trainer-profile-btn">Update</button>
+          <button className="mt-5 trainer-profile-btn" onClick={handleUpdate}>
+            Update
+          </button>
         </div>
         <div className="col-6 my-5">
           <label htmlFor="phone" className="form-label mt-4">
@@ -69,7 +95,7 @@ function TrainerProfileComponent() {
             type="text"
             id="phone"
             className="form-control"
-            value={phone}
+            value={phone} 
             placeholder="Enter phone number"
             onChange={(e) => setPhone(e.target.value)}
           />
@@ -91,7 +117,7 @@ function TrainerProfileComponent() {
             type="text"
             id="achivements"
             className="form-control"
-            value={achivements}
+            value={achivements} 
             placeholder="Enter achievements"
             onChange={(e) => setAchivements(e.target.value)}
           />

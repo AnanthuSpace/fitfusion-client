@@ -7,9 +7,18 @@ import {
   MdLiveTv,
 } from "react-icons/md";
 import { FaUserCircle, FaPhotoVideo } from "react-icons/fa";
-import { IoIosChatboxes, IoMdNotifications } from "react-icons/io";
+import { IoIosChatboxes, IoMdNotifications, IoMdLogOut } from "react-icons/io";
+import { useDispatch } from "react-redux";
+import { trainerLogout } from "../../redux/trainers/trainerSlice";
+import { useNavigate } from "react-router-dom";
 
 function TrainerSideBar() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
+  const Logout = () => {
+    dispatch(trainerLogout())
+    navigate('/trainer')
+  }
   return (
     <div className="trainer-sidebar d-flex flex-column">
       <div className="trainer-div-logo text-center w-100 fs-2 pt-3 ">
@@ -43,6 +52,10 @@ function TrainerSideBar() {
         <div className=" shadow mb-3 trainer-sidebarlist ">
           <IoMdNotifications />
           <span>Notification</span>
+        </div>
+        <div className=" shadow mb-3 trainer-sidebarlist " style={{ cursor: "pointer"}}>
+          <IoMdLogOut />
+          <span onClick={Logout}>Logout</span>
         </div>
       </div>
     </div>

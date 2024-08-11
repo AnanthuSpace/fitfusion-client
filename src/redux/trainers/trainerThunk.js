@@ -1,7 +1,6 @@
 import axios from "axios";
 import { localhostURL } from "../../utils/url";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { toast } from "react-toastify";
 import trainerAxiosInstance from "../../config/axiosTrainerConfig"
 
 
@@ -30,6 +29,8 @@ export const trainerRegistration = createAsyncThunk(
         } else {
             try {
                 const response = await axios.post(`${localhostURL}/trainer/signup`, { name, email, password });
+                console.log(response);
+                
                 if (response.data.message === "User already exists") {
                     return rejectWithValue("User already exists");
                 } else {
@@ -49,10 +50,9 @@ export const trainerVerification = createAsyncThunk(
             return rejectWithValue("All the fields are required!");
         } else {
             try {
-                console.log("Fronend : ", temperoryEmail)
+                console.log( temperoryEmail)
                 const response = await axios.post(`${localhostURL}/trainer/verify`, { completeOtp, temperoryEmail });
                 if (response.data.message === "OTP verified") {
-                    console.log(response.data)
                     return response.data.trainerData;
                 } else {
                     return rejectWithValue(response.data.message);
@@ -79,7 +79,6 @@ export const trainerLogin = createAsyncThunk(
             }
             
             const response = await axios.post(`${localhostURL}/trainer/login`, { email, password });
-            console.log("start");
             
             if (response.data.success === false) {
                 return rejectWithValue(response.data.message);
@@ -94,3 +93,47 @@ export const trainerLogin = createAsyncThunk(
         }
     }
 )
+
+
+export const editTrainer = createAsyncThunk(
+    "trainerSlice/editTrainer",
+    async ({ name, phone, address, gender, qualification, achivements  }, { rejectWithValue }) => {
+
+        name = name.trim();
+        phone = phone.trim();
+        address = address.trim();
+        gender = gender.trim();
+        qualification = qualification.trim();
+        achivements = achivements.trim();
+        
+        const phoneRegex = /^\d{10}$/;
+        
+        if (name === "" || phone === "" || address === "" || gender === "" || achivements === "" || qualification === "") {
+            return rejectWithValue("All the fields are required!");
+        } else if (!phoneRegex.test(phone)) {
+            return rejectWithValue("Invalid phone number. It should be a 10-digit number.");
+        } else {
+            try {
+                
+                const response = await trainerAxiosInstance.put("/trainer/edit-trainer", { name, phone, address, gender, qualification, achivements });
+                console.log("start", response);
+                sessionStorage.setItem(`trainerData.name`, name)
+                sessionStorage.setItem(`trainerData.phone`, phone)
+                sessionStorage.setItem(`trainerData.address`, address)
+                sessionStorage.setItem(`trainerData.gender`, gender)
+                sessionStorage.setItem(`trainerData.qualification`, qualification)
+                sessionStorage.setItem(`trainerData.achivements`, achivements)
+                return response.data;
+            } catch (error) {
+                if (error.response && error.response.status === 401) {
+                    sessionStorage.removeItem("trainerAccessToken")
+                    return rejectWithValue("Invalid or expired token");
+                } else if (error.response && error.response.status === 403){
+                    return rejectWithValue("Invalid password");
+                }
+                return rejectWithValue("Update failed, try again");
+            }
+        }
+    }
+
+);
