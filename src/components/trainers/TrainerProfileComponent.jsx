@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import "../../assets/styles/trainers/TrainerProfileComponent.css";
 import { useDispatch, useSelector } from "react-redux";
-import { editTrainer } from "../../redux/trainers/trainerThunk";
+import {
+  editTrainer,
+  changeTrainerPassword,
+} from "../../redux/trainers/trainerThunk";
 
 function TrainerProfileComponent() {
   const trainer = useSelector((state) => state.trainer.trainerData);
   const dispatch = useDispatch();
-
 
   const [name, setName] = useState(trainer?.name || "");
   const [gender, setGender] = useState(trainer?.gender || "");
@@ -15,7 +17,10 @@ function TrainerProfileComponent() {
   const [qualification, setQualification] = useState(
     trainer?.qualification || ""
   );
-  const [achivements, setAchivements] = useState(trainer?.achivements || "");
+  const [achievements, setAchievements] = useState(trainer?.achievements || "");
+  const [showModal, setShowModal] = useState(false);
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
 
   const handleUpdate = () => {
     dispatch(
@@ -25,9 +30,18 @@ function TrainerProfileComponent() {
         phone: phone,
         address: address,
         qualification: qualification,
-        achivements: achivements,
+        achievements: achievements,
       })
     );
+  };
+
+  const handleResetPassword = () => {
+    dispatch(
+      changeTrainerPassword({ oldPass: oldPassword, newPass: newPassword })
+    );
+    setOldPassword("")
+    setNewPassword("")
+    setShowModal(false);
   };
 
   return (
@@ -57,7 +71,7 @@ function TrainerProfileComponent() {
             type="text"
             id="name"
             className="form-control"
-            value={name} 
+            value={name}
             placeholder="Enter full name"
             onChange={(e) => setName(e.target.value)}
           />
@@ -68,7 +82,7 @@ function TrainerProfileComponent() {
             type="text"
             id="gender"
             className="form-control"
-            value={gender} 
+            value={gender}
             placeholder="Enter gender"
             onChange={(e) => setGender(e.target.value)}
           />
@@ -79,7 +93,7 @@ function TrainerProfileComponent() {
             type="text"
             id="qualification"
             className="form-control"
-            value={qualification} 
+            value={qualification}
             placeholder="Enter qualification"
             onChange={(e) => setQualification(e.target.value)}
           />
@@ -95,7 +109,7 @@ function TrainerProfileComponent() {
             type="text"
             id="phone"
             className="form-control"
-            value={phone} 
+            value={phone}
             placeholder="Enter phone number"
             onChange={(e) => setPhone(e.target.value)}
           />
@@ -110,20 +124,68 @@ function TrainerProfileComponent() {
             placeholder="Enter address"
             onChange={(e) => setAddress(e.target.value)}
           />
-          <label htmlFor="achivements" className="form-label mt-4">
+          <label htmlFor="achievements" className="form-label mt-4">
             Achievements
           </label>
           <input
             type="text"
-            id="achivements"
+            id="achievements"
             className="form-control"
-            value={achivements} 
+            value={achievements}
             placeholder="Enter achievements"
-            onChange={(e) => setAchivements(e.target.value)}
+            onChange={(e) => setAchievements(e.target.value)}
           />
-          <button className="mt-5 trainer-profile-btn">Reset Password</button>
+          <button
+            className="mt-5 trainer-profile-btn"
+            onClick={() => setShowModal(true)}
+          >
+            Reset Password
+          </button>
         </div>
       </div>
+
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h5 className="text-center text-white">Reset Password</h5>
+            <div className="modal-body">
+              <label htmlFor="oldPassword" className="form-label mt-4">
+                Old Password
+              </label>
+              <input
+                type="password"
+                id="oldPassword"
+                className="form-control"
+                placeholder="Enter old password"
+                value={oldPassword}
+                onChange={(e) => setOldPassword(e.target.value)}
+              />
+              <label htmlFor="newPassword" className="form-label mt-4">
+                New Password
+              </label>
+              <input
+                type="password"
+                id="newPassword"
+                className="form-control"
+                placeholder="Enter new password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+              />
+            </div>
+            <div className="modal-footer">
+              <button
+                className="btn btn-black"
+                onClick={() => setShowModal(false)}
+              >
+                Cancel
+              </button>
+              <button className="btn btn-submit" onClick={handleResetPassword}>
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

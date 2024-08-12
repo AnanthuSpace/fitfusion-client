@@ -21,7 +21,7 @@ const adminSlice = createSlice({
             localStorage.removeItem("adminRefreshToken");
             state.usersData = [];
             state.trainersData = [];
-            toast.error("Logged out successfully", { hideProgressBar: true, autoClose: 3000 });
+            toast.success("Logged out successfully", { hideProgressBar: true, autoClose: 3000 });
         }
     },
     extraReducers: (builder) => {

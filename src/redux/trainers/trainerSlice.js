@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-import { trainerRegistration, trainerVerification, trainerLogin, editTrainer } from "./trainerThunk";
+import { trainerRegistration, trainerVerification, trainerLogin, editTrainer, changeTrainerPassword } from "./trainerThunk";
 
 
 const trainerData = localStorage.getItem("trainerData") ? JSON.parse(localStorage.getItem("trainerData")) : null;
@@ -20,7 +20,7 @@ const trainerSlice = createSlice({
             sessionStorage.removeItem("trainerAccessToken");
             localStorage.removeItem("trainerRefreshToken");
             localStorage.removeItem('trainerData');
-            toast.error("Logout successfully", { hideProgressBar: true, autoClose: 3000 });
+            toast.success("Logout successfully", { hideProgressBar: true, autoClose: 3000 });
         },
     },
     extraReducers: (builder) => {
@@ -87,6 +87,15 @@ const trainerSlice = createSlice({
                 state.trainerData.achivements = sessionStorage.getItem(`trainerData.achivements`)
                 toast.success(action.payload.message, { hideProgressBar: true, autoClose: 3000 });
             })
+
+
+            .addCase(changeTrainerPassword.fulfilled, (state) => {
+                toast.success("Password updated successfully", { hideProgressBar: true, autoClose: 3000 });
+              })
+              .addCase(changeTrainerPassword.rejected, (state, action) => {
+                state.error = action.payload;
+                toast.error(action.payload || "Reset error", { hideProgressBar: true, autoClose: 3000 });
+              });
     }
 })
 

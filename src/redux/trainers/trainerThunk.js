@@ -30,7 +30,7 @@ export const trainerRegistration = createAsyncThunk(
             try {
                 const response = await axios.post(`${localhostURL}/trainer/signup`, { name, email, password });
                 console.log(response);
-                
+
                 if (response.data.message === "User already exists") {
                     return rejectWithValue("User already exists");
                 } else {
@@ -50,7 +50,7 @@ export const trainerVerification = createAsyncThunk(
             return rejectWithValue("All the fields are required!");
         } else {
             try {
-                console.log( temperoryEmail)
+                console.log(temperoryEmail)
                 const response = await axios.post(`${localhostURL}/trainer/verify`, { completeOtp, temperoryEmail });
                 if (response.data.message === "OTP verified") {
                     return response.data.trainerData;
@@ -70,16 +70,16 @@ export const trainerLogin = createAsyncThunk(
         try {
             email = email.trim()
             password = password.trim()
-            
+
             const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailPattern.test(email)) {
                 return rejectWithValue("Please enter a valid email address");
             } else if (password.length < 6) {
                 return rejectWithValue("Password must be at least 6 characters long!");
             }
-            
+
             const response = await axios.post(`${localhostURL}/trainer/login`, { email, password });
-            
+
             if (response.data.success === false) {
                 return rejectWithValue(response.data.message);
             } else {
@@ -97,7 +97,7 @@ export const trainerLogin = createAsyncThunk(
 
 export const editTrainer = createAsyncThunk(
     "trainerSlice/editTrainer",
-    async ({ name, phone, address, gender, qualification, achivements  }, { rejectWithValue }) => {
+    async ({ name, phone, address, gender, qualification, achivements }, { rejectWithValue }) => {
 
         name = name.trim();
         phone = phone.trim();
@@ -105,16 +105,16 @@ export const editTrainer = createAsyncThunk(
         gender = gender.trim();
         qualification = qualification.trim();
         achivements = achivements.trim();
-        
+
         const phoneRegex = /^\d{10}$/;
-        
+
         if (name === "" || phone === "" || address === "" || gender === "" || achivements === "" || qualification === "") {
             return rejectWithValue("All the fields are required!");
         } else if (!phoneRegex.test(phone)) {
             return rejectWithValue("Invalid phone number. It should be a 10-digit number.");
         } else {
             try {
-                
+
                 const response = await trainerAxiosInstance.put("/trainer/edit-trainer", { name, phone, address, gender, qualification, achivements });
                 console.log("start", response);
                 sessionStorage.setItem(`trainerData.name`, name)
@@ -128,12 +128,41 @@ export const editTrainer = createAsyncThunk(
                 if (error.response && error.response.status === 401) {
                     sessionStorage.removeItem("trainerAccessToken")
                     return rejectWithValue("Invalid or expired token");
-                } else if (error.response && error.response.status === 403){
+                } else if (error.response && error.response.status === 403) {
                     return rejectWithValue("Invalid password");
                 }
                 return rejectWithValue("Update failed, try again");
             }
         }
     }
+);
 
+export const changeTrainerPassword = createAsyncThunk(
+    "trainerSlice/changeTrainerPassword",
+    async ({ oldPass, newPass }, { rejectWithValue }) => {
+        
+        const oldPassword = oldPass.trim();
+        const newPassword = newPass.trim();
+
+        if (oldPassword === "" || newPassword === "") {
+            return rejectWithValue("All fields are required!");
+        } else if (oldPassword === newPassword) {
+            return rejectWithValue("Old password and new password cannot be the same!");
+        } else if (oldPassword.length < 6) {
+            return rejectWithValue("Enter the correct old password");
+        } else if (newPassword.length < 6) {
+            return rejectWithValue("New password must be at least 6 characters long!");
+        } else {
+            try {
+                const response = await trainerAxiosInstance.patch("/trainer/change-trainerpass", { oldPassword, newPassword });
+                return response.data; 
+            } catch (error) {
+                if (error.response && error.response.status === 401) {
+                    sessionStorage.removeItem("userAccessToken");
+                    return rejectWithValue("Unauthorized: Invalid or expired token");
+                }
+                return rejectWithValue(error.response?.data?.message || "Update failed, try again");
+            }
+        }
+    }
 );
