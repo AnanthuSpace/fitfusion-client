@@ -1,25 +1,24 @@
 .reviewlist-container {
     width: 97%;
-    height: 20rem;
+    min-height: 20rem; /* Added minimum height for better visibility */
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 2rem 0;
+    margin: 2rem auto;
     background-color: #222222;
     border-radius: 2rem;
-    display: flex;
+    padding: 1rem; /* Added padding to avoid content sticking to edges */
 }
 
-.review-div {
-    width: 75%;
-    height: 100%;
+.review-div-heading {
+    width: 85%;
     display: flex;
     justify-content: space-between;
+    align-items: center; /* Center content vertically */
 }
 
 .heading {
     width: 40%;
-    height: 100%;
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -36,39 +35,40 @@
     color: white;
 }
 
-.review {
+.review-textes {
     width: 60%;
-    height: 100%;
     display: flex;
     justify-content: center;
     flex-direction: column;
 }
 
-.user-review img {
-    width: 5rem;
-    height: 5rem;
-    margin-top: 2rem;
-    border-radius: 3rem;
-}
-
-.review p {
+.review-textes p {
     font-size: 1.2rem;
-    margin-bottom: 0;
+    margin-bottom: 1rem; /* Added margin-bottom for spacing */
     color: #878383;
 }
 
 .user-review {
+    display: flex;
+    align-items: center;
     margin-top: 1rem;
     width: 20rem;
-    height: 5rem;
     color: white;
-    display: flex;
     justify-content: space-between;
-    align-items: center;
 }
 
-.user-review  span {
+.user-review img {
+    width: 5rem;
+    height: 5rem;
+    margin-right: 1rem; /* Margin for spacing */
+    border-radius: 50%; /* Changed to circle for consistency */
+}
+
+.user-review h3 {
+    margin: 0;
+}
+
+.user-review span {
     color: whitesmoke;
-    margin-left: 1rem;
     font-size: 1rem;
 }

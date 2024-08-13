@@ -43,6 +43,7 @@ export const trainerRegistration = createAsyncThunk(
     }
 );
 
+
 export const trainerVerification = createAsyncThunk(
     "trainerSlice/trainerVerification",
     async ({ completeOtp, temperoryEmail }, { rejectWithValue }) => {
@@ -79,7 +80,8 @@ export const trainerLogin = createAsyncThunk(
             }
 
             const response = await axios.post(`${localhostURL}/trainer/login`, { email, password });
-
+            console.log(response);
+            
             if (response.data.success === false) {
                 return rejectWithValue(response.data.message);
             } else {
@@ -109,24 +111,31 @@ export const editTrainer = createAsyncThunk(
         const phoneRegex = /^\d{10}$/;
 
         if (name === "" || phone === "" || address === "" || gender === "" || achivements === "" || qualification === "") {
-            return rejectWithValue("All the fields are required!");
+            return rejectWithValue("All fields are required!");
         } else if (!phoneRegex.test(phone)) {
             return rejectWithValue("Invalid phone number. It should be a 10-digit number.");
         } else {
             try {
+                const response = await trainerAxiosInstance.put(`${localhostURL}/trainer/edit-trainer`, {
+                    name,
+                    phone,
+                    address,
+                    gender,
+                    qualification,
+                    achivements
+                });
+                
+                localStorage.setItem(`trainerData.name: `, name)
+                localStorage.setItem(`trainerData.phone: `, phone)
+                localStorage.setItem(`trainerData.address: `, address)
+                localStorage.setItem(`trainerData.gender: `, gender)
+                localStorage.setItem(`trainerData.qualification: `, qualification)
+                localStorage.setItem(`trainerData.achivements: `, achivements)
 
-                const response = await trainerAxiosInstance.put("/trainer/edit-trainer", { name, phone, address, gender, qualification, achivements });
-                console.log("start", response);
-                sessionStorage.setItem(`trainerData.name`, name)
-                sessionStorage.setItem(`trainerData.phone`, phone)
-                sessionStorage.setItem(`trainerData.address`, address)
-                sessionStorage.setItem(`trainerData.gender`, gender)
-                sessionStorage.setItem(`trainerData.qualification`, qualification)
-                sessionStorage.setItem(`trainerData.achivements`, achivements)
-                return response.data;
+                return response.data
             } catch (error) {
                 if (error.response && error.response.status === 401) {
-                    sessionStorage.removeItem("trainerAccessToken")
+                    sessionStorage.removeItem("trainerAccessToken");
                     return rejectWithValue("Invalid or expired token");
                 } else if (error.response && error.response.status === 403) {
                     return rejectWithValue("Invalid password");
@@ -137,10 +146,11 @@ export const editTrainer = createAsyncThunk(
     }
 );
 
+
 export const changeTrainerPassword = createAsyncThunk(
     "trainerSlice/changeTrainerPassword",
     async ({ oldPass, newPass }, { rejectWithValue }) => {
-        
+
         const oldPassword = oldPass.trim();
         const newPassword = newPass.trim();
 
@@ -154,8 +164,8 @@ export const changeTrainerPassword = createAsyncThunk(
             return rejectWithValue("New password must be at least 6 characters long!");
         } else {
             try {
-                const response = await trainerAxiosInstance.patch("/trainer/change-trainerpass", { oldPassword, newPassword });
-                return response.data; 
+                const response = await trainerAxiosInstance.patch(`${localhostURL}/trainer/change-trainerpass`, { oldPassword, newPassword });
+                return response.data;
             } catch (error) {
                 if (error.response && error.response.status === 401) {
                     sessionStorage.removeItem("userAccessToken");
@@ -163,6 +173,27 @@ export const changeTrainerPassword = createAsyncThunk(
                 }
                 return rejectWithValue(error.response?.data?.message || "Update failed, try again");
             }
+        }
+    }
+);
+
+
+export const requestOtp = createAsyncThunk(
+    'trainer/requestOtp',
+    async (email, { rejectWithValue }) => {
+        try {
+            email = email.trim()
+            const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+            if (email === "") {
+                return rejectWithValue("Email Required")
+            } else if (!emailRegex.test(email)) {
+                return rejectWithValue("Invalid email address!");
+            }
+
+            const response = await axios.post(`${localhostURL}/trainer/request-otp`, { email });
+            return response.data;
+        } catch (error) {
+            return rejectWithValue(error.response.data);
         }
     }
 );

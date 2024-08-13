@@ -5,7 +5,7 @@ function ReviewList() {
   return (
     <>
       <div className="reviewlist-container">
-        <div className="review-div">
+        <div className="review-div-heading">
           <div className="heading">
             <p>DONT' TAKE OUR WORDS</p>
             <h1>
@@ -13,7 +13,7 @@ function ReviewList() {
               Happy Clients
             </h1>
           </div>
-          <div className="review">
+          <div className="review-textes">
             <p>
               I have been a proud member of this incredible platform for over a
               year now, and the <br />

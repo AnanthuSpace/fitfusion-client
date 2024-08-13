@@ -1,18 +1,77 @@
-import React from 'react';
-import { IoMdNotifications } from "react-icons/io";
-import 'bootstrap/dist/css/bootstrap.min.css'; 
-import "../../assets/styles/trainers/TrainerNavbar.css"
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { trainerLogout } from "../../redux/trainers/trainerSlice";
+// import { IoMdNotifications } from "react-icons/io";
+import { Modal, Button } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "../../assets/styles/trainers/TrainerNavbar.css";
 
 function TrainerNavbar() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+
+  const handleLogout = () => {
+    dispatch(trainerLogout());
+    navigate("/trainer");
+  };
+
+  const handleShow = () => setShowModal(true);
+  const handleClose = () => setShowModal(false);
   return (
-    <div className="d-flex justify-content-end align-items-center  trainer-navbar" >
-      <div className="d-flex align-items-center me-3 trainer-short-icon">
-        <IoMdNotifications size={24} />
-      </div>
-      <div className="d-flex align-items-center pe-4">
-        <img src="/Trainer-profile.jpg" alt="Profile" className="rounded-circle" style={{ width: '2.5rem', height: '2.5rem' }} />
-      </div>
-    </div>
+    <>
+      <nav className="navbar navbar-dark bg-dark border-bottom border-secondary">
+        <div className="container-fluid">
+          <span className="navbar-brand text-white fw-bold">FITFUSION</span>
+          <a
+            className="text-white ms-auto text-decoration-none"
+            onClick={handleShow}
+            style={{ cursor: "pointer" }}
+          >
+            Logout
+          </a>
+        </div>
+      </nav>
+
+      {/* Logout Modal */}
+      <Modal show={showModal} centered contentClassName="p-0">
+        <Modal.Header
+          style={{ backgroundColor: "black", borderBottom: "none" }}
+        >
+          <Modal.Title className="w-100 text-center text-white">
+            Confirm Logout
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ backgroundColor: "black", color: "white" }}>
+          Are you sure you want to logout?
+        </Modal.Body>
+        <Modal.Footer
+          style={{
+            backgroundColor: "black",
+            borderTop: "none",
+            justifyContent: "space-between",
+          }}
+        >
+          <Button
+            variant="secondary"
+            onClick={handleClose}
+            style={{ width: "30%", border: "none" }}
+            className="gradient-blue-white ms-1"
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="danger"
+            className="gradient-red-white me-1"
+            onClick={handleLogout}
+            style={{ width: "30%" }}
+          >
+            Logout
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
   );
 }
 

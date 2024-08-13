@@ -1,0 +1,35 @@
+
+.progress-div {
+    width: 97%;
+    background-color: #222222;
+    height: 10rem;
+    margin-bottom: 2rem;
+    border-radius: 5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.progress-div-count {
+    width: 25%;
+    display: flex;
+    justify-content: center;
+    color: white;
+    flex-direction: column;
+}
+
+.progress-count-div {
+    display: flex;
+    align-items: center;
+    width: 85%;
+    margin-left: 8rem;
+}
+
+.progress-count-div h1 {
+    margin-bottom: 0;
+    font-size: 2.2rem;
+}
+
+.progress-count-div p {
+    color: #808080;
+}

@@ -1,6 +1,6 @@
 .be-a-member {
     width: 100%;
-    height: 25rem; 
+    min-height: 25rem; /* Use min-height instead of height for responsiveness */
     background-image: url('/fit.avif'); 
     background-size: cover; 
     background-position: center; 
@@ -11,15 +11,19 @@
     text-align: center;
     flex-direction: column;
     margin-bottom: 5rem;
+    padding: 2rem; /* Added padding for better spacing */
 }
 
 .be-a-member h1 {
     color: white;
+    font-size: 2rem; /* Adjusted font size for better visibility */
+    margin: 0; /* Removed default margin */
 }
-
 
 .be-a-member p {
     color: white;
+    font-size: 1.2rem; /* Adjusted font size */
+    margin: 1rem 0; /* Added margin for spacing */
 }
 
 .be-a-member button {
@@ -27,8 +31,14 @@
     color: white;
     border-radius: 2rem;
     border: none;
-    width: 7rem;
-    height: 2.5rem;
-    margin-top: 2rem;
+    width: 8rem; /* Increased width for better button size */
+    height: 3rem; /* Increased height for better button size */
+    margin-top: 1.5rem; /* Adjusted margin for spacing */
+    font-size: 1rem; /* Added font size for better readability */
+    cursor: pointer; /* Added cursor pointer for better UX */
+    transition: background-color 0.3s; /* Smooth transition on hover */
 }
 
+.be-a-member button:hover {
+    background-color: #e66c00; /* Darker color on hover for better interaction */
+}

@@ -12,7 +12,6 @@ import "react-toastify/dist/ReactToastify.css";
 import TrainerLogin from "./components/trainers/TrainerLogin";
 import AdminLoginPage from "./components/admin/AdminLogin";
 import TrainerOtpVerification from "./components/trainers/TrainerOtpVerification";
-import TrainerConsole from "./components/trainers/TrainerConsole";
 import AdminConsole from "./pages/admin/AdminConsole";
 import AdminTrainerPage from "./pages/admin/AdminTrainerPage";
 import AdminUserPage from "./pages/admin/AdminUserPage";
@@ -22,6 +21,8 @@ import TrainerProtector from "./components/protucters/TrainerProtector";
 import TrainerLoginProtector from "./components/protucters/TrainerLoginProtector";
 import UserLoginProtector from "./components/protucters/UserLoginProtector";
 import AdminLoginProtector from "./components/protucters/AdminLoginProtector";
+import TrainerDashboardPage from "./pages/trainers/TrainerDashboardPage";
+import TrainerProfilePage from "./pages/trainers/TrainerProfilePage";
 
 function App() {
   return (
@@ -31,14 +32,7 @@ function App() {
         <Routes>
           {/* User Routes */}
           <Route path="/" element={<HomePage />} />
-          <Route
-            path="/login"
-            element={
-              <UserLoginProtector>
-                <LoginPage />
-              </UserLoginProtector>
-            }
-          />
+          <Route path="/login" element={<LoginPage />} />
           <Route
             path="/signup"
             element={
@@ -94,26 +88,29 @@ function App() {
             path="/trainer-console"
             element={
               <TrainerProtector>
-                <TrainerConsole />
+                <TrainerDashboardPage />
+              </TrainerProtector>
+            }
+          />
+          
+          <Route
+            path="/trainer-profile"
+            element={
+              <TrainerProtector>
+                <TrainerProfilePage />
               </TrainerProtector>
             }
           />
 
+
           {/* Admin Routes */}
-          <Route
-            path="/admin"
-            element={
-              <AdminLoginProtector>
-                <AdminLoginPage />
-              </AdminLoginProtector>
-            }
-          />
+          <Route path="/admin" element={<AdminLoginPage />} />
           <Route
             path="/admin-console"
             element={
-              <AdminProtector>
+              <AdminLoginProtector>
                 <AdminConsole />
-              </AdminProtector>
+              </AdminLoginProtector>
             }
           />
           <Route

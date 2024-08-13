@@ -40,7 +40,7 @@
     height: 2.5rem;
 }
 
-.progress {
+.progress-div {
     width: 97%;
     background-color: #222222;
     height: 10rem;
@@ -51,7 +51,7 @@
     align-items: center;
 }
 
-.progress-count {
+.progress-div-count {
     width: 25%;
     display: flex;
     justify-content: center;
@@ -59,15 +59,20 @@
     flex-direction: column;
 }
 
-.count-div {
+.progress-count-div {
     display: flex;
     align-items: center;
     width: 85%;
     margin-left: 8rem;
 }
 
-.count-div h1 {
+.progress-count-div h1 {
     margin-bottom: 0;
+    font-size: 2.2rem;
+}
+
+.progress-count-div p {
+    color: #808080;
 }
 
 .home-div {
@@ -145,4 +150,24 @@
     width: 100%;
     height: 100%;
     border-radius: 2rem;
+}
+
+
+.home-footer {
+    margin-top: -3rem;
+    width: 100%;
+    background-color: #222222;
+    color: #808080;
+    padding: .5rem;
+    text-align: center;
+    border-top: 1px solid #34495e;
+}
+
+.home-footer a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.home-footer a:hover {
+    text-decoration: underline;
 }

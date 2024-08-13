@@ -8,6 +8,7 @@ import {
 } from "react-icons/md";
 import { FaUserCircle, FaPhotoVideo } from "react-icons/fa";
 import { IoIosChatboxes, IoMdNotifications, IoMdLogOut } from "react-icons/io";
+import { FaHome, FaUsers, FaChalkboardTeacher, FaDumbbell } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { trainerLogout } from "../../redux/trainers/trainerSlice";
 import { useNavigate } from "react-router-dom";
@@ -20,44 +21,21 @@ function TrainerSideBar() {
     navigate('/trainer')
   }
   return (
-    <div className="trainer-sidebar d-flex flex-column">
-      <div className="trainer-div-logo text-center w-100 fs-2 pt-3 ">
-        <span></span>FitFusion
+    <div className="b text-light d-flex flex-column align-items-center py-3" style={{ width: "60px", backgroundColor:"#101113" }}>
+      <div className="mb-4">
+        <FaDumbbell className="text-white fs-2" onClick={()=>navigate("/trainer-console")}/>
       </div>
-      <div className="d-flex flex-column align-items-center w-100 pt-5">
-        <div className=" shadow mb-3 trainer-sidebarlist ">
-          <MdDashboard />
-          <span>Dashboard</span>
-        </div>
-        <div className=" shadow mb-3 trainer-sidebarlist ">
-          <FaUserCircle />
-          <span>Profile</span>
-        </div>
-        <div className=" shadow mb-3 trainer-sidebarlist ">
-          <IoIosChatboxes />
-          <span>Chat</span>
-        </div>
-        <div className=" shadow mb-3 trainer-sidebarlist ">
-          <FaPhotoVideo />
-          <span>Videos</span>
-        </div>
-        <div className=" shadow mb-3 trainer-sidebarlist ">
-          <MdOutlineEmojiFoodBeverage />
-          <span>Diet Plans</span>
-        </div>
-        <div className=" shadow mb-3 trainer-sidebarlist ">
-          <MdLiveTv />
-          <span>Live Classes</span>
-        </div>
-        <div className=" shadow mb-3 trainer-sidebarlist ">
-          <IoMdNotifications />
-          <span>Notification</span>
-        </div>
-        <div className=" shadow mb-3 trainer-sidebarlist " style={{ cursor: "pointer"}}>
-          <IoMdLogOut />
-          <span onClick={Logout}>Logout</span>
-        </div>
-      </div>
+      <ul className="nav flex-column text-center">
+        <li className="nav-item my-3">
+          <FaHome className="fs-4 text-secondary" onClick={()=>navigate("/trainer-console")}/>
+        </li>
+        <li className="nav-item my-3">
+          <FaUsers className="fs-4 text-secondary" onClick={()=>navigate("/trainer-profile")}/>
+        </li>
+        <li className="nav-item my-3">
+          <FaChalkboardTeacher className="fs-4 text-secondary" onClick={()=>navigate("/admin-trainer")}/>
+        </li>
+      </ul>
     </div>
   );
 }

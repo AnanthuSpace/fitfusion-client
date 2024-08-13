@@ -77,14 +77,14 @@ const trainerSlice = createSlice({
                 toast.error(action.payload || "Updat error", { hideProgressBar: true, autoClose: 3000 });
             })
             .addCase(editTrainer.fulfilled, (state, action) => {
-                console.log(action.payload);
+                console.log("Action : ",action.payload);
                 
-                state.trainerData.name = sessionStorage.getItem(`trainerData.name`)
-                state.trainerData.phone = sessionStorage.getItem(`trainerData.phone`)
-                state.trainerData.address = sessionStorage.getItem(`trainerData.address`)
-                state.trainerData.gender = sessionStorage.getItem(`trainerData.gender`)
-                state.trainerData.qualification = sessionStorage.getItem(`trainerData.qualification`)
-                state.trainerData.achivements = sessionStorage.getItem(`trainerData.achivements`)
+                // state.trainerData.name = localStorage.getItem(`trainerData.name`)
+                // state.trainerData.phone = localStorage.getItem(`trainerData.phone`)
+                // state.trainerData.address = localStorage.getItem(`trainerData.address`)
+                // state.trainerData.gender = localStorage.getItem(`trainerData.gender`)
+                // state.trainerData.qualification = localStorage.getItem(`trainerData.qualification`)
+                // state.trainerData.achivements = localStorage.getItem(`trainerData.achivements`)
                 toast.success(action.payload.message, { hideProgressBar: true, autoClose: 3000 });
             })
 

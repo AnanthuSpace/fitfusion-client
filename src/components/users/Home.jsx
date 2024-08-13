@@ -5,7 +5,7 @@ import TrainerContainer from "./TrainerContainer";
 import ReviewList from "./ReviewList";
 import Membership from "./Membership";
 import Header from "./Header";
-
+import CountingDiv from "./CountingDiv"; // Import the animated component
 
 function Home() {
   return (
@@ -44,43 +44,15 @@ function Home() {
           </div>
         </div>
 
-        <div className="progress">
-          <div className="count-div">
-            <div className="progress-count">
-              <h1>500+</h1>
-              <p>
-                Happy Members <br />
-                Our Community is growing fast!
-              </p>
-            </div>
-            <div className="progress-count">
-              <h1>30+</h1>
-              <p>
-                Weekly Classes <br />
-                Pics from various workouts
-              </p>
-            </div>
-            <div className="progress-count">
-              <h1>10+</h1>
-              <p>
-                Certified Trainers <br />
-                Guidance at every step
-              </p>
-            </div>
-            <div className="progress-count">
-              <h1>99%</h1>
-              <p>
-                Customer Satisfaction <br />
-                We ensure your progress satisfaction
-              </p>
-            </div>
-          </div>
-        </div>
+        <CountingDiv /> {/* Use the animated component here */}
 
         <WhyChooseUs />
         <TrainerContainer />
         <ReviewList />
         <Membership />
+        <footer className="home-footer">
+          © 2024 FITFUSION. All rights reserved.
+        </footer>
       </div>
     </>
   );

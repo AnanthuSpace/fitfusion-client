@@ -17,7 +17,7 @@ function TrainerProfileComponent() {
   const [qualification, setQualification] = useState(
     trainer?.qualification || ""
   );
-  const [achievements, setAchievements] = useState(trainer?.achievements || "");
+  const [achivements, setAchievements] = useState(trainer?.achivements || "");
   const [showModal, setShowModal] = useState(false);
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -30,7 +30,7 @@ function TrainerProfileComponent() {
         phone: phone,
         address: address,
         qualification: qualification,
-        achievements: achievements,
+        achivements: achivements,
       })
     );
   };
@@ -131,7 +131,7 @@ function TrainerProfileComponent() {
             type="text"
             id="achievements"
             className="form-control"
-            value={achievements}
+            value={achivements}
             placeholder="Enter achievements"
             onChange={(e) => setAchievements(e.target.value)}
           />
