@@ -3,7 +3,7 @@ import TrainerNavbar from "../../components/trainers/TrainerNavbar";
 import TrainerSideBar from "../../components/trainers/TrainerSideBar";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../assets/styles/trainers/TrainerConsole.css"
-import TrainerProfileComponent from "../../components/trainers/TrainerProfileComponent";
+import TrainerProfile from "../../components/trainers/TrainerProfile";
 
 function TrainerProfilePage() {
   return (
@@ -12,7 +12,7 @@ function TrainerProfilePage() {
       <TrainerSideBar />
       <div className="flex-grow-1 d-flex flex-column">
         <TrainerNavbar />
-        <TrainerProfileComponent />
+        <TrainerProfile />
       </div>
     </div>
   </>

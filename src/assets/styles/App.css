@@ -33,11 +33,30 @@ body,
   box-shadow: 0 23px 45px -11px rgba(20, 20, 20, 0.25) !important;
 }
 
+
 .gradient-blue-white {
   background: linear-gradient(to right, #4B63DD 0%, #0524BF 99%);
   border: none;
   color: white;
+  font-size: 16px;
+  border-radius: 4px;
+  transition: background 0.3s ease;
 }
+
+.gradient-blue-white:hover {
+  background: linear-gradient(to right, #5A75EE 0%, #1238FF 99%);
+}
+
+
+.gradient-blue-white-text {
+  background-image: linear-gradient(to right, #4B63DD, #0524BF);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
 
 .gradient-red-white {
   background: linear-gradient(to right, #DD4B4B 0%, #BF0505 99%);

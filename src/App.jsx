@@ -23,6 +23,7 @@ import UserLoginProtector from "./components/protucters/UserLoginProtector";
 import AdminLoginProtector from "./components/protucters/AdminLoginProtector";
 import TrainerDashboardPage from "./pages/trainers/TrainerDashboardPage";
 import TrainerProfilePage from "./pages/trainers/TrainerProfilePage";
+import TrainerChatPage from "./pages/trainers/TrainerChatPage";
 
 function App() {
   return (
@@ -33,14 +34,7 @@ function App() {
           {/* User Routes */}
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route
-            path="/signup"
-            element={
-              <UserLoginProtector>
-                <SignupPage />
-              </UserLoginProtector>
-            }
-          />
+          <Route path="/signup" element={<SignupPage />} />
           <Route
             path="/verify-otp"
             element={
@@ -92,7 +86,6 @@ function App() {
               </TrainerProtector>
             }
           />
-          
           <Route
             path="/trainer-profile"
             element={
@@ -101,7 +94,14 @@ function App() {
               </TrainerProtector>
             }
           />
-
+          <Route
+            path="/trainer-chat"
+            element={
+              <TrainerProtector>
+                <TrainerChatPage />
+              </TrainerProtector>
+            }
+          />
 
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminLoginPage />} />
