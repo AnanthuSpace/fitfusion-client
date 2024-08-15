@@ -31,8 +31,8 @@ function Header() {
             <li className={location.pathname === "/class" ? "active" : ""}>
               <Link to="/class">Class</Link>
             </li>
-            <li className={location.pathname === "/trainers" ? "active" : ""}>
-              <Link to="/trainers">Trainers</Link>
+            <li className={location.pathname === "/trainer-list" ? "active" : ""}>
+              <Link to="/trainer-list">Trainers</Link>
             </li>
             <li className={location.pathname === "/contact" ? "active" : ""}>
               <Link to="/contact">Contact</Link>

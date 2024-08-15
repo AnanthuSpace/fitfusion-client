@@ -24,6 +24,7 @@ import AdminLoginProtector from "./components/protucters/AdminLoginProtector";
 import TrainerDashboardPage from "./pages/trainers/TrainerDashboardPage";
 import TrainerProfilePage from "./pages/trainers/TrainerProfilePage";
 import TrainerChatPage from "./pages/trainers/TrainerChatPage";
+import TrainerListPage from "./pages/users/TrainerListPage";
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
             }
           />
           <Route path="/login-verify" element={<LoginVerification />} />
+          <Route path="/trainer-list" element={<TrainerListPage />} />
           <Route
             path="/profile"
             element={

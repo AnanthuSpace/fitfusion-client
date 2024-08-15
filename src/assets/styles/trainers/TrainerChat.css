@@ -83,3 +83,10 @@
   border: none;
   margin-left: 10px;
 }
+
+/* TrainerChat.css */
+
+.chat-txt::placeholder {
+  color: white !important;
+  opacity: 1; /* Make sure the opacity is set to 1 to ensure full visibility */
+}
