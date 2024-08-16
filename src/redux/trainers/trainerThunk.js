@@ -81,7 +81,7 @@ export const trainerLogin = createAsyncThunk(
 
             const response = await axios.post(`${localhostURL}/trainer/login`, { email, password });
             console.log(response);
-            
+
             if (response.data.success === false) {
                 return rejectWithValue(response.data.message);
             } else {
@@ -100,16 +100,16 @@ export const trainerLogin = createAsyncThunk(
 export const editTrainer = createAsyncThunk(
     "trainerSlice/editTrainer",
     async ({ name, phone, address, gender, qualification, achivements }, { rejectWithValue }) => {
-
+        
         name = name.trim();
         phone = phone.trim();
         address = address.trim();
         gender = gender.trim();
         qualification = qualification.trim();
         achivements = achivements.trim();
-
+        
         const phoneRegex = /^\d{10}$/;
-
+        
         if (name === "" || phone === "" || address === "" || gender === "" || achivements === "" || qualification === "") {
             return rejectWithValue("All fields are required!");
         } else if (!phoneRegex.test(phone)) {
@@ -125,6 +125,7 @@ export const editTrainer = createAsyncThunk(
                     achivements
                 });
                 
+
                 localStorage.setItem(`trainerData.name: `, name)
                 localStorage.setItem(`trainerData.phone: `, phone)
                 localStorage.setItem(`trainerData.address: `, address)
@@ -192,6 +193,25 @@ export const requestOtp = createAsyncThunk(
 
             const response = await axios.post(`${localhostURL}/trainer/request-otp`, { email });
             return response.data;
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
+export const updateProfilePicture = createAsyncThunk(
+    'trainer/updateProfilePicture',
+    async (file, { rejectWithValue }) => {
+        try {
+            const formData = new FormData();
+            formData.append('profileImage', file);
+
+            const response = await trainerAxiosInstance.put(`${localhostURL}/trainer/profile-picture`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            }); 
+            return response.data.profileImage;
         } catch (error) {
             return rejectWithValue(error.response.data);
         }

@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-import { trainerRegistration, trainerVerification, trainerLogin, editTrainer, changeTrainerPassword } from "./trainerThunk";
+import { trainerRegistration, trainerVerification, trainerLogin, editTrainer, changeTrainerPassword, updateProfilePicture } from "./trainerThunk";
 
 
 const trainerData = localStorage.getItem("trainerData") ? JSON.parse(localStorage.getItem("trainerData")) : null;
@@ -78,13 +78,6 @@ const trainerSlice = createSlice({
             })
             .addCase(editTrainer.fulfilled, (state, action) => {
                 console.log("Action : ",action.payload);
-                
-                // state.trainerData.name = localStorage.getItem(`trainerData.name`)
-                // state.trainerData.phone = localStorage.getItem(`trainerData.phone`)
-                // state.trainerData.address = localStorage.getItem(`trainerData.address`)
-                // state.trainerData.gender = localStorage.getItem(`trainerData.gender`)
-                // state.trainerData.qualification = localStorage.getItem(`trainerData.qualification`)
-                // state.trainerData.achivements = localStorage.getItem(`trainerData.achivements`)
                 toast.success(action.payload.message, { hideProgressBar: true, autoClose: 3000 });
             })
 
@@ -95,6 +88,22 @@ const trainerSlice = createSlice({
               .addCase(changeTrainerPassword.rejected, (state, action) => {
                 state.error = action.payload;
                 toast.error(action.payload || "Reset error", { hideProgressBar: true, autoClose: 3000 });
+              })
+
+
+              .addCase(updateProfilePicture.pending, (state) => {
+                state.isLoading = true;
+                state.error = null;
+              })
+              .addCase(updateProfilePicture.fulfilled, (state, action) => {
+                state.isLoading = false;
+                localStorage.setItem("trainerData.profileIMG", JSON.stringify(action.payload));
+                toast.success('Profile picture updated successfully!');
+              })
+              .addCase(updateProfilePicture.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload || 'Failed to update profile picture';
+                toast.error(state.error);
               });
     }
 })

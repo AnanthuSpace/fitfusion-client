@@ -5,9 +5,10 @@ import TrainerContainer from "./TrainerContainer";
 import ReviewList from "./ReviewList";
 import Membership from "./Membership";
 import Header from "./Header";
-import CountingDiv from "./CountingDiv"; // Import the animated component
+import CountingDiv from "./CountingDiv"; 
 
 function Home() {
+
   return (
     <>
       <div className="home-container">

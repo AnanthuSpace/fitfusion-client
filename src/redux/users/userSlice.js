@@ -95,10 +95,10 @@ const userSlice = createSlice({
         toast.error(action.payload || "Updat error", { hideProgressBar: true, autoClose: 3000 });
       })
       .addCase(editUserData.fulfilled, (state, action) => {
-        state.userData.name = sessionStorage.getItem(`userData.name`)
-        state.userData.phone = sessionStorage.getItem(`userData.phone`)
-        state.userData.address = sessionStorage.getItem(`userData.address`)
-        state.userData.gender = sessionStorage.getItem(`userData.gender`)
+        state.userData.name = localStorage.getItem(`userData.name`)
+        state.userData.phone = localStorage.getItem(`userData.phone`)
+        state.userData.address = localStorage.getItem(`userData.address`)
+        state.userData.gender = localStorage.getItem(`userData.gender`)
         toast.success("Update successfully", { hideProgressBar: true, autoClose: 3000 });
       })
 
@@ -109,7 +109,7 @@ const userSlice = createSlice({
       .addCase(changeUserPassword.rejected, (state, action) => {
         state.error = action.payload;
         toast.error(action.payload || "Reset error", { hideProgressBar: true, autoClose: 3000 });
-      });
+      })
   },
 });
 

@@ -138,10 +138,10 @@ export const editUserData = createAsyncThunk(
         } else {
             try {
                 const response = await userAxiosInstance.put("/edit-user", { name, phone, address, gender, password });
-                sessionStorage.setItem(`userData.name`, name)
-                sessionStorage.setItem(`userData.phone`, phone)
-                sessionStorage.setItem(`userData.address`, address)
-                sessionStorage.setItem(`userData.gender`, gender)
+                localStorage.setItem(`userData.name`, name)
+                localStorage.setItem(`userData.phone`, phone)
+                localStorage.setItem(`userData.address`, address)
+                localStorage.setItem(`userData.gender`, gender)
                 return response.data;
             } catch (error) {
                 if (error.response && error.response.status === 401) {

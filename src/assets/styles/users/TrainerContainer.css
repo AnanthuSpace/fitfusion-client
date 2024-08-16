@@ -11,7 +11,7 @@
 
 .trainer-div {
     margin-top: 3rem;
-    height: 100%;
+    height: 17rem;
     width: 65%;
     display: flex;
     justify-content: space-between;
@@ -20,7 +20,7 @@
 }
 
 .trainer-img {
-    width: 30%;
+    width: 28%;
     height: 100%;
     position: relative; 
     overflow: hidden; 
