@@ -45,7 +45,7 @@ function Home() {
           </div>
         </div>
 
-        <CountingDiv /> {/* Use the animated component here */}
+        <CountingDiv />
 
         <WhyChooseUs />
         <TrainerContainer />

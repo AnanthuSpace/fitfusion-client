@@ -25,6 +25,7 @@ import TrainerDashboardPage from "./pages/trainers/TrainerDashboardPage";
 import TrainerProfilePage from "./pages/trainers/TrainerProfilePage";
 import TrainerChatPage from "./pages/trainers/TrainerChatPage";
 import TrainerListPage from "./pages/users/TrainerListPage";
+import UserDetailsForm from "./components/users/MoreDetails";
 
 function App() {
   return (
@@ -36,14 +37,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
-          <Route
-            path="/verify-otp"
-            element={
-              <UserLoginProtector>
-                <SignUpVerification />
-              </UserLoginProtector>
-            }
-          />
+          <Route path="/verify-otp" element={<SignUpVerification />} />
           <Route path="/login-verify" element={<LoginVerification />} />
           <Route path="/trainer-list" element={<TrainerListPage />} />
           <Route
@@ -51,6 +45,14 @@ function App() {
             element={
               <UserProtecter>
                 <ProfilePage />
+              </UserProtecter>
+            }
+          />
+          <Route
+            path="/user-data"
+            element={
+              <UserProtecter>
+                <UserDetailsForm />
               </UserProtecter>
             }
           />

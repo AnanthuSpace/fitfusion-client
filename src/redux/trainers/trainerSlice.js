@@ -97,6 +97,7 @@ const trainerSlice = createSlice({
               })
               .addCase(updateProfilePicture.fulfilled, (state, action) => {
                 state.isLoading = false;
+                state.trainerData.profileIMG = action.payload
                 localStorage.setItem("trainerData.profileIMG", JSON.stringify(action.payload));
                 toast.success('Profile picture updated successfully!');
               })

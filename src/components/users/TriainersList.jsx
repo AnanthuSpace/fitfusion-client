@@ -61,33 +61,64 @@ function TrainersList() {
           </InputGroup>
         </Form>
       </div>
-      <Row>
-        {filteredTrainers.map((trainer, index) => (
-          <Col md={4} lg={3} className="mb-4" key={index}>
-            <Card
-              className="h-100 text-center"
-              style={{ backgroundColor: "#1c1c1e" }}
-            >
-              <Card.Img
-                variant="top"
-                src={`${localhostURL}/${trainer.profileIMG}`}
-                alt={trainer.name}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                }}
-              />
-              <Card.Body>
-                <Card.Title className="text-white">{trainer.name}</Card.Title>
-                <Card.Text className="text-muted">
-                  {trainer.specialization}
-                </Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
-      </Row>
+      <div
+        style={{
+          maxHeight: "500px", // Adjust the height as needed
+          overflowY: "scroll",
+          overflowX: "hidden",
+        }}
+      >
+        <Row>
+          {filteredTrainers.map((trainer, index) => (
+            <Col md={4} lg={3} className="mb-4" key={index}>
+              <Card
+                className="h-100 text-center"
+                style={{ backgroundColor: "#1c1c1e" }}
+              >
+                <Card.Img
+                  variant="top"
+                  src={`${localhostURL}/${trainer.profileIMG}`}
+                  alt={trainer.name}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                  }}
+                  onError={(e) => {
+                    e.target.src = "/path/to/default/profile-icon.jpg";
+                  }}
+                />
+                <Card.Body>
+                  <Card.Title className="text-white">{trainer.name}</Card.Title>
+                  <Card.Text className="text-muted">
+                    {trainer.specialization}
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+      </div>
+
+      {/* Custom scrollbar styling */}
+      <style jsx>{`
+        /* WebKit browsers (Chrome, Safari) */
+        div::-webkit-scrollbar {
+          width: 12px;
+          background-color: transparent; /* Transparent scrollbar track */
+        }
+
+        div::-webkit-scrollbar-thumb {
+          background-color: #ff7906; /* Scrollbar thumb color */
+          border-radius: 10px;
+        }
+
+        /* Firefox */
+        div {
+          scrollbar-width: thin;
+          scrollbar-color: #ff7906 transparent; /* thumb color | track color (transparent) */
+        }
+      `}</style>
     </div>
   );
 }

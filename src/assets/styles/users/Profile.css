@@ -1,5 +1,5 @@
 .profile-page {
-    background-color: #222222;
+    background-color: #222222; /* Black background */
     width: 100vw;
     height: 100%;
     display: flex;
@@ -7,6 +7,7 @@
     align-items: center;
     justify-content: flex-start;
     padding-top: 2rem;
+    color: white; /* White text color */
 }
 
 .profile-content {
@@ -20,11 +21,12 @@
 .profile-div {
     width: 23%;
     height: 19rem;
-    background-color: white;
+    background-color: black; /* Dark background for profile section */
     border-radius: 1rem;
     display: flex;
     align-items: center;
     flex-direction: column;
+    color: white; /* White text color */
 }
 
 .profile-div img {
@@ -37,16 +39,18 @@
 
 .profile-div p {
     margin-top: .1rem;
+    color: white; /* Ensure text color is white */
 }
 
 .user-edit-profile {
     width: 50%;
     height: 19rem;
-    background-color: white;
+    background-color: black; /* Dark background for edit profile section */
     border-radius: 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
+    color: white; /* White text color */
 }
 
 .change-password {
@@ -67,6 +71,7 @@
     width: 95%;
     padding: .5rem;
     border-bottom: 1px solid #FF7906;
+    color: white; /* White text color */
 }
 
 .input-div .user-input-text {
@@ -74,6 +79,7 @@
     border: none;
     outline: none;
     background: transparent;
+    color: white; /* White text color */
 }
 
 .radio-group {
@@ -87,6 +93,7 @@
     align-items: center;
     gap: 0.5rem;
     cursor: pointer;
+    color: white; /* White text color */
 }
 
 .radio {
@@ -102,6 +109,7 @@
     width: 95%;
     padding: .5rem;
     border-bottom: 1px solid #FF7906;
+    color: white; /* White text color */
 }
 
 .edit-profile-btn {
@@ -116,4 +124,5 @@
 
 .ptag {
     width: 61%;
+    color: white; /* Ensure text color is white */
 }

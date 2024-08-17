@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "../../assets/styles/users/UserChangePassword.css";
-import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { changeUserPassword } from "../../redux/users/userThunk";
 

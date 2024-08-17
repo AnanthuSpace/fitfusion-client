@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registration, signupVerification, userLogin, loginVerification, editUserData, changeUserPassword } from "./userThunk";
+import { registration, signupVerification, userLogin, loginVerification, editUserData, changeUserPassword, addUserDetails } from "./userThunk";
 import { toast } from "react-toastify";
 
 const userData = localStorage.getItem("userData") ? JSON.parse(localStorage.getItem("userData")) : null;
@@ -109,6 +109,22 @@ const userSlice = createSlice({
       .addCase(changeUserPassword.rejected, (state, action) => {
         state.error = action.payload;
         toast.error(action.payload || "Reset error", { hideProgressBar: true, autoClose: 3000 });
+      })
+
+
+      .addCase(addUserDetails.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(addUserDetails.fulfilled, (state, action) => {
+        state.userDetails = action.payload;
+        state.isLoading = false;
+        toast.success("User details added successfully", { hideProgressBar: true, autoClose: 3000 });
+      })
+      .addCase(addUserDetails.rejected, (state, action) => {
+        state.error = action.payload;
+        state.isLoading = false;
+        toast.error(action.payload || "Failed to add user details", { hideProgressBar: true, autoClose: 3000 });
       })
   },
 });

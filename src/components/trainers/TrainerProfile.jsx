@@ -75,7 +75,7 @@ function TrainerProfile() {
               <img
                 src={`${localhostURL}/${trainer?.profileIMG}`}
                 className="card-img-top mx-auto mt-4"
-                alt="Profile"
+                alt="profileIMG"
                 style={{ width: "130px", height: "130px", borderRadius: "50%" }}
               />
               <label htmlFor="profileImageUpload" className="edit-icon">

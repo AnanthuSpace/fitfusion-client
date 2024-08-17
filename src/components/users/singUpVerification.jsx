@@ -33,7 +33,7 @@ function SignUpVerification() {
       temperoryEmail
     })).then((result) => {
       if (result.meta.requestStatus === "fulfilled") {
-        navigate("/")
+        navigate("/user-data")
       }
     });
   };

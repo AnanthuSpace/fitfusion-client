@@ -128,7 +128,7 @@ export const editUserData = createAsyncThunk(
         password = password.trim();
         const phoneRegex = /^\d{10}$/;
 
-        if(password.length < 6){
+        if (password.length < 6) {
             return rejectWithValue("Password must be at least 6 characters long!");
         }
         if (name === "" || phone === "" || address === "" || gender === "") {
@@ -147,7 +147,7 @@ export const editUserData = createAsyncThunk(
                 if (error.response && error.response.status === 401) {
                     sessionStorage.removeItem("userAccessToken")
                     return rejectWithValue("Invalid or expired token");
-                } else if (error.response && error.response.status === 403){
+                } else if (error.response && error.response.status === 403) {
                     return rejectWithValue("Invalid password");
                 }
                 return rejectWithValue("Update failed, try again");
@@ -183,6 +183,19 @@ export const changeUserPassword = createAsyncThunk(
                 }
                 return rejectWithValue("Update failed, try again");
             }
+        }
+    }
+);
+
+
+export const addUserDetails = createAsyncThunk(
+    "user/addUserDetails",
+    async (userDetails, { rejectWithValue }) => {
+        try {
+            const response = await userAxiosInstance.put(`${localhostURL}/user-details`, {userDetails: userDetails});
+            return response.data;
+        } catch (error) {
+            return rejectWithValue(error.response?.data || "An error occurred");
         }
     }
 );
