@@ -9,6 +9,14 @@
     margin-top: 2rem;
 }
 
+.trainer-container  h1 {
+    color: #b249f8;
+}
+
+.trainer-container  p {
+    color: #ecedee;
+}
+
 .trainer-div {
     margin-top: 3rem;
     height: 17rem;

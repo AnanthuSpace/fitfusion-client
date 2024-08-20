@@ -26,6 +26,7 @@ import TrainerProfilePage from "./pages/trainers/TrainerProfilePage";
 import TrainerChatPage from "./pages/trainers/TrainerChatPage";
 import TrainerListPage from "./pages/users/TrainerListPage";
 import UserDetailsForm from "./components/users/MoreDetails";
+import TrainerViewPage from "./pages/users/TrainerViewPage";
 
 function App() {
   return (
@@ -53,6 +54,14 @@ function App() {
             element={
               <UserProtecter>
                 <UserDetailsForm />
+              </UserProtecter>
+            }
+          />
+          <Route
+            path="/trainer-view/:trainerId"
+            element={
+              <UserProtecter>
+                <TrainerViewPage />
               </UserProtecter>
             }
           />

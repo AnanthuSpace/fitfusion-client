@@ -91,6 +91,20 @@ export const userLogin = createAsyncThunk(
 );
 
 
+export const fetchTrainersData = createAsyncThunk(
+    "userSlice/fetchTrainersData",
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await axios.get(`${localhostURL}/fetch-trainers`);
+            return response.data; 
+        } catch (error) {
+            return rejectWithValue(error.response?.data || "Failed to fetch trainers data");
+        }
+    }
+);
+
+
+
 export const loginVerification = createAsyncThunk(
     "userSlice/loginVerification",
     async ({ completeOtp, temperoryEmail }, { rejectWithValue }) => {
@@ -119,29 +133,37 @@ export const loginVerification = createAsyncThunk(
 // Edit user data
 export const editUserData = createAsyncThunk(
     "userSlice/editUserData",
-    async ({ name, phone, address, gender, password }, { rejectWithValue }) => {
+    async ({ name, phone, address, gender, password, weight, height, activityLevel, dietary, goals, medicalDetails }, { rejectWithValue }) => {
 
         name = name.trim();
         phone = phone.trim();
         address = address.trim();
         gender = gender.trim();
         password = password.trim();
+        weight = weight.trim();
+        height = height.trim();
+        activityLevel = activityLevel.trim()
+        goals = goals.trim()
         const phoneRegex = /^\d{10}$/;
 
         if (password.length < 6) {
             return rejectWithValue("Password must be at least 6 characters long!");
         }
-        if (name === "" || phone === "" || address === "" || gender === "") {
+        if (name === "" || phone === "" || address === "" || gender === "" || weight === "" || height === "" || activityLevel === "" || goals === "") {
             return rejectWithValue("All the fields are required!");
         } else if (!phoneRegex.test(phone)) {
             return rejectWithValue("Invalid phone number. It should be a 10-digit number.");
         } else {
             try {
-                const response = await userAxiosInstance.put("/edit-user", { name, phone, address, gender, password });
+                const response = await userAxiosInstance.put("/edit-user", { name, phone, address, gender, password, weight, height, activityLevel, goals });
                 localStorage.setItem(`userData.name`, name)
                 localStorage.setItem(`userData.phone`, phone)
                 localStorage.setItem(`userData.address`, address)
                 localStorage.setItem(`userData.gender`, gender)
+                localStorage.setItem(`userData.weight`, weight)
+                localStorage.setItem(`userData.height`, height)
+                localStorage.setItem(`userData.activityLevel`, activityLevel)
+                localStorage.setItem(`userData.goals`, goals)
                 return response.data;
             } catch (error) {
                 if (error.response && error.response.status === 401) {
@@ -192,7 +214,9 @@ export const addUserDetails = createAsyncThunk(
     "user/addUserDetails",
     async (userDetails, { rejectWithValue }) => {
         try {
-            const response = await userAxiosInstance.put(`${localhostURL}/user-details`, {userDetails: userDetails});
+            const response = await userAxiosInstance.put(`${localhostURL}/user-details`, { userDetails: userDetails });
+            console.log(response);
+
             return response.data;
         } catch (error) {
             return rejectWithValue(error.response?.data || "An error occurred");

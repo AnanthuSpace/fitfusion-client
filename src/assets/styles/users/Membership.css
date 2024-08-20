@@ -1,6 +1,6 @@
 .be-a-member {
     width: 100%;
-    min-height: 25rem; /* Use min-height instead of height for responsiveness */
+    min-height: 25rem; /* Responsive min-height */
     background-image: url('/fit.avif'); 
     background-size: cover; 
     background-position: center; 
@@ -11,34 +11,43 @@
     text-align: center;
     flex-direction: column;
     margin-bottom: 5rem;
-    padding: 2rem; /* Added padding for better spacing */
+    padding: 2rem; /* Padding for spacing */
+    background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent glass background */
+    backdrop-filter: blur(10px); /* Frosted glass effect */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Light border to enhance the glass effect */
 }
 
 .be-a-member h1 {
-    color: white;
-    font-size: 2rem; /* Adjusted font size for better visibility */
-    margin: 0; /* Removed default margin */
+    color: #ecedee;
+    font-size: 2rem; /* Adjusted font size */
+    margin: 0;
 }
 
 .be-a-member p {
     color: white;
     font-size: 1.2rem; /* Adjusted font size */
-    margin: 1rem 0; /* Added margin for spacing */
+    margin: 1rem 0;
 }
 
 .be-a-member button {
-    background-color: #FF7906;
-    color: white;
-    border-radius: 2rem;
-    border: none;
-    width: 8rem; /* Increased width for better button size */
-    height: 3rem; /* Increased height for better button size */
-    margin-top: 1.5rem; /* Adjusted margin for spacing */
-    font-size: 1rem; /* Added font size for better readability */
-    cursor: pointer; /* Added cursor pointer for better UX */
-    transition: background-color 0.3s; /* Smooth transition on hover */
+    background: linear-gradient(90deg, #b249f8 0%, #ff1cf7 100%); /* Semi-transparent white */
+        color: white;
+        border-radius: 1rem;
+        border: none;
+        width: 7rem;
+        height: 2.5rem;
+        backdrop-filter: blur(10px); /* Blur effect for glassmorphism */
+        -webkit-backdrop-filter: blur(10px); /* For Safari support */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
+        border: 1px solid rgba(255, 255, 255, 0.3); /* Border to enhance glass effect */
+        text-transform: uppercase;
+        font-weight: lighter;
+        transition: all 0.3s ease;
+        margin-right: 1rem;
 }
 
 .be-a-member button:hover {
-    background-color: #e66c00; /* Darker color on hover for better interaction */
+    background-color: rgba(230, 108, 0, 0.9); /* Darker color on hover */
+    transform: scale(1.05); /* Slight zoom effect on hover */
 }

@@ -23,7 +23,10 @@ function BootstrapHeader() {
           <h1 className="mb-0">FitFusion</h1>
         </div>
         <div className="header-nav-list">
-          <ul className="nav">
+          <ul
+            className="nav d-flex align-items-center"
+            style={{ height: "100%", alignItems: "center" }} 
+          >
             <li
               className={`nav-item ${
                 location.pathname === "/" ? "active" : ""

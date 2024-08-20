@@ -1,13 +1,16 @@
 .reviewlist-container {
     width: 97%;
-    min-height: 20rem; /* Added minimum height for better visibility */
+    min-height: 20rem; /* Maintain minimum height for visibility */
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 2rem auto;
-    background-color: #222222;
+    background-color: rgba(255, 255, 255, 0.1); /* Glass effect background */
     border-radius: 2rem;
-    padding: 1rem; /* Added padding to avoid content sticking to edges */
+    padding: 1rem; /* Padding to avoid content sticking to edges */
+    backdrop-filter: blur(10px); /* Frosted glass effect */
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Light border to enhance glass effect */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
 }
 
 .review-div-heading {
@@ -28,11 +31,11 @@
 .heading p {
     font-size: 1rem;
     margin-bottom: 0;
-    color: #878383;
+    color: #a1a1aa;
 }
 
 .heading h1 {
-    color: white;
+    color: #ecedee;
 }
 
 .review-textes {
@@ -44,7 +47,7 @@
 
 .review-textes p {
     font-size: 1.2rem;
-    margin-bottom: 1rem; /* Added margin-bottom for spacing */
+    margin-bottom: 1rem; /* Margin for spacing */
     color: #878383;
 }
 
@@ -53,7 +56,7 @@
     align-items: center;
     margin-top: 1rem;
     width: 20rem;
-    color: white;
+    color: #ecedee;
     justify-content: space-between;
 }
 
@@ -61,7 +64,8 @@
     width: 5rem;
     height: 5rem;
     margin-right: 1rem; /* Margin for spacing */
-    border-radius: 50%; /* Changed to circle for consistency */
+    border-radius: 50%; /* Circle for consistency */
+    border: 2px solid rgba(255, 255, 255, 0.2); /* Light border for glass effect */
 }
 
 .user-review h3 {
@@ -69,6 +73,6 @@
 }
 
 .user-review span {
-    color: whitesmoke;
+    color: #ecedee;
     font-size: 1rem;
 }

@@ -1,5 +1,5 @@
 .profile-page {
-    background-color: #222222; /* Black background */
+    background-color: black;
     width: 100vw;
     height: 100%;
     display: flex;
@@ -7,12 +7,12 @@
     align-items: center;
     justify-content: flex-start;
     padding-top: 2rem;
-    color: white; /* White text color */
+    color: white;
 }
 
 .profile-content {
-    margin-top: 10rem;
-    width: 90%;
+    margin-top: 3rem;
+    width: 100%;
     display: flex;
     justify-content: center;
     gap: 1.5rem;
@@ -20,58 +20,87 @@
 
 .profile-div {
     width: 23%;
-    height: 19rem;
-    background-color: black; /* Dark background for profile section */
+    height: 50%;
+    background: rgba(0, 0, 0, 0.4);
     border-radius: 1rem;
     display: flex;
     align-items: center;
     flex-direction: column;
-    color: white; /* White text color */
+    color: white;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 1rem;
+    transition: background 0.3s ease;
+}
+
+.profile-div:hover {
+    background: rgba(0, 0, 0, 0.5);
 }
 
 .profile-div img {
     width: 6rem;
     height: 6rem;
     border-radius: 1rem;
-    border: 1px solid #FF7906;
+    border: 1px solid #b249f8;
     margin-top: 2rem;
 }
 
 .profile-div p {
     margin-top: .1rem;
-    color: white; /* Ensure text color is white */
+    color: white;
 }
 
 .user-edit-profile {
     width: 50%;
-    height: 19rem;
-    background-color: black; /* Dark background for edit profile section */
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
     border-radius: 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    color: white; /* White text color */
+    color: white;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 1rem;
+    transition: background 0.3s ease;
 }
 
 .change-password {
-    background-color: #FF7906;
+    background: rgba(178, 73, 248, 0.4);
     color: white;
-    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.2);
     width: 9rem;
     height: 2rem;
     border-radius: .5rem;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s ease;
+}
+
+.change-password:hover {
+    background: rgba(178, 73, 248, 0.6);
 }
 
 .input-div {
-    margin-top: 1rem;
+    margin-top: 1.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     height: 2rem;
     width: 95%;
     padding: .5rem;
-    border-bottom: 1px solid #FF7906;
-    color: white; /* White text color */
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: .5rem;
+    border-bottom: 1px solid rgba(178, 73, 248, 0.6);
+    color: white;
+    backdrop-filter: blur(8px);
+    transition: background 0.3s ease;
+}
+
+.input-div:hover {
+    background: rgba(0, 0, 0, 0.5);
 }
 
 .input-div .user-input-text {
@@ -79,7 +108,7 @@
     border: none;
     outline: none;
     background: transparent;
-    color: white; /* White text color */
+    color: white;
 }
 
 .radio-group {
@@ -93,7 +122,7 @@
     align-items: center;
     gap: 0.5rem;
     cursor: pointer;
-    color: white; /* White text color */
+    color: white;
 }
 
 .radio {
@@ -108,21 +137,24 @@
     height: 2rem;
     width: 95%;
     padding: .5rem;
-    border-bottom: 1px solid #FF7906;
-    color: white; /* White text color */
+    border-bottom: 1px solid #b249f8;
+    color: white;
 }
 
 .edit-profile-btn {
-    background-color: #FF7906;
+    background: #b249f8;
     color: white;
     border: none;
     width: 9rem;
     height: 2rem;
     border-radius: .5rem;
-    margin-top: .5rem;
+    margin: 1rem 0rem;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-family: 'Arial', sans-serif;
 }
 
 .ptag {
     width: 61%;
-    color: white; /* Ensure text color is white */
+    color: white;
 }

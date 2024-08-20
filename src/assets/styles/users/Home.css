@@ -4,7 +4,7 @@
     flex-direction: column;
     width: 100vw;
     height: 100%;
-    background-color: #F5F5F5;
+    background-color: black;
 }
 
 .enrty-container {
@@ -12,11 +12,10 @@
     margin-bottom: 2rem;
     width: 97%;
     height: 44rem;
-    /* background-color: #222222; */
-    background-color: hsla(23, 0%, 13%, 1);
+    background-color: #000000;
     background-image:
-        radial-gradient(at 80% 100%, hsla(21, 0%, 0%, 1) 0px, transparent 50%),
-        radial-gradient(at 96% 15%, hsla(30, 100%, 50%, 0.1) 0px, transparent 50%);
+        radial-gradient(at 80% 100%, #00000050 0px, transparent 50%),
+        radial-gradient(at 96% 15%, #b249f850 0px, transparent 50%);
     border-radius: 3rem;
     display: flex;
     justify-content: center;
@@ -32,12 +31,33 @@
 }
 
 .signinButtn button {
-    background-color: #FF7906;
+    background: rgba(255, 255, 255, 0.2);
+    /* Semi-transparent white */
     color: white;
     border-radius: 2rem;
     border: none;
     width: 7rem;
     height: 2.5rem;
+    backdrop-filter: blur(10px);    
+    /* Blur effect for glassmorphism */
+    -webkit-backdrop-filter: blur(10px);
+    /* For Safari support */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Soft shadow */
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    /* Border to enhance glass effect */
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.signinButtn button:hover {
+    background: rgba(255, 255, 255, 0.3);
+    /* Slightly increase transparency on hover */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    /* Slightly stronger shadow on hover */
+    transform: scale(1.05);
+    /* Scale effect on hover */
 }
 
 .progress-div {
@@ -55,7 +75,7 @@
     width: 25%;
     display: flex;
     justify-content: center;
-    color: white;
+    color: #ecedee;
     flex-direction: column;
 }
 
@@ -72,14 +92,14 @@
 }
 
 .progress-count-div p {
-    color: #808080;
+    color: #ecedee;
 }
 
 .home-div {
     margin-top: 2rem;
     height: 25%;
     width: 90%;
-    color: #F5F5F5;
+    color: #ecedee;
 }
 
 .home-heading {
@@ -97,23 +117,22 @@
 
 .beamember,
 .learn {
-    margin-bottom: 1rem;
-    margin-right: 1rem;
-    height: 3rem;
-    width: 10rem;
-    border-radius: 2rem;
-    color: white;
+        background: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
+        color: #ecedee;
+        border-radius: 1rem;
+        border: none;
+        width: 7rem;
+        height: 2.5rem;
+        backdrop-filter: blur(10px); /* Blur effect for glassmorphism */
+        -webkit-backdrop-filter: blur(10px); /* For Safari support */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
+        border: 1px solid rgba(255, 255, 255, 0.3); /* Border to enhance glass effect */
+        text-transform: uppercase;
+        font-weight: lighter;
+        transition: all 0.3s ease;
+        margin-right: 1rem;
 }
 
-.beamember {
-    background-color: #FF7906;
-    border: none;
-}
-
-.learn {
-    border: 1px solid #FF7906;
-    background-color: transparent;
-}
 
 .images {
     display: flex;
@@ -129,7 +148,7 @@
     margin-right: 2rem;
     display: flex;
     flex-direction: column;
-    color: white;
+    color: #ecedee;
 }
 
 .small-img p {
@@ -156,11 +175,11 @@
 .home-footer {
     margin-top: -3rem;
     width: 100%;
-    background-color: #222222;
-    color: #808080;
+    background-color: black;
+    color: #a1a1aa;
     padding: .5rem;
     text-align: center;
-    border-top: 1px solid #34495e;
+    
 }
 
 .home-footer a {

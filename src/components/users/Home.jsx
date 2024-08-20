@@ -21,7 +21,7 @@ function Home() {
                 IMPROVE YOUR <br /> FITNESS LEVEL FOR <br /> THE BEST
               </h1>
               <div className="buttons">
-                <div className="empty">
+                <div className="empty ">
                   <button className="beamember">BE A MEMBER</button>
                   <button className="learn">LEARN MORE</button>
                 </div>

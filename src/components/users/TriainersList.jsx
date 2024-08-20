@@ -1,35 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Card, Row, Col, Form, InputGroup, Spinner } from "react-bootstrap";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { localhostURL } from "../../utils/url";
 
 function TrainersList() {
-  const [trainers, setTrainers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchTrainers = async () => {
-      try {
-        const response = await axios.get(`${localhostURL}/fetch-trainers`);
-        setTrainers(response.data);
-      } catch (error) {
-        console.error("Error fetching trainers:", error);
-        setError("Failed to load trainers");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchTrainers();
-  }, []);
+  const navigate = useNavigate();
+  const trainersData = useSelector((state) => state.user.trainersData);
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
 
-  const filteredTrainers = trainers.filter((trainer) =>
+  const handleCardClick = (trainerId) => {
+    navigate(`/trainer-view/${trainerId}`);
+  };
+
+  const filteredTrainers = trainersData.filter((trainer) =>
     trainer.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -50,30 +40,30 @@ function TrainersList() {
       <div className="text-center mb-4">
         <h2 className="text-white">Meet Our Trainers</h2>
         <Form className="d-flex justify-content-center mt-3">
-          <InputGroup>
+          <InputGroup  style={{ border: "1px solid #b249f8", borderRadius: "1rem"}}>
             <Form.Control
               type="text"
               placeholder="Search Trainers"
               value={searchTerm}
               onChange={handleSearch}
-              className="bg-dark text-white"
+              className="text-white ms-2 me-2"
             />
           </InputGroup>
         </Form>
       </div>
       <div
         style={{
-          maxHeight: "500px", // Adjust the height as needed
+          maxHeight: "500px",
           overflowY: "scroll",
           overflowX: "hidden",
         }}
       >
         <Row>
-          {filteredTrainers.map((trainer, index) => (
-            <Col md={4} lg={3} className="mb-4" key={index}>
+          {filteredTrainers.map((trainer) => (
+            <Col md={4} lg={3} className="mb-4" key={trainer.trainerId}>
               <Card
-                className="h-100 text-center"
-                style={{ backgroundColor: "#1c1c1e" }}
+                className="h-100 text-center glass-card"
+                onClick={() => handleCardClick(trainer.trainerId)}
               >
                 <Card.Img
                   variant="top"
@@ -81,7 +71,7 @@ function TrainersList() {
                   alt={trainer.name}
                   style={{
                     width: "100%",
-                    height: "100%",
+                    height: "200px",
                     objectFit: "cover",
                   }}
                   onError={(e) => {
@@ -90,8 +80,8 @@ function TrainersList() {
                 />
                 <Card.Body>
                   <Card.Title className="text-white">{trainer.name}</Card.Title>
-                  <Card.Text className="text-muted">
-                    {trainer.specialization}
+                  <Card.Text className="text-white">
+                    {trainer.achivements || "No specialization"}
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -100,25 +90,32 @@ function TrainersList() {
         </Row>
       </div>
 
-      {/* Custom scrollbar styling */}
-      <style jsx>{`
-        /* WebKit browsers (Chrome, Safari) */
-        div::-webkit-scrollbar {
-          width: 12px;
-          background-color: transparent; /* Transparent scrollbar track */
-        }
+      <style>{`
+  /* WebKit browsers (Chrome, Safari) */
+  div::-webkit-scrollbar {
+    width: 12px;
+    background-color: transparent;
+  }
 
-        div::-webkit-scrollbar-thumb {
-          background-color: #ff7906; /* Scrollbar thumb color */
-          border-radius: 10px;
-        }
+  div::-webkit-scrollbar-thumb {
+    background-color: #b249f8;
+    border-radius: 10px;
+  }
 
-        /* Firefox */
-        div {
-          scrollbar-width: thin;
-          scrollbar-color: #ff7906 transparent; /* thumb color | track color (transparent) */
-        }
-      `}</style>
+  /* Firefox */
+  div {
+    scrollbar-width: thin;
+    scrollbar-color: #b249f8 transparent;
+  }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+`}</style>
     </div>
   );
 }

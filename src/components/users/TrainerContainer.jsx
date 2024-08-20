@@ -1,26 +1,16 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import "../../assets/styles/users/TrainerContainer.css";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchTrainersData } from "../../redux/users/userThunk";
 import { localhostURL } from "../../utils/url";
-import axios from "axios";
 
 function TrainerContainer() {
-  const [trainers, setTrainers] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+  const { trainersData = [], loading } = useSelector((state) => state.user);
 
   useEffect(() => {
-    const fetchTrainers = async () => {
-      try {
-        const response = await axios.get(`${localhostURL}/fetch-trainers`);
-        setTrainers(response.data);
-      } catch (error) {
-        console.error("Error fetching trainers:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchTrainers();
-  }, []);
+    dispatch(fetchTrainersData());
+  }, [dispatch]);
 
   return (
     <div className="trainer-container">
@@ -36,9 +26,12 @@ function TrainerContainer() {
         <div>Loading...</div>
       ) : (
         <div className="trainer-div">
-          {trainers.slice(0, 3).map((trainer, index) => (
+          {trainersData.slice(0, 3).map((trainer, index) => (
             <div className="trainer-img" key={index}>
-              <img src={`${localhostURL}/${trainer.profileIMG}`} alt={trainer.name} />
+              <img
+                src={`${localhostURL}/${trainer.profileIMG}`}
+                alt={trainer.name}
+              />
               <div className="trainer-name">{trainer.name}</div>
             </div>
           ))}
@@ -47,5 +40,6 @@ function TrainerContainer() {
     </div>
   );
 }
+
 
 export default TrainerContainer;

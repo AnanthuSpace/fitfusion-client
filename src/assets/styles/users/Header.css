@@ -2,7 +2,7 @@
     margin-top: -2rem;
     background-color: transparent;
     width: 90%;
-    color: #FF7906;
+    color: #b249f8;
     display: flex;
     justify-content: space-between;
 
@@ -37,7 +37,7 @@
     margin: 0 auto;
     width: 50%;
     padding-top: 0.25rem;
-    border-bottom: 2px solid #FF7906;
+    border-bottom: 2px solid #b249f8;
 }
 
 .signinButtn {
@@ -58,6 +58,6 @@
     width: 2.5rem;
     height: 2.5rem;
     border-radius: 1.5rem;
-    border: 1px solid #FF7906;
+    border: 1px solid #b249f8;
     cursor: pointer;
 }

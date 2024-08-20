@@ -1,21 +1,31 @@
-
 .progress-div {
     width: 97%;
-    background-color: #222222;
+    background: rgba(34, 34, 34, 0.6);
+    /* Semi-transparent background */
     height: 10rem;
     margin-bottom: 2rem;
     border-radius: 5rem;
     display: flex;
     justify-content: center;
     align-items: center;
+    backdrop-filter: blur(10px);
+    /* Blur effect for glassmorphism */
+    -webkit-backdrop-filter: blur(10px);
+    /* Safari support */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    /* Soft shadow */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    /* Border to enhance glass effect */
 }
 
 .progress-div-count {
     width: 25%;
     display: flex;
     justify-content: center;
-    color: white;
+    color: #ecedee;
     flex-direction: column;
+    border-radius: 2rem;
+    padding: 1rem;
 }
 
 .progress-count-div {
@@ -28,8 +38,9 @@
 .progress-count-div h1 {
     margin-bottom: 0;
     font-size: 2.2rem;
+    color: #ecedee;
 }
 
 .progress-count-div p {
-    color: #808080;
+    color: #ecedee;
 }

@@ -8,6 +8,7 @@
     margin-top: 1rem;
     display: flex;
     align-items: center;
+    color: #ecedee;
 }
 
 
@@ -17,11 +18,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: white;
+    background-color: black;
 }
 
 .login-logo h1 {
-    color: #FF7906;
+    color: #b249f8;
     font-family: 'Montagu Slab', serif;
     margin: 0 3rem;
 }
@@ -55,12 +56,23 @@
 }
 
 .login-signin-btn {
-    width: 6rem;
-    height: 3rem;
-    border-radius: 0.5rem;
-    background-color: #313131;
+    background: rgba(255, 255, 255, 0.1); /* Semi-transparent background for glass effect */
     color: white;
+    height: 3rem;
+    width: 6rem;
+    cursor: pointer;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Light border for glass effect */
+    backdrop-filter: blur(10px); /* Frosted glass effect */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    transition: background 0.3s ease, transform 0.3s ease; /* Smooth hover transition */
 }
+
+.login-signin-btn:hover {
+    background: rgba(255, 255, 255, 0.2); /* Darker background on hover */
+    transform: scale(1.05); /* Slight zoom effect on hover */
+}
+
 
 .login-signup-btn {
     width: 4rem;
@@ -86,17 +98,17 @@
 }
 
 .login-heading span {
-    color: #FF7906;
+    color: #b249f8;
     font-size: 4rem;
 }
 
 .login-heading h2 {
-    color: #373737;
+    color: #ecedee;
     font-size: 2rem;
 }
 
 .login-heading p {
-    color: #373737;
+    color: #ecedee;
 }
 
 .login-input {
@@ -107,29 +119,50 @@
     align-items: center;
 }
 
-input {
+.login-input input {
     width: 89%;
-    background-color: white;
+    background-color: transparent;
     padding-left: 1rem;
     height: 2.6rem;
+    color: #ecedee;
 }
 
 .login-user {
-    background-color: #313131;
+    background: rgba(255, 255, 255, 0.1); /* Semi-transparent background for glass effect */
     color: #F0F0F0;
     height: 3rem;
     width: 8rem;
     cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.3); 
+    backdrop-filter: blur(10px); /* Frosted glass effect */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    transition: transform 0.3s ease, background 0.3s ease; /* Smooth hover transition */
+}
+
+.login-user:hover {
+    background: rgba(255, 255, 255, 0.2); /* Darker background on hover */
+    transform: scale(1.05); /* Slight zoom effect on hover */
 }
 
 .login-trainer {
     margin-top: 3rem;
     width: 10rem;
-    background-color: #313131;
-    color: #F0F0F0;
     height: 3rem;
+    background: rgba(255, 255, 255, 0.1); /* Semi-transparent background for glass effect */
+    color: #F0F0F0;
     cursor: pointer;
+    border-radius: 0.5rem; /* Rounded corners */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Light border for glass effect */
+    backdrop-filter: blur(10px); /* Frosted glass effect */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    transition: background 0.3s ease, transform 0.3s ease; /* Smooth hover transition */
 }
+
+.login-trainer:hover {
+    background: rgba(255, 255, 255, 0.2); /* Darker background on hover */
+    transform: scale(1.05); /* Slight zoom effect on hover */
+}
+
 
 .login-last {
     display: flex;

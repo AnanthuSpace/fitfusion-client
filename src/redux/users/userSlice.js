@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registration, signupVerification, userLogin, loginVerification, editUserData, changeUserPassword, addUserDetails } from "./userThunk";
+import { registration, signupVerification, userLogin, loginVerification, editUserData, changeUserPassword, addUserDetails, fetchTrainersData } from "./userThunk";
 import { toast } from "react-toastify";
 
 const userData = localStorage.getItem("userData") ? JSON.parse(localStorage.getItem("userData")) : null;
+const trainersData = localStorage.getItem("trainersData") ? JSON.parse(localStorage.getItem("trainersData")) : [];
 
 const userSlice = createSlice({
   name: "userSlice",
@@ -11,6 +12,7 @@ const userSlice = createSlice({
     isLoading: false,
     error: null,
     temperoryEmail: "",
+    trainersData: trainersData,
   },
   reducers: {
     userLogout: (state) => {
@@ -126,6 +128,23 @@ const userSlice = createSlice({
         state.isLoading = false;
         toast.error(action.payload || "Failed to add user details", { hideProgressBar: true, autoClose: 3000 });
       })
+
+
+
+      .addCase(fetchTrainersData.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchTrainersData.fulfilled, (state, action) => {
+        state.trainersData = action.payload; 
+        state.isLoading = false;
+        // toast.success("Trainers data fetched successfully", { hideProgressBar: true, autoClose: 3000 });
+      })
+      .addCase(fetchTrainersData.rejected, (state, action) => {
+        state.error = action.payload;
+        state.isLoading = false;
+        // toast.error(action.payload || "Failed to fetch trainers data", { hideProgressBar: true, autoClose: 3000 });
+      });
   },
 });
 
