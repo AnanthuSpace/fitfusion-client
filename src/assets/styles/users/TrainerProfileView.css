@@ -1,121 +1,7 @@
-/* TrainerProfileView.css */
-
-.container {
+.container-div {
     width: 100vw;
-    /* Full viewport width */
-    min-height: 100vh;
-    /* Full viewport height */
     display: flex;
     flex-direction: column;
-    /* Stack children vertically */
-}
-
-.background-container {
-    height: 15rem;
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    /* Semi-transparent dark background */
-    backdrop-filter: blur(10px);
-    /* Glass effect */
-    border-radius: 0.5rem;
-    /* Rounded corners */
-    position: relative;
-    overflow: hidden;
-    margin-bottom: 2rem;
-    /* Space below background container */
-}
-
-.background-image {
-    width: 100%;
-    height: 50%;
-    /* Fill half of the container's height */
-    object-fit: cover;
-    position: absolute;
-    /* Positioning absolute to cover the container */
-    top: 0;
-    /* Align to the top */
-    left: 0;
-    z-index: -1;
-    /* Send background image behind other elements */
-}
-
-.profile-image {
-    width: 8rem;
-    height: 8rem;
-    top: 70%;
-    left: 10%;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-    /* Circular profile image */
-    object-fit: cover;
-    overflow: hidden;
-    border: 4px solid rgba(255, 255, 255, 0.3);
-    /* Light border for the glass effect */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    /* Slight shadow for depth */
-    position: absolute;
-}
-
-.icons-container {
-    top: 85%;
-    right: 5%;
-    transform: translateY(-50%);
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: end;
-}
-
-.glass-button {
-    border-radius: 5px;
-    padding: 10px 20px;
-    background-color: rgba(255, 255, 255, 0.2);
-    /* Glass effect for buttons */
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    /* Light border for glass effect */
-    backdrop-filter: blur(5px);
-    /* Glass effect */
-    margin: 0 0.5rem;
-}
-
-.bottom-sections {
-    display: flex;
-    gap: 1rem;
-    padding: 1rem;
-    width: 100vw;
-}
-
-.details-section,
-.media-section {
-    border-radius: 0.5rem;
-}
-
-.details-section {
-    width: 20%;
-    padding: 1rem;
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-}
-
-.media-section {
-    width: 63%;
-    padding: 1rem;
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-}
-
-
-/* TrainerProfileView.css */
-
-.container {
-    width: 100vw;
-    /* Full viewport width */
-    min-height: 100vh;
-    /* Full viewport height */
-    display: flex;
-    flex-direction: column;
-    /* Stack children vertically */
 }
 
 .background-container {
@@ -129,19 +15,14 @@
     margin-bottom: 2rem;
 }
 
-
 .background-image {
     width: 100%;
     height: 50%;
-    /* Fill half of the container's height */
     object-fit: cover;
     position: absolute;
-    /* Positioning absolute to cover the container */
     top: 0;
-    /* Align to the top */
     left: 0;
     z-index: -1;
-    /* Send background image behind other elements */
 }
 
 .profile-image {
@@ -151,13 +32,10 @@
     left: 10%;
     transform: translate(-50%, -50%);
     border-radius: 50%;
-    /* Circular profile image */
     object-fit: cover;
     overflow: hidden;
     border: 4px solid rgba(255, 255, 255, 0.3);
-    /* Light border for the glass effect */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    /* Slight shadow for depth */
     position: absolute;
 }
 
@@ -169,72 +47,6 @@
     display: flex;
     align-items: center;
     justify-content: end;
-}
-
-
-.bottom-sections {
-    display: flex;
-    gap: 1rem;
-    padding: 1rem;
-    width: 100vw;
-}
-
-.details-section,
-.media-section {
-    border-radius: 0.5rem;
-    padding: 1rem;
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    background-color: rgba(0, 0, 0, 0.5);
-    /* Ensure background contrast */
-}
-
-
-.details-section {
-    width: 20%;
-    padding: 1rem;
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-}
-
-.media-section {
-    width: 63%;
-    padding: 1rem;
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    text-align: center;
-    /* Center text */
-    min-height: 30vh;
-    /* Ensure enough height for content */
-}
-
-.contents-div {
-    width: 100% !important;
-    display: flex;
-    align-items: center;
-    height: 80%;
-    justify-content: center;
-}
-
-/* Global styles for the underlined heading */
-.underlined-heading {
-    position: relative;
-    display: inline-block;
-}
-
-.underlined-heading::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: -2px;
-    /* Adjust based on the thickness of your text */
-    width: 100%;
-    height: 2px;
-    /* Thickness of the underline */
-    background-color: #b249f8;
-    /* Color of the underline */
-    border-radius: 2px;
-    /* Optional: for rounded underline */
 }
 
 .glass-button {
@@ -246,9 +58,58 @@
     backdrop-filter: blur(5px);
     margin: 0 0.5rem;
     transition: background-color 0.3s ease, transform 0.3s ease;
-  }
-  
-  .glass-button:hover {
+}
+
+.glass-button:hover {
     background-color: rgba(255, 255, 255, 0.3);
-  }
-  
+}
+
+.bottom-sections {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    width: 100vw;
+}
+
+.details-section,
+.media-section {
+    border-radius: 0.5rem;
+    padding: 1rem;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.details-section {
+    width: 20%;
+}
+
+.media-section {
+    width: 63%;
+    text-align: center;
+    min-height: 30vh;
+}
+
+.contents-div {
+    width: 100% !important;
+    display: flex;
+    align-items: center;
+    height: 80%;
+    justify-content: center;
+}
+
+.underlined-heading {
+    position: relative;
+    display: inline-block;
+}
+
+.underlined-heading::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    height: 2px;
+    background-color: #b249f8;
+    border-radius: 2px;
+}

@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { Container, Image, Col } from "react-bootstrap";
+import { Image, Col } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import { localhostURL } from "../../utils/url";
 import "../../assets/styles/users/TrainerProfileView.css";
+import CheckoutForm from "./CheckoutForm";
 
 function TrainerProfileView() {
   const { trainerId } = useParams();
   const trainersData = useSelector((state) => state.user.trainersData);
+  const [showModal, setShowModal] = useState(false);
 
   const trainerDetails = trainersData.find(
     (trainer) => trainer.trainerId === trainerId
@@ -17,8 +19,16 @@ function TrainerProfileView() {
     return <div className="text-center mt-5">Trainer not found</div>;
   }
 
+  const handleSubscribeClick = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
   return (
-    <Container fluid className="container">
+    <div className="container-div">
       <div className="background-container">
         <Image
           src="/purple.jpg"
@@ -49,11 +59,21 @@ function TrainerProfileView() {
         <div className="media-section text-center">
           <u><h3 className="underlined-heading">Videos & Classes</h3></u>
           <div className="w-100 contents-div">
-          <button class="glass-button">Subscribe for the Content</button>
+            <button className="glass-button" onClick={handleSubscribeClick}>
+              Subscribe for the Content
+            </button>
           </div>
         </div>
       </div>
-    </Container>
+
+      {/* Stripe Checkout Modal */}
+      <CheckoutForm
+        show={showModal}
+        handleClose={handleCloseModal}
+        trainerId={trainerId}
+        amount={5000} 
+      />
+    </div>
   );
 }
 
