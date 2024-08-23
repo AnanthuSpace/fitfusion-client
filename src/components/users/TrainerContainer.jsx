@@ -14,7 +14,7 @@ function TrainerContainer() {
 
   return (
     <div className="trainer-container">
-      <h1>Meet Our Trainers</h1>
+      <h1 className="gradient-text">Meet Our Trainers</h1>
       <p>
         When picking a gym, consider its amenities like guest access, hours,
         location,

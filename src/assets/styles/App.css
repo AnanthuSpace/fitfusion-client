@@ -76,19 +76,39 @@ body,
 }
 
 
-.text-gradient {
-  background-clip: text;
+
+.gradient-text {
+  background-image: linear-gradient(90deg, #b249f8 0%, #ff1cf7 100%) !important;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  position: relative;
-  z-index: 1;
+  background-clip: text;
+  text-fill-color: transparent;
 }
 
-.text-gradient.text-info {
-  background-image: linear-gradient(90deg, #b249f8 0%, #ff1cf7 100%);
+.short-gradient-text-blue {
+  background-image: linear-gradient(90deg,  #0072f5 0%, #5ea2ef  100%) !important;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
 }
+
 
 .text-white {
   color: #ecedee;
 }
 
+.background-gradient-main {
+  background-image:
+    radial-gradient(at 71% 61%, hsla(133, 0%, 0%, 1) 0px, transparent 50%),
+    radial-gradient(at 88% 14%, hsla(277, 0%, 0%, 1) 0px, transparent 50%),
+    radial-gradient(at 74% 29%, hsla(300, 73%, 23%, 1) 0px, transparent 50%),
+    radial-gradient(at 99% 100%, hsla(231, 73%, 23%, 0.58) 0px, transparent 50%) !important;
+}
+
+.homepage-gradient-main {
+  background-image:
+    radial-gradient(at 71% 61%, hsla(133, 0%, 0%, 1) 0px, transparent 50%),
+    radial-gradient(at 88% 14%, hsla(277, 0%, 0%, 1) 0px, transparent 50%),
+    radial-gradient(at 74% 29%, hsla(300, 73%, 23%, 1) 0px, transparent 50%);
+}

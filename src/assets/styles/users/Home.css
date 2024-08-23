@@ -12,10 +12,8 @@
     margin-bottom: 2rem;
     width: 97%;
     height: 44rem;
-    background-color: #000000;
-    background-image:
-        radial-gradient(at 80% 100%, #00000050 0px, transparent 50%),
-        radial-gradient(at 96% 15%, #b249f850 0px, transparent 50%);
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
     border-radius: 3rem;
     display: flex;
     justify-content: center;
@@ -175,7 +173,6 @@
 .home-footer {
     margin-top: -3rem;
     width: 100%;
-    background-color: black;
     color: #a1a1aa;
     padding: .5rem;
     text-align: center;

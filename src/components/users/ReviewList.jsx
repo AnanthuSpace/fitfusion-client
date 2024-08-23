@@ -8,7 +8,7 @@ function ReviewList() {
         <div className="review-div-heading">
           <div className="heading">
             <p>DONT' TAKE OUR WORDS</p>
-            <h1>
+            <h1 className="gradient-text">
               Listen from our <br />
               Happy Clients
             </h1>

@@ -25,10 +25,11 @@ function TrainerProfile() {
   const [showModal, setShowModal] = useState(false);
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [feePerMonth, setFeePerMonth] = useState("");
+  const [experience, setExperience] = useState("");
   const [profileIMG, setProfileImage] = useState(
     trainer?.profileIMG || "/Trainer-profile.jpg"
   );
-
 
   const handleUpdate = () => {
     dispatch(
@@ -39,10 +40,11 @@ function TrainerProfile() {
         address,
         qualification,
         achivements,
+        feePerMonth,
+        experience
       })
     );
   };
-
 
   const handleResetPassword = () => {
     dispatch(
@@ -121,6 +123,7 @@ function TrainerProfile() {
                       type="text"
                       className="form-control bg-transparent text-white"
                       id="gender"
+                      placeholder="Enter gender"
                       value={gender}
                       onChange={(e) => setGender(e.target.value)}
                     />
@@ -131,8 +134,19 @@ function TrainerProfile() {
                       type="text"
                       className="form-control bg-transparent text-white"
                       id="qualification"
+                      placeholder="Enter Qualification"
                       value={qualification}
                       onChange={(e) => setQualification(e.target.value)}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="experience">Experience in year</label>
+                    <input
+                      className="form-control bg-transparent text-white"
+                      id="experience"
+                      value={experience}
+                      placeholder="Enter Experience"
+                      onChange={(e) => setExperience(e.target.value)}
                     />
                   </div>
                 </div>
@@ -144,6 +158,7 @@ function TrainerProfile() {
                       className="form-control bg-transparent text-white"
                       id="phone"
                       value={phone}
+                      placeholder="Enter Phone Number"
                       onChange={(e) => setPhone(e.target.value)}
                     />
                   </div>
@@ -154,6 +169,7 @@ function TrainerProfile() {
                       className="form-control bg-transparent text-white"
                       id="address"
                       value={address}
+                      placeholder="Enter Address"
                       onChange={(e) => setAddress(e.target.value)}
                     />
                   </div>
@@ -163,7 +179,18 @@ function TrainerProfile() {
                       className="form-control bg-transparent text-white"
                       id="achivements"
                       value={achivements}
+                      placeholder="Enter Achievements"
                       onChange={(e) => setAchievements(e.target.value)}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="achievements">Fees Per Month</label>
+                    <input
+                      className="form-control bg-transparent text-white"
+                      id="achivements"
+                      value={feePerMonth}
+                      placeholder="$"
+                      onChange={(e) => setFeePerMonth(e.target.value)}
                     />
                   </div>
                 </div>

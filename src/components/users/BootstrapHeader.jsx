@@ -20,7 +20,7 @@ function BootstrapHeader() {
     <>
       <div className="nav-bar d-flex justify-content-between align-items-center bg-transparent px-4 pb-3 mt-1  w-100">
         <div className="header-logo">
-          <h1 className="mb-0">FitFusion</h1>
+          <h1 className="mb-0 gradient-text">FitFusion</h1>
         </div>
         <div className="header-nav-list">
           <ul

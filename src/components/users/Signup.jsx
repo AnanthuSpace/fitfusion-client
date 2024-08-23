@@ -33,11 +33,11 @@ function Signup() {
 
   return (
     <>
-      <div className="signup-page">
+      <div className="signup-page background-gradient-main">
         
         <div className="signup-nav-bar">
           <div className="signup-logo">
-            <h1>FitFusion</h1>
+            <h1 className="gradient-text">FitFusion</h1>
           </div>
           <div className="signup-nav-list">
             <ul>
@@ -64,7 +64,7 @@ function Signup() {
 
         <div className="signup-body-container">
           <div className="signup-heading">
-            <span>
+            <span className="gradient-text ">
               Let’s build <br /> the physical you
             </span>
             <h2>Perfect Fitness App</h2>
@@ -75,7 +75,7 @@ function Signup() {
             </p>
           </div>
           <div className="signup-signupform">
-            <h2 style={{ color: "#FF7906" }}>Sign Up</h2>
+            <h2 className="gradient-text">Sign Up</h2>
             <input
               type="text"
               className="signup-input-text"

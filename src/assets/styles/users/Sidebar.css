@@ -49,20 +49,16 @@
   background: rgba(44, 44, 44, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(10px);
-  /* Frosted glass effect */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  /* Soft shadow for depth */
   color: #b249f8;
   display: flex;
   align-items: center;
   cursor: pointer;
   transition: background 0.3s ease;
-  /* Smooth transition on hover */
 }
 
 .sidebar-list:hover {
   background:  rgb(178, 73, 248);
-  /* Slightly more opaque background on hover */
 }
 
 .sidebar-list p span {
@@ -73,6 +69,7 @@
 .sidebar-list p {
   padding-left: 2rem;
   display: flex;
+  padding-top: .7rem;
   align-items: center;
 }
 

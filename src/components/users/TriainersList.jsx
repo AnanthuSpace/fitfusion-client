@@ -16,7 +16,7 @@ function TrainersList() {
   };
 
   const handleCardClick = (trainerId) => {
-    navigate(`/trainer-view/${trainerId}`);
+    navigate(`/trainer-view`, {state: {trainerId: trainerId}});
   };
 
   const filteredTrainers = trainersData.filter((trainer) =>
@@ -38,7 +38,7 @@ function TrainersList() {
   return (
     <div className="container mt-4">
       <div className="text-center mb-4">
-        <h2 className="text-white">Meet Our Trainers</h2>
+        <h2 className="gradient-text">Meet Our Trainers</h2>
         <Form className="d-flex justify-content-center mt-3">
           <InputGroup  style={{ border: "1px solid #b249f8", borderRadius: "1rem"}}>
             <Form.Control

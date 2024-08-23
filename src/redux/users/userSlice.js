@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registration, signupVerification, userLogin, loginVerification, editUserData, changeUserPassword, addUserDetails, fetchTrainersData } from "./userThunk";
+import { registration, signupVerification, userLogin, loginVerification, editUserData, changeUserPassword, addUserDetails, fetchTrainersData, createCheckoutSession } from "./userThunk";
 import { toast } from "react-toastify";
 
 const userData = localStorage.getItem("userData") ? JSON.parse(localStorage.getItem("userData")) : null;
@@ -136,14 +136,27 @@ const userSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchTrainersData.fulfilled, (state, action) => {
-        state.trainersData = action.payload; 
+        state.trainersData = action.payload;
         state.isLoading = false;
-        // toast.success("Trainers data fetched successfully", { hideProgressBar: true, autoClose: 3000 });
       })
       .addCase(fetchTrainersData.rejected, (state, action) => {
         state.error = action.payload;
         state.isLoading = false;
-        // toast.error(action.payload || "Failed to fetch trainers data", { hideProgressBar: true, autoClose: 3000 });
+      })
+
+
+      .addCase(createCheckoutSession.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(createCheckoutSession.fulfilled, (state) => {
+        state.loading = false;
+        toast.success(action.payload || "Payment successfully completed", { hideProgressBar: true, autoClose: 3000 });
+      })
+      .addCase(createCheckoutSession.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        toast.error(action.payload || "Payment failed please try again", { hideProgressBar: true, autoClose: 3000 });
       });
   },
 });

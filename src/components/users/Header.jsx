@@ -21,7 +21,7 @@ function Header() {
     <>
       <div className="nav-bar">
         <div className="header-logo">
-          <h1>FitFusion</h1>
+          <h1 className="gradient-text">FitFusion</h1>
         </div>
         <div className="header-nav-list">
           <ul>

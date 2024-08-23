@@ -19,7 +19,7 @@ function UserManagement() {
       className="container-fluid p-3 flex-column"
       style={{ backgroundColor: "black", color: "white" }}
     >
-      <h2 style={{ color: "#4285F4" }}>User Management</h2>
+      <h2 className="short-gradient-text-blue">User Management</h2>
       <table className="table table-dark table-hover">
         <thead>
           <tr>

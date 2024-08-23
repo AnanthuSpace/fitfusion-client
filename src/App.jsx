@@ -19,7 +19,6 @@ import AdminProtector from "./components/protucters/AdminProtector";
 import TrainerSignup from "./components/trainers/TrainerSignup";
 import TrainerProtector from "./components/protucters/TrainerProtector";
 import TrainerLoginProtector from "./components/protucters/TrainerLoginProtector";
-import UserLoginProtector from "./components/protucters/UserLoginProtector";
 import AdminLoginProtector from "./components/protucters/AdminLoginProtector";
 import TrainerDashboardPage from "./pages/trainers/TrainerDashboardPage";
 import TrainerProfilePage from "./pages/trainers/TrainerProfilePage";
@@ -58,7 +57,7 @@ function App() {
             }
           />
           <Route
-            path="/trainer-view/:trainerId"
+            path="/trainer-view"
             element={
               <UserProtecter>
                 <TrainerViewPage />

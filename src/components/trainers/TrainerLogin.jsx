@@ -50,7 +50,7 @@ function TrainerLogin() {
   return (
     <>
       <div className="trainer-login-container">
-        <div className="trainer-login-div">
+        <div className="trainer-login-div bg-dark">
           <div className="trainer-login-icon">
             <img src="/Login-image.png" alt="Login" />
             <u>
@@ -65,7 +65,7 @@ function TrainerLogin() {
               <HiMiniUser />
               <input
                 type="text"
-                className="trainer-login-input"
+                className="trainer-login-input bg-transparent text-white"
                 placeholder="Email"
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -75,7 +75,7 @@ function TrainerLogin() {
               <RiLockPasswordFill />
               <input
                 type="password"
-                className="trainer-login-input"
+                className="trainer-login-input bg-transparent text-white"
                 placeholder="Password"
                 onChange={(e) => setPassword(e.target.value)}
               />

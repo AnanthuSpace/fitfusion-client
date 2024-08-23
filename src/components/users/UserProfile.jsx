@@ -66,7 +66,7 @@ function UserProfile() {
 
   return (
     <>
-      <div className="profile-page">
+      <div className="profile-page background-gradient-main">
         <Header />
         <div className="profile-content">
           <div className="profile-div">

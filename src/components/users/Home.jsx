@@ -11,18 +11,18 @@ function Home() {
 
   return (
     <>
-      <div className="home-container">
+      <div className="home-container homepage-gradient-main ">
         <div className="enrty-container">
           <Header />
           <div className="home-div">
             <p>THE BEST FITNESS ONLINE PLATFORM</p>
             <div className="home-heading">
-              <h1>
+              <h1 className="gradient-text">
                 IMPROVE YOUR <br /> FITNESS LEVEL FOR <br /> THE BEST
               </h1>
               <div className="buttons">
                 <div className="empty ">
-                  <button className="beamember">BE A MEMBER</button>
+                  <button className="beamember ">BE A MEMBER</button>
                   <button className="learn">LEARN MORE</button>
                 </div>
               </div>
@@ -44,13 +44,14 @@ function Home() {
             </div>
           </div>
         </div>
-
+        <div className="background-gradient-main">
         <CountingDiv />
 
         <WhyChooseUs />
         <TrainerContainer />
         <ReviewList />
         <Membership />
+        </div>
         <footer className="home-footer">
           © 2024 FITFUSION. All rights reserved.
         </footer>

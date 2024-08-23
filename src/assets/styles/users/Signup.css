@@ -15,11 +15,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: black;
+    background-color: transparent;
 }
 
 .signup-logo h1 {
-    color: #b249f8;
     font-family: 'Montagu Slab', serif;
     margin: 0 3rem;
 }
@@ -62,27 +61,20 @@
 
 .signup-signup-btn {
     background: rgba(255, 255, 255, 0.1);
-    /* Semi-transparent background for glass effect */
     color: white;
     height: 3rem;
     width: 6rem;
     cursor: pointer;
     border-radius: 0.5rem;
     border: 1px solid rgba(255, 255, 255, 0.3);
-    /* Light border for glass effect */
     backdrop-filter: blur(10px);
-    /* Frosted glass effect */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    /* Soft shadow for depth */
     transition: background 0.3s ease, transform 0.3s ease;
-    /* Smooth hover transition */
 }
 
 .signup-signup-btn:hover {
     background: rgba(255, 255, 255, 0.2);
-    /* Darker background on hover */
     transform: scale(1.05);
-    /* Slight zoom effect on hover */
 }
 
 .signup-body-container {
@@ -103,7 +95,6 @@
 }
 
 .signup-heading span {
-    color: #b249f8;
     font-size: 4rem;
 }
 
@@ -154,6 +145,7 @@
     padding-top: 1rem;
     width: 65%;
     outline: none;
+    color: white;
 }
 
 .signup-join {

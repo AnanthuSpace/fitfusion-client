@@ -36,10 +36,10 @@ function Login() {
 
   return (
     <>
-        <div className="login-page">
+        <div className="login-page background-gradient-main">
           <div className="login-nav-bar">
             <div className="login-logo">
-              <h1>FitFusion</h1>
+              <h1 className="gradient-text">FitFusion</h1>
             </div>
             <div className="login-nav-list">
               <ul>
@@ -60,7 +60,7 @@ function Login() {
 
           <div className="login-body-container">
             <div className="login-heading">
-              <span>
+              <span className="gradient-text">
                 Let’s build <br /> the physical you
               </span>
               <h2>Perfect Fitness App</h2>

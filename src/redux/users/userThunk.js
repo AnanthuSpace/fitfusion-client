@@ -2,6 +2,9 @@ import axios from "axios";
 import { localhostURL } from "../../utils/url";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import userAxiosInstance from "../../config/axiosConfig";
+import { loadStripe } from '@stripe/stripe-js';
+import { PublishableKey } from "../../utils/publishKey";
+
 
 
 // Registration Thunk
@@ -223,3 +226,40 @@ export const addUserDetails = createAsyncThunk(
         }
     }
 );
+
+
+
+export const createCheckoutSession = createAsyncThunk(
+    'user/createCheckoutSession',
+    async ({ trainerId, amount }, { rejectWithValue }) => {
+      try {
+        const stripe = await loadStripe(PublishableKey);
+  
+        const response = await userAxiosInstance.post(
+          `${localhostURL}/create-checkout-session`,
+          {
+            trainerId,
+            amount,
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            }
+          }
+        );
+  
+        const { sessionId } = response.data;
+        const result = await stripe.redirectToCheckout({ sessionId });
+  
+        if (result.error) {
+          console.error(result.error.message);
+          return rejectWithValue(result.error.message);
+        }
+  
+        return result;
+      } catch (error) {
+        console.error('Error creating checkout session:', error);
+        return rejectWithValue(error.message);
+      }
+    }
+  );

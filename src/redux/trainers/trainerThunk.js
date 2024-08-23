@@ -99,7 +99,7 @@ export const trainerLogin = createAsyncThunk(
 
 export const editTrainer = createAsyncThunk(
     "trainerSlice/editTrainer",
-    async ({ name, phone, address, gender, qualification, achivements }, { rejectWithValue }) => {
+    async ({ name, phone, address, gender, qualification, achivements, feePerMonth, experience }, { rejectWithValue }) => {
         
         name = name.trim();
         phone = phone.trim();
@@ -107,22 +107,27 @@ export const editTrainer = createAsyncThunk(
         gender = gender.trim();
         qualification = qualification.trim();
         achivements = achivements.trim();
+        feePerMonth = feePerMonth.trim();
+        experience = experience.trim();
         
         const phoneRegex = /^\d{10}$/;
         
-        if (name === "" || phone === "" || address === "" || gender === "" || achivements === "" || qualification === "") {
+        if (name === "" || phone === "" || address === "" || gender === "" || achivements === "" || qualification === "" || feePerMonth === "" || experience === "") {
             return rejectWithValue("All fields are required!");
         } else if (!phoneRegex.test(phone)) {
             return rejectWithValue("Invalid phone number. It should be a 10-digit number.");
         } else {
             try {
+                console.log("wrking");
                 const response = await trainerAxiosInstance.put(`${localhostURL}/trainer/edit-trainer`, {
                     name,
                     phone,
                     address,
                     gender,
                     qualification,
-                    achivements
+                    achivements,
+                    feePerMonth,
+                    experience
                 });
                 
 
@@ -132,6 +137,8 @@ export const editTrainer = createAsyncThunk(
                 localStorage.setItem(`trainerData.gender: `, gender)
                 localStorage.setItem(`trainerData.qualification: `, qualification)
                 localStorage.setItem(`trainerData.achivements: `, achivements)
+                localStorage.setItem(`trainerData.feePerMonth: `, feePerMonth)
+                localStorage.setItem(`trainerData.experience: `, experience)
 
                 return response.data
             } catch (error) {

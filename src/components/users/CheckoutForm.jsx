@@ -57,7 +57,7 @@ const CheckoutForm = ({ trainerId, amount, handleClose }) => {
       <CardElement />
       {error && <div className="text-danger mt-3">{error}</div>}
       <Button type="submit" className="mt-3" disabled={!stripe || loading}>
-        {loading ? "Processing..." : "Pay Now"}
+        {loading ? "Processing..." : "Pay $100"}
       </Button>
     </Form>
   );

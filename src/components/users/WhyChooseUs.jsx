@@ -5,7 +5,7 @@ function WhyChooseUs() {
   return (
     <>
       <div className="why-container">
-        <h1>Why Choose Us</h1>
+        <h1 className="gradient-text">Why Choose Us</h1>
         <p>
           When picking a gym , consider its amenities Like guest access, hours,
           location , <br />

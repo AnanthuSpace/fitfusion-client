@@ -18,11 +18,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: black;
+    background-color: transparent;
 }
 
 .login-logo h1 {
-    color: #b249f8;
     font-family: 'Montagu Slab', serif;
     margin: 0 3rem;
 }
@@ -56,7 +55,7 @@
 }
 
 .login-signin-btn {
-    background: rgba(255, 255, 255, 0.1); /* Semi-transparent background for glass effect */
+    background: transparent;
     color: white;
     height: 3rem;
     width: 6rem;
@@ -98,7 +97,8 @@
 }
 
 .login-heading span {
-    color: #b249f8;
+    background-image: linear-gradient(90deg, #b249f8 0%, #ff1cf7 100%) !important;
+    background-clip: text;
     font-size: 4rem;
 }
 
