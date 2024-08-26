@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Row, Col, Form, InputGroup, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -14,6 +14,7 @@ function TrainersList() {
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
+
 
   const handleCardClick = (trainerId) => {
     navigate(`/trainer-view`, {state: {trainerId: trainerId}});

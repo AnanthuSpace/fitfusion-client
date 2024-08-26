@@ -67,7 +67,6 @@
 .bottom-sections {
     gap: 1rem;
     padding: 1rem;
-    width: 100vw;
     justify-content: center;
 }
 
@@ -76,18 +75,17 @@
     border-radius: 0.5rem;
     padding: 1rem;
     color: white;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .details-section {
     width: 20%;
+    height: 100%;
 }
 
 .media-section {
     width: 63%;
     text-align: center;
-    min-height: 30vh;
+    height: 40vh;
 }
 
 .contents-div {

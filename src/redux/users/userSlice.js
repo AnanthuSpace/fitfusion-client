@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registration, signupVerification, userLogin, loginVerification, editUserData, changeUserPassword, addUserDetails, fetchTrainersData, createCheckoutSession } from "./userThunk";
-import { toast } from "react-toastify";
+import { registration, signupVerification, userLogin, loginVerification, editUserData, changeUserPassword, addUserDetails, fetchTrainersData, createCheckoutSession, fetchUserAndTrainer, fetchChatMessages } from "./userThunk";
+import { toast } from "sonner";
 
 const userData = localStorage.getItem("userData") ? JSON.parse(localStorage.getItem("userData")) : null;
 const trainersData = localStorage.getItem("trainersData") ? JSON.parse(localStorage.getItem("trainersData")) : [];
@@ -11,8 +11,9 @@ const userSlice = createSlice({
     userData: userData,
     isLoading: false,
     error: null,
-    temperoryEmail: "",
+    temperoryData: "",
     trainersData: trainersData,
+    chatMessage: {}
   },
   reducers: {
     userLogout: (state) => {
@@ -21,6 +22,9 @@ const userSlice = createSlice({
       localStorage.removeItem("userRefreshToken");
       localStorage.removeItem('userData');
       toast.success("Logout successfully", { hideProgressBar: true, autoClose: 3000 });
+    },
+    setTemporaryData: (state, action) => {
+      state.temperoryData = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -32,7 +36,7 @@ const userSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(registration.fulfilled, (state, action) => {
-        state.temperoryEmail = action.meta.arg.email;
+        state.temperoryData = action.meta.arg.email;
         toast.success(action.payload, { hideProgressBar: true, autoClose: 3000 });
         state.isLoading = false;
       })
@@ -51,6 +55,7 @@ const userSlice = createSlice({
         state.userData = action.payload;
         localStorage.setItem('userData', JSON.stringify(state.userData));
         toast.success("Registration completed successfully", { hideProgressBar: true, autoClose: 3000 });
+        state.temperoryData = ""
         state.isLoading = false;
       })
       .addCase(signupVerification.rejected, (state, action) => {
@@ -66,7 +71,7 @@ const userSlice = createSlice({
         state.error = null;
       })
       .addCase(userLogin.fulfilled, (state, action) => {
-        state.temperoryEmail = action.meta.arg.email;
+        state.temperoryData = action.meta.arg.email;
         state.isLoading = false;
       })
       .addCase(userLogin.rejected, (state, action) => {
@@ -83,6 +88,7 @@ const userSlice = createSlice({
         state.userData = action.payload;
         localStorage.setItem('userData', JSON.stringify(state.userData));
         toast.success("Login verification completed successfully", { hideProgressBar: true, autoClose: 3000 });
+        state.temperoryData = ""
         state.isLoading = false;
       })
       .addCase(loginVerification.rejected, (state, action) => {
@@ -144,22 +150,50 @@ const userSlice = createSlice({
         state.isLoading = false;
       })
 
+      .addCase(fetchUserAndTrainer.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchUserAndTrainer.fulfilled, (state, action) => {
+        
+        state.isLoading = false;
+      })
+      .addCase(fetchUserAndTrainer.rejected, (state, action) => {
+        state.error = action.payload;
+        state.isLoading = false;
+      })
+
 
       .addCase(createCheckoutSession.pending, (state) => {
-        state.loading = true;
+        state.isLoading = true;
         state.error = null;
       })
       .addCase(createCheckoutSession.fulfilled, (state) => {
-        state.loading = false;
+        state.isLoading = false;
         toast.success(action.payload || "Payment successfully completed", { hideProgressBar: true, autoClose: 3000 });
       })
       .addCase(createCheckoutSession.rejected, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.error = action.payload;
         toast.error(action.payload || "Payment failed please try again", { hideProgressBar: true, autoClose: 3000 });
+      })
+
+
+
+      .addCase(fetchChatMessages.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchChatMessages.fulfilled, (state, action) => {
+        state.chatMessage = action.payload;
+        state.isLoading = false;        
+      }) 
+      .addCase(fetchChatMessages.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+        toast.warning(action.payload || "Verification failed", { hideProgressBar: true, autoClose: 3000 });
       });
   },
 });
 
-export const { userLogout } = userSlice.actions;
+export const { userLogout, setTemporaryData } = userSlice.actions;
 export default userSlice.reducer;

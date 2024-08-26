@@ -4,6 +4,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import userAxiosInstance from "../../config/axiosConfig";
 import { loadStripe } from '@stripe/stripe-js';
 import { PublishableKey } from "../../utils/publishKey";
+import { setTemporaryData } from './userSlice'; 
 
 
 
@@ -99,7 +100,7 @@ export const fetchTrainersData = createAsyncThunk(
     async (_, { rejectWithValue }) => {
         try {
             const response = await axios.get(`${localhostURL}/fetch-trainers`);
-            return response.data; 
+            return response.data;
         } catch (error) {
             return rejectWithValue(error.response?.data || "Failed to fetch trainers data");
         }
@@ -232,34 +233,70 @@ export const addUserDetails = createAsyncThunk(
 export const createCheckoutSession = createAsyncThunk(
     'user/createCheckoutSession',
     async ({ trainerId, amount }, { rejectWithValue }) => {
-      try {
-        const stripe = await loadStripe(PublishableKey);
-  
-        const response = await userAxiosInstance.post(
-          `${localhostURL}/create-checkout-session`,
-          {
-            trainerId,
-            amount,
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json',
+        try {
+            dispatch(setTemporaryData(trainerId)); 
+            const stripe = await loadStripe(PublishableKey);
+            const response = await userAxiosInstance.post(
+                `${localhostURL}/create-checkout-session`,
+                {
+                    trainerId,
+                    amount,
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                }
+            );
+
+            const { sessionId } = response.data;
+
+            const result = await stripe.redirectToCheckout({ sessionId });
+
+            if (result.error) {
+                console.error(result.error.message);
+                return rejectWithValue(result.error.message);
             }
-          }
-        );
-  
-        const { sessionId } = response.data;
-        const result = await stripe.redirectToCheckout({ sessionId });
-  
-        if (result.error) {
-          console.error(result.error.message);
-          return rejectWithValue(result.error.message);
+
+            return result;
+        } catch (error) {
+            console.error('Error creating checkout session:', error);
+            return rejectWithValue(error.message);
         }
-  
-        return result;
-      } catch (error) {
-        console.error('Error creating checkout session:', error);
-        return rejectWithValue(error.message);
-      }
     }
-  );
+);
+
+export const fetchUserAndTrainer = createAsyncThunk(
+    'user/fetchUserAndTrainer',
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await userAxiosInstance.get(`${localhostURL}/fetch-user-trainer`)
+            const { trainersData, userData } = response.data;
+            console.log("UserData and trainerData", response.data);
+            return { trainersData, userData };
+        } catch (error) {
+            console.error('Error creating checkout session:', error);
+            return rejectWithValue(error.message);
+        }
+    }
+)
+
+
+export const fetchChatMessages = createAsyncThunk(
+    'user/fetchChatMessages',
+    async ({ userId, trainerId, isSubscribed }, { rejectWithValue }) => {
+        try {
+
+            if (!isSubscribed) {
+                return rejectWithValue("Please Subscribe!");
+            }
+            
+            const response = await userAxiosInstance.post(`${localhostURL}/chat/start`, { userId, trainerId });
+            
+            return response.data;
+        } catch (error) {
+            toast.error("Failed to fetch chat messages");
+            return rejectWithValue(error.response.data);
+        }
+    }
+);

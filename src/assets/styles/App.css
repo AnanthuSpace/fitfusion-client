@@ -62,7 +62,7 @@ body,
 .gradient-red-white {
   background: linear-gradient(to right, #DD4B4B 0%, #BF0505 99%);
   border: none;
-  color: white;
+  color: white !important;
 }
 
 .badge-verified {
@@ -82,7 +82,6 @@ body,
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-fill-color: transparent;
 }
 
 .short-gradient-text-blue {
@@ -90,7 +89,6 @@ body,
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-fill-color: transparent;
 }
 
 
@@ -111,4 +109,41 @@ body,
     radial-gradient(at 71% 61%, hsla(133, 0%, 0%, 1) 0px, transparent 50%),
     radial-gradient(at 88% 14%, hsla(277, 0%, 0%, 1) 0px, transparent 50%),
     radial-gradient(at 74% 29%, hsla(300, 73%, 23%, 1) 0px, transparent 50%);
+}
+
+
+/* styles/global.css */
+
+
+.glass-effect {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+.gradient-button-global {
+  background: linear-gradient(90deg, #b249f8 0%, #ff1cf7 100%) !important;
+  color: white !important; 
+  border: none;
+  border-radius: 5px; 
+  padding: 10px 20px; 
+  font-size: 16px; 
+  cursor: pointer;
+  transition: background 0.3s ease; 
+}
+
+.gradient-button-global:hover {
+  background: linear-gradient(90deg, #ff1cf7 0%, #b249f8 100%) !important;
+}
+
+.user-chat-message {
+  align-self: flex-end;
+  background-image: linear-gradient(90deg, #b249f8 0%, #ff1cf7 100%) !important;
+  color: white;
+  border-top-left-radius: 20px;
+  border-bottom-right-radius: 0;
 }

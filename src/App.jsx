@@ -7,7 +7,6 @@ import UserProtecter from "./components/protucters/UserProtector";
 import "./assets/styles/App.css";
 import HomePage from "./pages/users/HomePage";
 import ProfilePage from "./pages/users/ProfilePage";
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import TrainerLogin from "./components/trainers/TrainerLogin";
 import AdminLoginPage from "./components/admin/AdminLogin";
@@ -26,12 +25,16 @@ import TrainerChatPage from "./pages/trainers/TrainerChatPage";
 import TrainerListPage from "./pages/users/TrainerListPage";
 import UserDetailsForm from "./components/users/MoreDetails";
 import TrainerViewPage from "./pages/users/TrainerViewPage";
+import PaymentSuccess from "./components/users/PaymentSuccess";
+import PaymentFailed from "./components/users/PaymentFailed";
+import { Toaster } from "sonner";
+import ChatPage from "./pages/users/ChatPage";
 
 function App() {
   return (
     <>
       <Router>
-        <ToastContainer />
+      <Toaster richColors />
         <Routes>
           {/* User Routes */}
           <Route path="/" element={<HomePage />} />
@@ -40,107 +43,28 @@ function App() {
           <Route path="/verify-otp" element={<SignUpVerification />} />
           <Route path="/login-verify" element={<LoginVerification />} />
           <Route path="/trainer-list" element={<TrainerListPage />} />
-          <Route
-            path="/profile"
-            element={
-              <UserProtecter>
-                <ProfilePage />
-              </UserProtecter>
-            }
-          />
-          <Route
-            path="/user-data"
-            element={
-              <UserProtecter>
-                <UserDetailsForm />
-              </UserProtecter>
-            }
-          />
-          <Route
-            path="/trainer-view"
-            element={
-              <UserProtecter>
-                <TrainerViewPage />
-              </UserProtecter>
-            }
-          />
+          <Route path="/profile" element={<UserProtecter><ProfilePage /></UserProtecter>} />
+          <Route path="/user-data" element={<UserProtecter><UserDetailsForm /></UserProtecter>} />
+          <Route path="/trainer-view" element={<UserProtecter><TrainerViewPage /></UserProtecter>} />
+          <Route path="/payment-success" element={<UserProtecter><PaymentSuccess /></UserProtecter>} />
+          <Route path="/payment-failed" element={<UserProtecter><PaymentFailed /></UserProtecter>} />
+          <Route path="/user-chat" element={<UserProtecter><ChatPage /></UserProtecter>} />
+
 
           {/* Trainer Routes */}
-          <Route
-            path="/trainer"
-            element={
-              <TrainerLoginProtector>
-                <TrainerLogin />
-              </TrainerLoginProtector>
-            }
-          />
-          <Route
-            path="/trainer-signup"
-            element={
-              <TrainerLoginProtector>
-                <TrainerSignup />
-              </TrainerLoginProtector>
-            }
-          />
-          <Route
-            path="/trainer-otp"
-            element={
-              <TrainerLoginProtector>
-                <TrainerOtpVerification />
-              </TrainerLoginProtector>
-            }
-          />
-          <Route
-            path="/trainer-console"
-            element={
-              <TrainerProtector>
-                <TrainerDashboardPage />
-              </TrainerProtector>
-            }
-          />
-          <Route
-            path="/trainer-profile"
-            element={
-              <TrainerProtector>
-                <TrainerProfilePage />
-              </TrainerProtector>
-            }
-          />
-          <Route
-            path="/trainer-chat"
-            element={
-              <TrainerProtector>
-                <TrainerChatPage />
-              </TrainerProtector>
-            }
-          />
+          <Route path="/trainer" element={<TrainerLoginProtector><TrainerLogin /></TrainerLoginProtector>} />
+          <Route path="/trainer-signup" element={<TrainerLoginProtector><TrainerSignup /></TrainerLoginProtector>} />
+          <Route path="/trainer-otp" element={<TrainerLoginProtector><TrainerOtpVerification /></TrainerLoginProtector>} />
+          <Route path="/trainer-console" element={<TrainerProtector><TrainerDashboardPage /></TrainerProtector>} />
+          <Route path="/trainer-profile" element={<TrainerProtector><TrainerProfilePage /></TrainerProtector>} />
+          <Route path="/trainer-chat" element={<TrainerProtector><TrainerChatPage /></TrainerProtector>} />
+
 
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminLoginPage />} />
-          <Route
-            path="/admin-console"
-            element={
-              <AdminLoginProtector>
-                <AdminConsole />
-              </AdminLoginProtector>
-            }
-          />
-          <Route
-            path="/admin-trainer"
-            element={
-              <AdminProtector>
-                <AdminTrainerPage />
-              </AdminProtector>
-            }
-          />
-          <Route
-            path="/admin-user"
-            element={
-              <AdminProtector>
-                <AdminUserPage />
-              </AdminProtector>
-            }
-          />
+          <Route path="/admin-console" element={<AdminLoginProtector><AdminConsole /></AdminLoginProtector>} />
+          <Route path="/admin-trainer" element={<AdminProtector><AdminTrainerPage /></AdminProtector>} />
+          <Route path="/admin-user" element={<AdminProtector><AdminUserPage /></AdminProtector>} />
         </Routes>
       </Router>
     </>
