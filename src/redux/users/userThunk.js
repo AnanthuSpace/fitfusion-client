@@ -4,7 +4,6 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import userAxiosInstance from "../../config/axiosConfig";
 import { loadStripe } from '@stripe/stripe-js';
 import { PublishableKey } from "../../utils/publishKey";
-import { setTemporaryData } from './userSlice'; 
 
 
 
@@ -148,12 +147,13 @@ export const editUserData = createAsyncThunk(
         height = height.trim();
         activityLevel = activityLevel.trim()
         goals = goals.trim()
+        dietary = dietary.trim()
         const phoneRegex = /^\d{10}$/;
 
         if (password.length < 6) {
             return rejectWithValue("Password must be at least 6 characters long!");
         }
-        if (name === "" || phone === "" || address === "" || gender === "" || weight === "" || height === "" || activityLevel === "" || goals === "") {
+        if (name === "" || phone === "" || address === "" || gender === "" || weight === "" || height === "" || activityLevel === "" || goals === "" || dietary === "") {
             return rejectWithValue("All the fields are required!");
         } else if (!phoneRegex.test(phone)) {
             return rejectWithValue("Invalid phone number. It should be a 10-digit number.");
@@ -234,7 +234,6 @@ export const createCheckoutSession = createAsyncThunk(
     'user/createCheckoutSession',
     async ({ trainerId, amount }, { rejectWithValue }) => {
         try {
-            dispatch(setTemporaryData(trainerId)); 
             const stripe = await loadStripe(PublishableKey);
             const response = await userAxiosInstance.post(
                 `${localhostURL}/create-checkout-session`,
@@ -272,7 +271,6 @@ export const fetchUserAndTrainer = createAsyncThunk(
         try {
             const response = await userAxiosInstance.get(`${localhostURL}/fetch-user-trainer`)
             const { trainersData, userData } = response.data;
-            console.log("UserData and trainerData", response.data);
             return { trainersData, userData };
         } catch (error) {
             console.error('Error creating checkout session:', error);
@@ -286,13 +284,10 @@ export const fetchChatMessages = createAsyncThunk(
     'user/fetchChatMessages',
     async ({ userId, trainerId, isSubscribed }, { rejectWithValue }) => {
         try {
-
             if (!isSubscribed) {
                 return rejectWithValue("Please Subscribe!");
             }
-            
-            const response = await userAxiosInstance.post(`${localhostURL}/chat/start`, { userId, trainerId });
-            
+            const response = await userAxiosInstance.post(`${localhostURL}/chat/fetchChat`, { userId, trainerId });
             return response.data;
         } catch (error) {
             toast.error("Failed to fetch chat messages");

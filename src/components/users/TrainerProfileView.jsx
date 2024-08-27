@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Image, Col } from 'react-bootstrap';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { localhostURL } from '../../utils/url';
-import '../../assets/styles/users/TrainerProfileView.css';
-import SubscribeButton from './SubscribeButton';
-import { fetchChatMessages } from '../../redux/users/userThunk';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Image, Col } from "react-bootstrap";
+import { useLocation, useNavigate } from "react-router-dom";
+import { localhostURL } from "../../utils/url";
+import "../../assets/styles/users/TrainerProfileView.css";
+import SubscribeButton from "./SubscribeButton";
+import { fetchChatMessages } from "../../redux/users/userThunk";
 
 function TrainerProfileView() {
- const [ trainerId, setTrainerId ] = useState('')
+  const [trainerId, setTrainerId] = useState("");
   const trainersData = useSelector((state) => state.user.trainersData);
   const user = useSelector((state) => state.user.userData);
   const isSubscribed = user?.subscribeList?.includes(trainerId);
-  const navigate = useNavigate()  
-  const dispatch = useDispatch()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const trainerDetails = trainersData.find(
     (trainer) => trainer.trainerId === trainerId
@@ -21,22 +21,29 @@ function TrainerProfileView() {
 
   const handleChat = () => {
     if (trainerDetails) {
-      dispatch(fetchChatMessages({ userId: user.userId, trainerId: trainerDetails.trainerId, isSubscribed }))
-      navigate("/user-chat")
+      dispatch(
+        fetchChatMessages({
+          userId: user.userId,
+          trainerId: trainerDetails.trainerId,
+          isSubscribed,
+        })
+      ).then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          navigate("/chat/fetchChat");
+        }
+      });
     }
   };
 
+  const location = useLocation();
 
-  const location = useLocation()
-  
-  useEffect(()=> {
-    setTrainerId(location.state?.trainerId)
-  },[location.state])
+  useEffect(() => {
+    setTrainerId(location.state?.trainerId);
+  }, [location.state]);
 
   if (!trainerDetails) {
     return <div className="text-center mt-5">Trainer not found</div>;
   }
-
 
   return (
     <div className="container-div">
@@ -54,7 +61,9 @@ function TrainerProfileView() {
         />
 
         <Col className="icons-container">
-          <button className="glass-button" onClick={handleChat}>Message</button>
+          <button className="glass-button" onClick={handleChat}>
+            Message
+          </button>
           <button className="glass-button">Follow</button>
           <button className="glass-button">Review</button>
         </Col>

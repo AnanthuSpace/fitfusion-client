@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { userLogout } from "../../redux/users/userSlice";
 import { IoIosNotifications, IoMdSettings } from "react-icons/io";
 import { FaCalculator } from "react-icons/fa";
+import { LuSendHorizonal } from "react-icons/lu";
 import "../../assets/styles/users/Sidebar.css";
 import {
   MdManageAccounts,
@@ -39,6 +40,12 @@ function Sidebar({ isOpen, onClose }) {
               <p>
                 <MdManageAccounts />
                 <span>Account</span>
+              </p>
+            </div>
+            <div className="sidebar-list" onClick={() => navigate("/chat")}>
+              <p>
+                <LuSendHorizonal />
+                <span>Message</span>
               </p>
             </div>
             <div className="sidebar-list">

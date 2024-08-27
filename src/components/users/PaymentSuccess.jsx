@@ -7,11 +7,10 @@ import { fetchUserAndTrainer } from "../../redux/users/userThunk"
 const PaymentSuccess = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const trainerId = useSelector((state) => state.user.temperoryData || "");
   const handleSubmit = () => {
     dispatch(fetchUserAndTrainer()).then((res) => {
       if(res.meta.requestStatus === "fulfilled"){    
-        navigate(`/trainer-view`, {state: {trainerId: trainerId}});
+        navigate(-3);
       }
     });
   };

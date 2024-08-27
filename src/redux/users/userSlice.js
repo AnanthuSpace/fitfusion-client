@@ -5,13 +5,14 @@ import { toast } from "sonner";
 const userData = localStorage.getItem("userData") ? JSON.parse(localStorage.getItem("userData")) : null;
 const trainersData = localStorage.getItem("trainersData") ? JSON.parse(localStorage.getItem("trainersData")) : [];
 
+
 const userSlice = createSlice({
   name: "userSlice",
   initialState: {
     userData: userData,
     isLoading: false,
     error: null,
-    temperoryData: "",
+    temperoryEmail: "",
     trainersData: trainersData,
     chatMessage: {}
   },
@@ -24,7 +25,7 @@ const userSlice = createSlice({
       toast.success("Logout successfully", { hideProgressBar: true, autoClose: 3000 });
     },
     setTemporaryData: (state, action) => {
-      state.temperoryData = action.payload;
+      state.temperoryEmail = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -36,7 +37,7 @@ const userSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(registration.fulfilled, (state, action) => {
-        state.temperoryData = action.meta.arg.email;
+        state.temperoryEmail = action.meta.arg.email;
         toast.success(action.payload, { hideProgressBar: true, autoClose: 3000 });
         state.isLoading = false;
       })
@@ -55,7 +56,7 @@ const userSlice = createSlice({
         state.userData = action.payload;
         localStorage.setItem('userData', JSON.stringify(state.userData));
         toast.success("Registration completed successfully", { hideProgressBar: true, autoClose: 3000 });
-        state.temperoryData = ""
+        state.temperoryEmail = ""
         state.isLoading = false;
       })
       .addCase(signupVerification.rejected, (state, action) => {
@@ -71,7 +72,7 @@ const userSlice = createSlice({
         state.error = null;
       })
       .addCase(userLogin.fulfilled, (state, action) => {
-        state.temperoryData = action.meta.arg.email;
+        state.temperoryEmail = action.meta.arg.email;
         state.isLoading = false;
       })
       .addCase(userLogin.rejected, (state, action) => {
@@ -88,7 +89,7 @@ const userSlice = createSlice({
         state.userData = action.payload;
         localStorage.setItem('userData', JSON.stringify(state.userData));
         toast.success("Login verification completed successfully", { hideProgressBar: true, autoClose: 3000 });
-        state.temperoryData = ""
+        state.temperoryEmail = ""
         state.isLoading = false;
       })
       .addCase(loginVerification.rejected, (state, action) => {
@@ -143,6 +144,7 @@ const userSlice = createSlice({
       })
       .addCase(fetchTrainersData.fulfilled, (state, action) => {
         state.trainersData = action.payload;
+        localStorage.setItem("trainersData", JSON.stringify(action.payload))
         state.isLoading = false;
       })
       .addCase(fetchTrainersData.rejected, (state, action) => {
@@ -150,13 +152,16 @@ const userSlice = createSlice({
         state.isLoading = false;
       })
 
+
+
       .addCase(fetchUserAndTrainer.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
       .addCase(fetchUserAndTrainer.fulfilled, (state, action) => {
-        
         state.isLoading = false;
+        localStorage.setItem("trainersData", JSON.stringify(action.payload.trainersData))
+        localStorage.setItem("userData", JSON.stringify(action.payload.userData))
       })
       .addCase(fetchUserAndTrainer.rejected, (state, action) => {
         state.error = action.payload;
@@ -185,8 +190,8 @@ const userSlice = createSlice({
       })
       .addCase(fetchChatMessages.fulfilled, (state, action) => {
         state.chatMessage = action.payload;
-        state.isLoading = false;        
-      }) 
+        state.isLoading = false;
+      })
       .addCase(fetchChatMessages.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;

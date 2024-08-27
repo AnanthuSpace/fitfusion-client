@@ -1,80 +1,64 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import userAxiosInstance from "../../config/axiosConfig";
+import ChatTrainerList from "./ChatTrainerList";
+import { localhostURL } from "../../utils/url";
 
 function ChatScreen() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedTrainerId, setSelectedTrainerId] = useState(null);
   const [chatMessages, setChatMessages] = useState([]);
 
   const trainersData = useSelector((state) => state.user.trainersData);
-  const userId = useSelector((state) => state.user.userData.userId);
-  const subscriptionList = useSelector((state) => state.user.userData.subscribeList);
-  const chatMessage = useSelector((state) => state.user.userData.subscribeList);
-  const initialChatMessage = useSelector((state) => state.user.chatMessage.messages);
+  const userData = useSelector((state) => state.user.userData);
+  const subscriptionList = useSelector(
+    (state) => state.user.userData.subscribeList
+  );
 
-  const subscribedTrainers = trainersData.filter(trainer =>
+  const subscribedTrainers = trainersData.filter((trainer) =>
     subscriptionList.includes(trainer.trainerId)
   );
-  
-  const subscribedTrainerNames = subscribedTrainers.map(trainer => trainer.name);
-  
+
+  const subscribedTrainerNames = subscribedTrainers.map((trainer) => ({
+    name: trainer.name,
+    trainerId: trainer.trainerId,
+  }));
 
   const filteredTrainers = subscribedTrainerNames.filter((trainer) =>
-    trainer.toLowerCase().includes(searchTerm.toLowerCase())
+    trainer.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  
-  useEffect(() => {
-    if (initialChatMessage) {
-      setChatMessages([initialChatMessage]);
-    }
-  }, [initialChatMessage]);
-
-
-  useEffect(() => {
-    if (selectedTrainerId) {
-      
-      fetch(`${localhostURL}/chat/start`,{userId :userId, trainerId: selectedTrainerId})
-        .then(response => response.json())
-        .then(data => setChatMessages(data))
-        .catch(error => console.error("Error fetching chat messages:", error));
-    }
-  }, [selectedTrainerId]);
-
-
-  const handleTrainerClick = (trainerId) => {
+  const handleTrainerClick = async (trainerId) => {
     setSelectedTrainerId(trainerId);
+    try { 
+      const response = await userAxiosInstance.post(
+        `${localhostURL}/chat/fetchChat`,
+        { senderId: userData.userId, receiverId: trainerId }
+      );
+      console.log("responds " ,response.data);
+      setChatMessages(response.data);
+    } catch (error) {
+      console.error("Error fetching chat messages:", error);
+    }
   };
 
   return (
     <div className="d-flex flex-grow-1 overflow-hidden">
-      <div className="col-3 p-3">
-        <input
-          type="text"
-          className="form-control mb-3 chat-txt"
-          placeholder="Search trainers..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-        <ul className="list-group">
-          {filteredTrainers.map((trainer, index) => (
-            <li
-              key={index}
-              className="list-group-item user-item"
-              onClick={() => handleTrainerClick(trainer.trainerId)}
-            >
-              {trainer.name}
-            </li>
-          ))}
-        </ul>
-      </div>
-
+      <ChatTrainerList
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        filteredTrainers={filteredTrainers}
+        handleTrainerClick={handleTrainerClick}
+      />
       <div className="col-9 p-3 d-flex flex-column">
         <div className="flex-grow-1 d-flex flex-column-reverse overflow-auto mb-3">
           {chatMessages.map((message, index) => (
             <div
               key={index}
               className={`chat-message ${
-                message.sender === "You" ? "user-chat-message" : "received-message"
+                message.sender === "You"
+                  ? "user-chat-message"
+                  : "received-message"
               }`}
             >
               <strong>{message.sender}: </strong>
@@ -97,4 +81,3 @@ function ChatScreen() {
 }
 
 export default ChatScreen;
-
