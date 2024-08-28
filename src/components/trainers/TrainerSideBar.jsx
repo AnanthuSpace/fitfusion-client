@@ -2,7 +2,7 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../assets/styles/trainers/TrainerSideBar.css";
 import { IoMdLogOut, IoIosSend } from "react-icons/io";
-import { FaHome, FaUsers, FaDumbbell } from "react-icons/fa";
+import { FaHome, FaUsers, FaDumbbell,FaUserCircle } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { trainerLogout } from "../../redux/trainers/trainerSlice";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -41,11 +41,19 @@ function TrainerSideBar() {
           />
         </li>
         <li className="nav-item my-3">
-          <FaUsers
+          <FaUserCircle
             className={`fs-4 ${
               isActive("/trainer-profile") ? "text-white" : "text-secondary"
             }`}
             onClick={() => navigate("/trainer-profile")}
+          />
+        </li>
+        <li className="nav-item my-3">
+          <FaUsers
+            className={`fs-4 ${
+              isActive("/customers") ? "text-white" : "text-secondary"
+            }`}
+            onClick={() => navigate("/customers")}
           />
         </li>
         <li className="nav-item my-3">

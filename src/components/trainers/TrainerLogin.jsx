@@ -1,11 +1,8 @@
 import React, { useState } from "react";
-import "../../assets/styles/trainers/TrainerLogin.css";
-import { HiMiniUser } from "react-icons/hi2";
-import { RiLockPasswordFill } from "react-icons/ri";
-import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { trainerLogin, requestOtp } from "../../redux/trainers/trainerThunk";
+import { trainerLogin } from "../../redux/trainers/trainerThunk";
+import "../../assets/styles/trainers/TrainerLogin.css"; 
 
 function TrainerLogin() {
   const navigate = useNavigate();
@@ -13,11 +10,9 @@ function TrainerLogin() {
   const { isLoading, error } = useSelector((state) => state.trainer);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showEmailModal, setShowEmailModal] = useState(false);
-  const [showOtpModal, setShowOtpModal] = useState(false);
-  const [otp, setOtp] = useState("");
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     const emailId = email.toLowerCase();
     dispatch(trainerLogin({ email: emailId, password })).then((result) => {
       if (result.meta.requestStatus === "fulfilled") {
@@ -26,144 +21,78 @@ function TrainerLogin() {
     });
   };
 
-  const handleForgotPassword = () => {
-    setShowEmailModal(true);
-  };
-
-  const handleEmailSubmit = () => {
-    dispatch(requestOtp(email)).then((result) => {
-      if (result.meta.requestStatus === "fulfilled") {
-        console.log("OTP sent to email:", email);
-        setShowEmailModal(false); 
-        setShowOtpModal(true);
-      } else {
-        console.error("Failed to send OTP:", result.payload);
-      }
-    });
-  };
-
-  const handleOtpSubmit = () => {
-    console.log("OTP entered:", otp);
-    setShowOtpModal(false); 
-  };
-
   return (
     <>
-      <div className="trainer-login-container">
-        <div className="trainer-login-div bg-dark">
-          <div className="trainer-login-icon">
-            <img src="/Login-image.png" alt="Login" />
+      <div className="admin-login-container trainer-gradient-bg">
+        <nav className="navbar navbar-light admin-navbar">
+          <div className="container">
+            <span className="navbar-brand mx-auto admin-navbar-brand text-white">
+              FITFUSION
+            </span>
+          </div>
+        </nav>
+
+        <div
+          className="d-flex justify-content-center align-items-center"
+          style={{ height: "80vh" }}
+        >
+          <div className="card p-4 glass-effect admin-login-card">
+            <h3 className="card-title text-center mb-4">Trainer Login</h3>
+            <form>
+              <div className="form-group mb-3">
+                <label htmlFor="email">Email address</label>
+                <input
+                  type="email"
+                  className="form-control form-control-glass"
+                  id="email"
+                  placeholder="Enter email"
+                  onChange={(e) => setEmail(e.target.value)}
+                  disabled={isLoading}
+                />
+              </div>
+              <div className="form-group mb-3">
+                <label htmlFor="password">Password</label>
+                <input
+                  type="password"
+                  className="form-control form-control-glass"
+                  id="password"
+                  placeholder="Password"
+                  onChange={(e) => setPassword(e.target.value)}
+                  disabled={isLoading}
+                />
+              </div>
+              <button
+                type="submit"
+                className="btn gradient-blue-white w-50 mx-auto d-block"
+                style={{
+                  border: "none",
+                  color: "white",
+                }}
+                onClick={handleSubmit}
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                ) : (
+                  "Login"
+                )}
+              </button>
+            </form>
             <u>
-              <p onClick={() => navigate("/trainer-signup")}>
+              <p
+                className="mt-4 text-center"
+                onClick={() => navigate("/trainer-signup")}
+              >
                 Create an account
               </p>
             </u>
           </div>
-          <div className="trainner-login-form">
-            <h1>Sign in</h1>
-            <div className="input-and-icon">
-              <HiMiniUser />
-              <input
-                type="text"
-                className="trainer-login-input bg-transparent text-white"
-                placeholder="Email"
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-            <hr />
-            <div className="input-and-icon">
-              <RiLockPasswordFill />
-              <input
-                type="password"
-                className="trainer-login-input bg-transparent text-white"
-                placeholder="Password"
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-            <hr />
-            <button className="trainer-login-button" onClick={handleSubmit}>
-              {isLoading ? "Loading..." : "Login"}
-            </button>
-
-            <div className="or-login text-center mt-4">
-              <u>
-                <p>Or login with Google</p>
-              </u>
-              {/* <FcGoogle className="d-block mx-auto" /> */}
-              {/* <u>
-                <p className="text-start" onClick={handleForgotPassword}>Forgot password</p>
-              </u> */}
-            </div>
-          </div>
         </div>
+
+        <footer className="text-center admin-footer">
+          © 2024 FITFUSION. All rights reserved.
+        </footer>
       </div>
-
-      {/* Forgot Password Email Modal */}
-      {showEmailModal && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h5 className="text-center text-white">Forgot Password</h5>
-            <div className="modal-body">
-              <label htmlFor="email" className="form-label mt-4">
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                className="form-control"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-            <div className="modal-footer">
-              <button
-                className="btn btn-black"
-                onClick={() => setShowEmailModal(false)}
-              >
-                Cancel
-              </button>
-              <button className="btn btn-submit" onClick={handleEmailSubmit}>
-                Submit
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* OTP Verification Modal */}
-      {showOtpModal && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h5 className="text-center text-white">OTP Verification</h5>
-            <div className="modal-body">
-              <label htmlFor="otp" className="form-label mt-4">
-                Enter OTP
-              </label>
-              <input
-                type="text"
-                id="otp"
-                className="form-control"
-                placeholder="Enter 4-digit OTP"
-                maxLength="4"
-                value={otp}
-                onChange={(e) => setOtp(e.target.value)}
-              />
-            </div>
-            <div className="modal-footer">
-              <button
-                className="btn btn-black"
-                onClick={() => setShowOtpModal(false)}
-              >
-                Cancel
-              </button>
-              <button className="btn btn-submit" onClick={handleOtpSubmit}>
-                Verify
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 }

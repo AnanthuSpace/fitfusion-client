@@ -27,8 +27,10 @@ import UserDetailsForm from "./components/users/MoreDetails";
 import TrainerViewPage from "./pages/users/TrainerViewPage";
 import PaymentSuccess from "./components/users/PaymentSuccess";
 import PaymentFailed from "./components/users/PaymentFailed";
-import { Toaster } from "sonner";
 import ChatPage from "./pages/users/ChatPage";
+import TrainerCustomersPage from "./pages/trainers/TrainerCustomersPage";
+import { Toaster } from "sonner";
+
 
 function App() {
   return (
@@ -57,6 +59,7 @@ function App() {
           <Route path="/trainer-otp" element={<TrainerLoginProtector><TrainerOtpVerification /></TrainerLoginProtector>} />
           <Route path="/trainer-console" element={<TrainerProtector><TrainerDashboardPage /></TrainerProtector>} />
           <Route path="/trainer-profile" element={<TrainerProtector><TrainerProfilePage /></TrainerProtector>} />
+          <Route path="/customers" element={<TrainerProtector><TrainerCustomersPage /></TrainerProtector>} />
           <Route path="/trainer-chat" element={<TrainerProtector><TrainerChatPage /></TrainerProtector>} />
 
 

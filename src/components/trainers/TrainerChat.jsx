@@ -10,7 +10,7 @@ function TrainerChat() {
     { sender: "John Doe", text: "Nice! Keep up the good work." },
   ];
 
-  // Filter users based on the search term
+
   const filteredUsers = users.filter((user) =>
     user.toLowerCase().includes(searchTerm.toLowerCase())
   );

@@ -10,7 +10,7 @@ function TrainerProfilePage() {
     <>
     <div className="d-flex vh-100 bg-black">
       <TrainerSideBar />
-      <div className="flex-grow-1 d-flex flex-column">
+      <div className="flex-grow-1 d-flex flex-column trainer-gradient-bg">
         <TrainerNavbar />
         <TrainerProfile />
       </div>

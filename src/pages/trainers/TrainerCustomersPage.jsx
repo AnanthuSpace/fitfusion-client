@@ -1,22 +1,22 @@
 import React from "react";
 import TrainerNavbar from "../../components/trainers/TrainerNavbar";
 import TrainerSideBar from "../../components/trainers/TrainerSideBar";
+import Customers from "../../components/trainers/Customers";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../assets/styles/trainers/TrainerConsole.css";
-import TrainerDashobord from "../../components/trainers/TrainerDashobord";
 
-function TrainerDashboardPage() {
+function TrainerCustomersPage() {
   return (
     <>
-      <div className="d-flex vh-100">
+      <div className="d-flex vh-100 trainer-gradient-bg">
         <TrainerSideBar />
-        <div className="flex-grow-1 d-flex flex-column trainer-gradient-bg">
+        <div className="flex-grow-1 d-flex flex-column ">
           <TrainerNavbar />
-          <TrainerDashobord />
+          <Customers />
         </div>
       </div>
     </>
   );
 }
 
-export default TrainerDashboardPage;
+export default TrainerCustomersPage;

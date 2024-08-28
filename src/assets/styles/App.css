@@ -85,7 +85,7 @@ body,
 }
 
 .short-gradient-text-blue {
-  background-image: linear-gradient(90deg,  #0072f5 0%, #5ea2ef  100%) !important;
+  background-image: linear-gradient(90deg, #0072f5 0%, #5ea2ef 100%) !important;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -127,13 +127,13 @@ body,
 
 .gradient-button-global {
   background: linear-gradient(90deg, #b249f8 0%, #ff1cf7 100%) !important;
-  color: white !important; 
+  color: white !important;
   border: none;
-  border-radius: 5px; 
-  padding: 10px 20px; 
-  font-size: 16px; 
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
   cursor: pointer;
-  transition: background 0.3s ease; 
+  transition: background 0.3s ease;
 }
 
 .gradient-button-global:hover {
@@ -146,4 +146,11 @@ body,
   color: white;
   border-top-left-radius: 20px;
   border-bottom-right-radius: 0;
+}
+
+
+.trainer-gradient-bg {
+  background-image:
+  radial-gradient(at 86% 81%, hsla(229,87%,40%,0.19) 0px, transparent 50%),
+  radial-gradient(at 12% 24%, hsla(229,65%,55%,0.15) 0px, transparent 50%);
 }

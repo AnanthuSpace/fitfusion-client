@@ -1,10 +1,10 @@
 .full-height {
   height: 100vh;
-  background-color: black;
+  /* background-color: black;  */
 }
 
 .user-list {
-  background-color: black;
+  /* background-color: black; */
   color: white;
 }
 
@@ -29,7 +29,7 @@
 }
 
 .chat-window {
-  background-color: rgb(22, 22, 22);
+  /* background-color: rgb(22, 22, 22); */
   color: white;
   display: flex !important;
   flex-direction: column !important;

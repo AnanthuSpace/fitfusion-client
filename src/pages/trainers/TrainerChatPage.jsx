@@ -5,7 +5,7 @@ import TrainerChat from "../../components/trainers/TrainerChat";
 
 function TrainerChatPage() {
   return (
-    <div className="d-flex vh-100 overflow-hidden">
+    <div className="d-flex vh-100 overflow-hidden trainer-gradient-bg">
       <TrainerSideBar />
       <div className="d-flex flex-column flex-grow-1 overflow-hidden">
         <TrainerNavbar />
