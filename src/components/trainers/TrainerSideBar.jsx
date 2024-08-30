@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../../assets/styles/trainers/TrainerSideBar.css";
 import { IoMdLogOut, IoIosSend } from "react-icons/io";
 import { FaHome, FaUsers, FaDumbbell,FaUserCircle } from "react-icons/fa";
+import { MdOutlineFastfood } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { trainerLogout } from "../../redux/trainers/trainerSlice";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -54,6 +55,14 @@ function TrainerSideBar() {
               isActive("/customers") ? "text-white" : "text-secondary"
             }`}
             onClick={() => navigate("/customers")}
+          />
+        </li>
+        <li className="nav-item my-3">
+          <MdOutlineFastfood
+            className={`fs-4 ${
+              isActive("/diet") ? "text-white" : "text-secondary"
+            }`}
+            onClick={() => navigate("/diet")}
           />
         </li>
         <li className="nav-item my-3">

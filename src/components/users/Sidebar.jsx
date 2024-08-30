@@ -42,7 +42,7 @@ function Sidebar({ isOpen, onClose }) {
                 <span>Account</span>
               </p>
             </div>
-            <div className="sidebar-list" onClick={() => navigate("/chat")}>
+            <div className="sidebar-list" onClick={() => navigate("/user-chat")}>
               <p>
                 <LuSendHorizonal />
                 <span>Message</span>

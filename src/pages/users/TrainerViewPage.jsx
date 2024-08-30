@@ -5,7 +5,7 @@ import BootstrapHeader from "../../components/users/BootstrapHeader";
 function TrainerViewPage() {
   return (
     <>
-      <div className="position-fixed top-0 w-100 background-gradient-main h-100">
+      <div className=" top-0 w-100 background-gradient-main h-100">
         <BootstrapHeader />
         <TrainerProfileView />
       </div>

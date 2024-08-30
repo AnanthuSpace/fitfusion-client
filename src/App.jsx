@@ -4,10 +4,8 @@ import SignupPage from "./pages/users/SignupPage";
 import SignUpVerification from "./components/users/SingUpVerification";
 import LoginVerification from "./components/users/LoginVerification";
 import UserProtecter from "./components/protucters/UserProtector";
-import "./assets/styles/App.css";
 import HomePage from "./pages/users/HomePage";
 import ProfilePage from "./pages/users/ProfilePage";
-import "react-toastify/dist/ReactToastify.css";
 import TrainerLogin from "./components/trainers/TrainerLogin";
 import AdminLoginPage from "./components/admin/AdminLogin";
 import TrainerOtpVerification from "./components/trainers/TrainerOtpVerification";
@@ -29,7 +27,10 @@ import PaymentSuccess from "./components/users/PaymentSuccess";
 import PaymentFailed from "./components/users/PaymentFailed";
 import ChatPage from "./pages/users/ChatPage";
 import TrainerCustomersPage from "./pages/trainers/TrainerCustomersPage";
+import TrainerDietPage from "./pages/trainers/TrainerDietPage";
 import { Toaster } from "sonner";
+import "./assets/styles/App.css";
+
 
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
       <Router>
       <Toaster richColors />
         <Routes>
+
           {/* User Routes */}
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
@@ -61,6 +63,7 @@ function App() {
           <Route path="/trainer-profile" element={<TrainerProtector><TrainerProfilePage /></TrainerProtector>} />
           <Route path="/customers" element={<TrainerProtector><TrainerCustomersPage /></TrainerProtector>} />
           <Route path="/trainer-chat" element={<TrainerProtector><TrainerChatPage /></TrainerProtector>} />
+          <Route path="/diet" element={<TrainerProtector><TrainerDietPage /></TrainerProtector>} />
 
 
           {/* Admin Routes */}
@@ -68,6 +71,7 @@ function App() {
           <Route path="/admin-console" element={<AdminLoginProtector><AdminConsole /></AdminLoginProtector>} />
           <Route path="/admin-trainer" element={<AdminProtector><AdminTrainerPage /></AdminProtector>} />
           <Route path="/admin-user" element={<AdminProtector><AdminUserPage /></AdminProtector>} />
+          
         </Routes>
       </Router>
     </>

@@ -12,10 +12,7 @@ export const trainerRegistration = createAsyncThunk(
         email = email.trim();
         password = password.trim();
         confirmPass = confirmPass.trim();
-
-
         const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-
         if (name === "" || email === "" || password === "" || confirmPass === "") {
             return rejectWithValue("All the fields are required!");
         } else if (name.length < 3 || name.length > 20) {
@@ -29,8 +26,6 @@ export const trainerRegistration = createAsyncThunk(
         } else {
             try {
                 const response = await axios.post(`${localhostURL}/trainer/signup`, { name, email, password });
-                console.log(response);
-
                 if (response.data.message === "User already exists") {
                     return rejectWithValue("User already exists");
                 } else {
@@ -42,7 +37,6 @@ export const trainerRegistration = createAsyncThunk(
         }
     }
 );
-
 
 export const trainerVerification = createAsyncThunk(
     "trainerSlice/trainerVerification",
@@ -71,17 +65,13 @@ export const trainerLogin = createAsyncThunk(
         try {
             email = email.trim()
             password = password.trim()
-
             const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailPattern.test(email)) {
                 return rejectWithValue("Please enter a valid email address");
             } else if (password.length < 6) {
                 return rejectWithValue("Password must be at least 6 characters long!");
             }
-
             const response = await axios.post(`${localhostURL}/trainer/login`, { email, password });
-            console.log(response);
-
             if (response.data.success === false) {
                 return rejectWithValue(response.data.message);
             } else {
@@ -96,11 +86,9 @@ export const trainerLogin = createAsyncThunk(
     }
 )
 
-
 export const editTrainer = createAsyncThunk(
     "trainerSlice/editTrainer",
     async ({ name, phone, address, gender, qualification, achivements, feePerMonth, experience }, { rejectWithValue }) => {
-        
         name = name.trim();
         phone = phone.trim();
         address = address.trim();
@@ -109,9 +97,7 @@ export const editTrainer = createAsyncThunk(
         achivements = achivements.trim();
         feePerMonth = feePerMonth.trim();
         experience = experience.trim();
-        
         const phoneRegex = /^\d{10}$/;
-        
         if (name === "" || phone === "" || address === "" || gender === "" || achivements === "" || qualification === "" || feePerMonth === "" || experience === "") {
             return rejectWithValue("All fields are required!");
         } else if (!phoneRegex.test(phone)) {
@@ -129,8 +115,6 @@ export const editTrainer = createAsyncThunk(
                     feePerMonth,
                     experience
                 });
-                
-
                 localStorage.setItem(`trainerData.name: `, name)
                 localStorage.setItem(`trainerData.phone: `, phone)
                 localStorage.setItem(`trainerData.address: `, address)
@@ -139,7 +123,6 @@ export const editTrainer = createAsyncThunk(
                 localStorage.setItem(`trainerData.achivements: `, achivements)
                 localStorage.setItem(`trainerData.feePerMonth: `, feePerMonth)
                 localStorage.setItem(`trainerData.experience: `, experience)
-
                 return response.data
             } catch (error) {
                 if (error.response && error.response.status === 401) {
@@ -154,14 +137,11 @@ export const editTrainer = createAsyncThunk(
     }
 );
 
-
 export const changeTrainerPassword = createAsyncThunk(
     "trainerSlice/changeTrainerPassword",
     async ({ oldPass, newPass }, { rejectWithValue }) => {
-
         const oldPassword = oldPass.trim();
         const newPassword = newPass.trim();
-
         if (oldPassword === "" || newPassword === "") {
             return rejectWithValue("All fields are required!");
         } else if (oldPassword === newPassword) {
@@ -185,7 +165,6 @@ export const changeTrainerPassword = createAsyncThunk(
     }
 );
 
-
 export const requestOtp = createAsyncThunk(
     'trainer/requestOtp',
     async (email, { rejectWithValue }) => {
@@ -197,7 +176,6 @@ export const requestOtp = createAsyncThunk(
             } else if (!emailRegex.test(email)) {
                 return rejectWithValue("Invalid email address!");
             }
-
             const response = await axios.post(`${localhostURL}/trainer/request-otp`, { email });
             return response.data;
         } catch (error) {
@@ -212,15 +190,41 @@ export const updateProfilePicture = createAsyncThunk(
         try {
             const formData = new FormData();
             formData.append('profileImage', file);
-
             const response = await trainerAxiosInstance.put(`${localhostURL}/trainer/profile-picture`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
-            }); 
+            });
             return response.data.profileImage;
         } catch (error) {
             return rejectWithValue(error.response.data);
         }
     }
 );
+
+export const fetchDeitPlans = createAsyncThunk(
+    'trainer/fetchDeitPlans',
+    async () => {
+        try {
+            const diets = await trainerAxiosInstance.get(`${localhostURL}/trainer/fetch-deit`)
+            console.log(diets);
+            localStorage.setItem("dietPlans", JSON.stringify(diets.data.diet))
+            return diets
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+)
+
+export const AddDietPlan = createAsyncThunk(
+    'trainer/AddDietPlan',
+    async ({ dietPlan }, { rejectWithValue }) => {
+        try {
+            const response = await trainerAxiosInstance.post(`${localhostURL}/trainer/add-diet`, { dietPlan });
+            console.log(response);
+            return response.data;
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+)

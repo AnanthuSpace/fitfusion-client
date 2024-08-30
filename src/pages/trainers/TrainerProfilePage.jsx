@@ -8,9 +8,9 @@ import TrainerProfile from "../../components/trainers/TrainerProfile";
 function TrainerProfilePage() {
   return (
     <>
-    <div className="d-flex vh-100 bg-black">
+    <div className="d-flex vh-100 trainer-gradient-bg">
       <TrainerSideBar />
-      <div className="flex-grow-1 d-flex flex-column trainer-gradient-bg">
+      <div className="flex-grow-1 d-flex flex-column">
         <TrainerNavbar />
         <TrainerProfile />
       </div>

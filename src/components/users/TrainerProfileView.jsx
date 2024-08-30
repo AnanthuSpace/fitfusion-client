@@ -29,7 +29,7 @@ function TrainerProfileView() {
         })
       ).then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
-          navigate("/chat/fetchChat");
+          navigate("/user-chat");
         }
       });
     }
@@ -68,7 +68,9 @@ function TrainerProfileView() {
           <button className="glass-button">Review</button>
         </Col>
       </div>
+      
       <div className="bottom-sections d-flex">
+        {/* Trainer Details Section */}
         <div className="details-section glass-effect">
           <h3>Trainer Details</h3>
           <p>Name: {trainerDetails.name}</p>
@@ -76,6 +78,26 @@ function TrainerProfileView() {
           <p>Qualification: {trainerDetails.qualification}</p>
           <p>Gender: {trainerDetails.gender}</p>
         </div>
+
+        {/* Diet Plans Section */}
+      <div className="diet-plans-section glass-effect">
+        <h3>Diet Plans</h3>
+        {trainerDetails.dietPlans && trainerDetails.dietPlans.length > 0 ? (
+          <ul>
+            {trainerDetails.dietPlans.map((plan, index) => (
+              <li key={index}>
+                <h5>{plan.title}</h5>
+                <p>{plan.description}</p>
+                {/* Add more details as needed */}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No diet plans available</p>
+        )}
+      </div>
+
+        {/* Media Section with Subscription Button */}
         <div className="media-section text-center glass-effect">
           <div className="w-100 contents-div">
             <SubscribeButton trainerId={trainerId} />
