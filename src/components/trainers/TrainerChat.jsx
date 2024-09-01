@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import io from "socket.io-client";
 import "../../assets/styles/trainers/TrainerChat.css";
 import { localhostURL } from "../../utils/url";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import CustomerList from "./CustomerList";
 import TrainerChatScreen from "./TrainerChatScreen";
+import { fetchAlreadyChattedCustomer } from "../../redux/trainers/trainerThunk";
 
 
 const socket = io(localhostURL);
@@ -20,8 +21,10 @@ function TrainerChat() {
   const [selectedName, setSelectedName] = useState("");
   const [chatHistory, setChatHistory] = useState([])
   const location = useLocation();
+  const dispatch = useDispatch()
 
   const trainerData = useSelector((state) => state.trainer.trainerData);
+  const alreadyChattedCustomer = useSelector((state) => state.trainer.alreadyChattedCustomer);
 
   useEffect(() => {
     setCurrentCustomerId(location.state?.customerId);
@@ -38,6 +41,9 @@ function TrainerChat() {
     }
   }, [selectedId]);
 
+  useEffect(() => {
+    dispatch(fetchAlreadyChattedCustomer(trainerData.alreadychattedUsers))
+  },[])
 
   const handleSendMessage = () => {
     
@@ -70,6 +76,7 @@ function TrainerChat() {
         currentCustomerName={currentCustomerName}
         onSelectCustomer={handleSelectCustomer}
         setChatHistory={setChatHistory}
+        alreadyChattedCustomer={alreadyChattedCustomer}
       />
       <TrainerChatScreen
         messages={messages}

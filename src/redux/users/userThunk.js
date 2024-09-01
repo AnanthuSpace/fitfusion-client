@@ -287,7 +287,12 @@ export const fetchChatMessages = createAsyncThunk(
             if (!isSubscribed) {
                 return rejectWithValue("Please Subscribe!");
             }
-            const response = await userAxiosInstance.post(`${localhostURL}/chat/fetchChat`, { userId, trainerId });
+            const response = await userAxiosInstance.get(`${localhostURL}/chat/fetchChat`, {
+                params: {
+                    trainerId: trainerId,
+                    userId: userId,
+                }
+            });
             return response.data;
         } catch (error) {
             toast.error("Failed to fetch chat messages");

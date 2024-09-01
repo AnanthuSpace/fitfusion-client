@@ -4,18 +4,25 @@ import userAxiosInstance from "../../config/axiosConfig";
 import ChatTrainerList from "./ChatTrainerList";
 import io from "socket.io-client";
 import { localhostURL } from "../../utils/url";
+import { useLocation } from "react-router-dom";
 
 const ChatScreen = () => {
+  const location = useLocation()
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedTrainerId, setSelectedTrainerId] = useState(null);
   const [chatMessages, setChatMessages] = useState([]);
   const [messageInput, setMessageInput] = useState("");
+  const [currentTraineId, setCurrentTraineId] = useState("");
+  const [currentTraineName, setCurrentTraineName] = useState("");
   const [socket, setSocket] = useState(null);
-
-  
   const trainersData = useSelector((state) => state.user.trainersData);
   const userData = useSelector((state) => state.user.userData);
   const subscriptionList = useSelector((state) => state.user.userData.subscribeList);
+
+  useEffect(()=> {
+    const chatMsg = location.state?.chatMessages || [];
+    setChatMessages(chatMsg)
+  },[location.state])
 
   const subscribedTrainers = trainersData.filter((trainer) =>
     subscriptionList.includes(trainer.trainerId)

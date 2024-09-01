@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "sonner";
-import { trainerRegistration, trainerVerification, trainerLogin, editTrainer, changeTrainerPassword, updateProfilePicture, AddDietPlan, fetchDeitPlans } from "./trainerThunk";
+import { trainerRegistration, trainerVerification, trainerLogin, editTrainer, changeTrainerPassword, updateProfilePicture, fetchAlreadyChattedCustomer, AddDietPlan, fetchDeitPlans } from "./trainerThunk";
 
 
 const trainerData = localStorage.getItem("trainerData") ? JSON.parse(localStorage.getItem("trainerData")) : null;
 const dietPlans = localStorage.getItem("dietPlans") ? JSON.parse(localStorage.getItem("dietPlans")) : [];
-
+const alreadyChattedCustomer = localStorage.getItem("alreadyChattedCustomer") ? JSON.parse(localStorage.getItem("alreadyChattedCustomer")) : []
 
 const trainerSlice = createSlice({
     name: "trainerSlice",
@@ -14,7 +14,8 @@ const trainerSlice = createSlice({
         isLoading: false,
         error: null,
         temperoryEmail: " ",
-        diet: dietPlans
+        diet: dietPlans,
+        alreadyChattedCustomer: alreadyChattedCustomer,
     },
     reducers: {
         trainerLogout: (state) => {
@@ -22,6 +23,8 @@ const trainerSlice = createSlice({
             sessionStorage.removeItem("trainerAccessToken");
             localStorage.removeItem("trainerRefreshToken");
             localStorage.removeItem('trainerData');
+            localStorage.removeItem('dietPlans');
+            localStorage.removeItem('alreadyChattedCustomer');
             toast.success("Logout successfully", { hideProgressBar: true, autoClose: 3000 });
         },
     },
@@ -127,13 +130,24 @@ const trainerSlice = createSlice({
                 state.isLoading = true;
                 state.error = null;
             })
-            .addCase(fetchDeitPlans.fulfilled, (state, action) => {
+            .addCase(fetchDeitPlans.fulfilled, (state) => {
                 state.isLoading = false;
             })
             .addCase(fetchDeitPlans.rejected, (state) => {
                 state.isLoading = false;
                 state.error = action.payload || 'Failed to add Diet';
                 toast.error(state.error);
+            })
+
+            .addCase(fetchAlreadyChattedCustomer.pending, (state) => {
+                state.isLoading = true;
+                state.error = null;
+            })
+            .addCase(fetchAlreadyChattedCustomer.fulfilled, (state, action) => {
+                state.isLoading = false;
+            })
+            .addCase(fetchAlreadyChattedCustomer.rejected, (state) => {
+                state.isLoading = false;
             })
     }
 })

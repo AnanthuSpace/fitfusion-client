@@ -207,7 +207,6 @@ export const fetchDeitPlans = createAsyncThunk(
     async () => {
         try {
             const diets = await trainerAxiosInstance.get(`${localhostURL}/trainer/fetch-deit`)
-            console.log(diets);
             localStorage.setItem("dietPlans", JSON.stringify(diets.data.diet))
             return diets
         } catch (error) {
@@ -228,14 +227,19 @@ export const AddDietPlan = createAsyncThunk(
     }
 )
 
-// export const instantChatWithCustomer = createAsyncThunk(
-//     'trainer/instantChatWithCustomer',
-//     async(userId, {rejectWithValue}) => {
-//         try {
-//             const response = await trainerAxiosInstance.post(`${localhostURL}/trainer/instent-chat-with-user`, { userId });
-//             return response.data;
-//         } catch (error) {
-//             return rejectWithValue(error.response.data);
-//         }
-//     }
-// )
+export const fetchAlreadyChattedCustomer = createAsyncThunk(
+    "trainer/fetchAlreadyChattedCustomer",
+    async (alreadyChatted, { rejectWithValue }) => {
+        try {
+            const response = await trainerAxiosInstance.post(`${localhostURL}/trainer/getUsersByIds`, { alreadyChatted });
+            if (response.data && response.data.users) {
+                localStorage.setItem('alreadyChattedCustomer', JSON.stringify(response.data.users));
+                return response.data.users;
+            }
+            throw new Error("Invalid response data");
+        } catch (error) {
+            return rejectWithValue(error.response ? error.response.data : error.message);
+        }
+    }
+);
+

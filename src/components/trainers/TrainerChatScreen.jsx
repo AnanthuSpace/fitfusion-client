@@ -1,9 +1,8 @@
 import React from "react";
 import { useSelector } from "react-redux";
 
-const TrainerChatScreen = ({ messages,newMessage,setNewMessage,handleSendMessage,currentCustomerName, currentCustomerId, chatHistory }) => {
+const TrainerChatScreen = ({ messages ,newMessage,setNewMessage,handleSendMessage,currentCustomerName, currentCustomerId, chatHistory }) => {
     const trainerId = useSelector((state)=>state.trainer.trainerData.trainerId)
-    console.log(chatHistory);
   return (
     <div className="col-9 p-3 chat-window d-flex flex-column">
       {currentCustomerName && (
