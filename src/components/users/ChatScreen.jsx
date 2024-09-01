@@ -1,107 +1,104 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import userAxiosInstance from "../../config/axiosConfig";
+import { useDispatch, useSelector } from "react-redux";
 import ChatTrainerList from "./ChatTrainerList";
 import io from "socket.io-client";
 import { localhostURL } from "../../utils/url";
-import { useLocation } from "react-router-dom";
+import { fetchAlreadyChattedTrainer } from "../../redux/users/userThunk";
+
+const socket = io(localhostURL);
 
 const ChatScreen = () => {
-  const location = useLocation()
+  const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedTrainerId, setSelectedTrainerId] = useState(null);
+  const [selectedId, setSelectedId] = useState("");
+  const [selectedName, setSelectedName] = useState("");
   const [chatMessages, setChatMessages] = useState([]);
   const [messageInput, setMessageInput] = useState("");
-  const [currentTraineId, setCurrentTraineId] = useState("");
-  const [currentTraineName, setCurrentTraineName] = useState("");
-  const [socket, setSocket] = useState(null);
-  const trainersData = useSelector((state) => state.user.trainersData);
+  const [chatHistory, setChatHistory] = useState([]);
+
   const userData = useSelector((state) => state.user.userData);
-  const subscriptionList = useSelector((state) => state.user.userData.subscribeList);
-
-  useEffect(()=> {
-    const chatMsg = location.state?.chatMessages || [];
-    setChatMessages(chatMsg)
-  },[location.state])
-
-  const subscribedTrainers = trainersData.filter((trainer) =>
-    subscriptionList.includes(trainer.trainerId)
-  );
-
-  const subscribedTrainerNames = subscribedTrainers.map((trainer) => ({
-    name: trainer.name,
-    trainerId: trainer.trainerId,
-  }));
-
-  const filteredTrainers = subscribedTrainerNames.filter((trainer) =>
-    trainer.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const alreadyChattedTrainer = useSelector(
+    (state) => state.user.alreadyChattedTrainer
   );
 
   useEffect(() => {
-    const socket = io(localhostURL);
-    setSocket(socket);
-
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
+    if (selectedId !== "") {
+      try {
+        socket.emit("joinRoom", {
+          userId: userData.userId,
+          trainerId: selectedId,
+        });
+      } catch (error) {
+        console.log("Error : ", error);
+      }
+    }
+  }, [selectedId]);
 
   useEffect(() => {
-    if (socket) {
-      socket.on("chatMessage", (msg) => {
-        setChatMessages((prevMessages) => [...prevMessages, msg]);
-      });
-    }
-  }, [socket]);
+    dispatch(fetchAlreadyChattedTrainer(userData.alreadychattedTrainers));
+  }, [dispatch, userData.alreadychattedTrainers]);
 
-  const handleTrainerClick = async (trainerId) => {
-    setSelectedTrainerId(trainerId);
-    try {
-      const response = await userAxiosInstance.post(
-        `${localhostURL}/chat/fetchChat`,
-        { senderId: userData.userId, receiverId: trainerId }
-      );
-      setChatMessages(response.data);
-      socket.emit("joinRoom", { userId: userData.userId, trainerId });
-    } catch (error) {
-      console.error("Error fetching chat messages:", error);
-    }
+  const handleSelectTrainer = (trainerId, trainerName) => {
+    setSelectedId(trainerId);
+    setSelectedName(trainerName);
   };
 
-  const handleSendMessage = () => {
-    if (messageInput.trim() && selectedTrainerId) {
-      const room = `${userData.userId}-${selectedTrainerId}`;
-      socket.emit("chatMessage", {
+  useEffect(() => {
+    socket.on("receiveMessage", (messageDetails) => {
+      setChatHistory((prevChatHistory) => [...prevChatHistory, { details: messageDetails }]);
+    });
+
+    return () => {
+      socket.off("receiveMessage");
+    };
+  }, [setChatMessages]);
+
+  const handleSendMessage = () => {    
+    console.log(selectedId);
+    
+    if (messageInput.trim()) {
+      const message = {
         senderId: userData.userId,
-        receiverId: selectedTrainerId,
-        message: messageInput,
-        room
-      });
+        recieverId: selectedId,
+        text: messageInput,
+      };
+
+      const firstTimeChat = chatHistory.length === 0;
+      socket.emit("sendMessage", { message, firstTimeChat });
+      setChatMessages((prevMessages) => [message, ...prevMessages]);
       setMessageInput("");
     }
   };
 
   return (
-    <div className="d-flex flex-grow-1 overflow-hidden">
+    <div className="d-flex flex-grow-1 overflow-hidden background-gradient-main">
       <ChatTrainerList
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
-        filteredTrainers={filteredTrainers}
-        handleTrainerClick={handleTrainerClick}
+        onSelectTrainer={handleSelectTrainer}
+        setChatHistory={setChatHistory}
+        alreadyChattedTrainer={alreadyChattedTrainer}
       />
       <div className="col-9 p-3 d-flex flex-column">
+        {selectedName && (
+          <h4 className="chat-header glass-effect">{selectedName}</h4>
+        )}
         <div className="flex-grow-1 d-flex flex-column-reverse overflow-auto mb-3">
-          {chatMessages.map((message, index) => (
+          {chatHistory.map((message, index) => (
             <div
               key={index}
               className={`chat-message ${
                 message.senderId === userData.userId
                   ? "user-chat-message"
                   : "received-message"
+              } d-flex justify-content-${
+                message.senderId === userData.userId ? "end" : "start"
               }`}
             >
-              <strong>{message.senderId}: </strong>
-              {message.message}
+              <div className="message-bubble text-white">
+                {message.messages}
+              </div>
             </div>
           ))}
         </div>
@@ -113,8 +110,19 @@ const ChatScreen = () => {
             placeholder="Type a message..."
             value={messageInput}
             onChange={(e) => setMessageInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && messageInput.trim() !== "") {
+                handleSendMessage();
+              }
+            }}
           />
-          <button className="gradient-button-global" onClick={handleSendMessage}>Send</button>
+          <button
+            className="gradient-button-global"
+            onClick={handleSendMessage}
+            disabled={messageInput.trim() === ""}
+          >
+            Send
+          </button>
         </div>
       </div>
     </div>

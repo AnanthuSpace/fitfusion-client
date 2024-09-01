@@ -45,6 +45,15 @@ function TrainerChat() {
     dispatch(fetchAlreadyChattedCustomer(trainerData.alreadychattedUsers))
   },[])
 
+  useEffect(() => {
+    socket.on("receiveMessage", (messageDetails) => {
+      setChatHistory((prevChatHistory) => [...prevChatHistory, { details: messageDetails }]);
+    });
+    return () => {
+      socket.off("receiveMessage");
+    };
+  }, [setMessages]);
+
   const handleSendMessage = () => {
     
     if (newMessage.trim()) {

@@ -300,3 +300,19 @@ export const fetchChatMessages = createAsyncThunk(
         }
     }
 );
+
+export const fetchAlreadyChattedTrainer = createAsyncThunk(
+    "user/fetchAlreadyChattedTrainer",
+    async (alreadyChatted, { rejectWithValue }) => {
+        try {
+            const response = await userAxiosInstance.post(`${localhostURL}/getTrainerByIds`, { alreadyChatted });
+            if (response.data && response.data.users) {
+                localStorage.setItem('alreadyChattedTrainer', JSON.stringify(response.data.users));
+                return response.data.users;
+            }
+            throw new Error("Invalid response data");
+        } catch (error) {
+            return rejectWithValue(error.response ? error.response.data : error.message);
+        }
+    }
+);

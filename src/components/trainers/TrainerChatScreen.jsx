@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 
-const TrainerChatScreen = ({ messages ,newMessage,setNewMessage,handleSendMessage,currentCustomerName, currentCustomerId, chatHistory }) => {
+const TrainerChatScreen = ({ newMessage,setNewMessage,handleSendMessage,currentCustomerName, chatHistory }) => {
     const trainerId = useSelector((state)=>state.trainer.trainerData.trainerId)
   return (
     <div className="col-9 p-3 chat-window d-flex flex-column">
@@ -13,9 +13,9 @@ const TrainerChatScreen = ({ messages ,newMessage,setNewMessage,handleSendMessag
           <div
             key={index}
             className={`chat-message ${
-              message.senderID === trainerId ? "received-message" : "sent-message"
+              message.receiverId === trainerId ? "received-message" : "sent-message"
             } d-flex justify-content-${
-              message.senderID === trainerId ? "end" : "start"
+              message.receiverId === trainerId ? "end" : "start"
             }`}
           >
             <div className={`message-bubble ${message.senderID === trainerId ? " text-white" : " text-white"}`}>
@@ -32,8 +32,13 @@ const TrainerChatScreen = ({ messages ,newMessage,setNewMessage,handleSendMessag
           placeholder="Type a message..."
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && newMessage.trim() !== "") {
+              handleSendMessage();
+            }
+          }}
         />
-        <button className="btn" onClick={handleSendMessage}>
+        <button className="btn" onClick={handleSendMessage} disabled={newMessage.trim() === ""}>
           Send
         </button>
       </div>

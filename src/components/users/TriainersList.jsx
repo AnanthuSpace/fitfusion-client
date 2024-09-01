@@ -76,7 +76,7 @@ function TrainersList() {
                     objectFit: "cover",
                   }}
                   onError={(e) => {
-                    e.target.src = "/path/to/default/profile-icon.jpg";
+                    e.target.src = "/Trainer-profile.jpg";
                   }}
                 />
                 <Card.Body>
