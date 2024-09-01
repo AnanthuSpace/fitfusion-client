@@ -221,10 +221,21 @@ export const AddDietPlan = createAsyncThunk(
     async ({ dietPlan }, { rejectWithValue }) => {
         try {
             const response = await trainerAxiosInstance.post(`${localhostURL}/trainer/add-diet`, { dietPlan });
-            console.log(response);
             return response.data;
         } catch (error) {
             return rejectWithValue(error.response.data);
         }
     }
 )
+
+// export const instantChatWithCustomer = createAsyncThunk(
+//     'trainer/instantChatWithCustomer',
+//     async(userId, {rejectWithValue}) => {
+//         try {
+//             const response = await trainerAxiosInstance.post(`${localhostURL}/trainer/instent-chat-with-user`, { userId });
+//             return response.data;
+//         } catch (error) {
+//             return rejectWithValue(error.response.data);
+//         }
+//     }
+// )

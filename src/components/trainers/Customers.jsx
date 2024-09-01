@@ -1,20 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import trainerAxiosInstance from "../../config/axiosTrainerConfig";
+import { IoIosChatbubbles } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
 
 function Customers() {
   const trainerData = useSelector((state) => state.trainer.trainerData);
   const [usersData, setUsersData] = useState([]);
+  const navigate = useNavigate();
 
+  const handleChatWithCustomer = ({customerId,customerName }) => {
+    navigate("/trainer-chat", { state: { customerId: customerId, customerName:customerName  } });
+  };
+  
   useEffect(() => {
     const fetchSubscribedUsers = async () => {
       try {
-        if (trainerData.subscribedUsers && trainerData.subscribedUsers.length > 0) {
-          const response = await trainerAxiosInstance.post("/trainer/customers", {
-            userIds: trainerData.subscribedUsers,
-          });
+        if (
+          trainerData.subscribedUsers &&
+          trainerData.subscribedUsers.length > 0
+        ) {
+          const response = await trainerAxiosInstance.post(
+            "/trainer/customers",
+            {
+              userIds: trainerData.subscribedUsers,
+            }
+          );
           console.log(response.data.customers);
-          setUsersData(response.data.customers);  
+          setUsersData(response.data.customers);
         }
       } catch (error) {
         console.error("Error fetching subscribed users:", error);
@@ -25,10 +38,7 @@ function Customers() {
   }, [trainerData.subscribedUsers]);
 
   return (
-    <div
-      className="container-fluid p-3 flex-column"
-      style={{color: "white" }}
-    >
+    <div className="container-fluid p-3 flex-column" style={{ color: "white" }}>
       <h2>Customers</h2>
       <table className="table table-dark table-hover">
         <thead>
@@ -59,6 +69,12 @@ function Customers() {
                 <td>{user.activityLevel || "Not updated"}</td>
                 <td>{user.dietary || "Not updated"}</td>
                 <td>{user.address || "Not updated"}</td>
+                <td>
+                  <IoIosChatbubbles
+                    size={24}
+                    onClick={() => handleChatWithCustomer({customerId: user.userId, customerName: user.name })}
+                  />
+                </td>
               </tr>
             ))
           ) : (

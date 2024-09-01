@@ -17,6 +17,15 @@
   position: relative;
 }
 
+.user-list .list-group {
+  list-style: none;
+  padding-left: 0; /* Optional: remove any default padding */
+}
+
+.user-list .list-group-item {
+  list-style: none; /* Ensure no bullet points are shown */
+}
+
 .user-item::after {
   content: "";
   display: block;

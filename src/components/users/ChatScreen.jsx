@@ -12,6 +12,7 @@ const ChatScreen = () => {
   const [messageInput, setMessageInput] = useState("");
   const [socket, setSocket] = useState(null);
 
+  
   const trainersData = useSelector((state) => state.user.trainersData);
   const userData = useSelector((state) => state.user.userData);
   const subscriptionList = useSelector((state) => state.user.userData.subscribeList);
