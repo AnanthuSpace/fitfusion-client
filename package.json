@@ -15,7 +15,7 @@
     "@reduxjs/toolkit": "^2.2.6",
     "@stripe/react-stripe-js": "^2.8.0",
     "@stripe/stripe-js": "^4.3.0",
-    "axios": "^1.7.2",
+    "axios": "^1.7.4",
     "bootstrap": "^5.3.3",
     "emoji-picker-react": "^4.11.1",
     "formik": "^2.4.6",
