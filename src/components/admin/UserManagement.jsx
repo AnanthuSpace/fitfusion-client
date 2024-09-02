@@ -1,10 +1,20 @@
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { handleUnblockUser, handleBlockUser } from "../../redux/admin/adminThunk";
+import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import {
+  handleUnblockUser,
+  handleBlockUser,
+  fetchUser,
+} from "../../redux/admin/adminThunk";
 
 function UserManagement() {
   const dispatch = useDispatch();
-  const usersData = useSelector((state) => state.admin.usersData);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [userData, setUserData] = useState([]);
+  const [totalPages, setTotalPages] = useState(0);
+
+  useEffect(() => {
+    loadTrainers(1);
+  }, []);
 
   const handleToggleBlock = (user) => {
     if (user.isBlocked) {
@@ -12,6 +22,17 @@ function UserManagement() {
     } else {
       dispatch(handleBlockUser({ userId: user.userId }));
     }
+  };
+
+  const loadTrainers = async (page) => {
+    dispatch(fetchUser(page)).then((res) => {
+      setUserData(res.payload);
+      setCurrentPage(page);
+    });
+  };
+
+  const handlePageChange = (newPage) => {
+    loadTrainers(newPage);
   };
 
   return (
@@ -32,7 +53,7 @@ function UserManagement() {
           </tr>
         </thead>
         <tbody>
-          {usersData.map((user, index) => (
+          {userData.map((user, index) => (
             <tr key={user.userId}>
               <th scope="row">{index + 1}</th>
               <td>{user.name}</td>
@@ -42,7 +63,9 @@ function UserManagement() {
               <td>
                 <button
                   className={`btn ${
-                    user.isBlocked ? "gradient-red-white" : "gradient-blue-white"
+                    user.isBlocked
+                      ? "gradient-red-white"
+                      : "gradient-blue-white"
                   }`}
                   style={{ width: "100px", color: "white" }}
                   onClick={() => handleToggleBlock(user)}
@@ -54,6 +77,29 @@ function UserManagement() {
           ))}
         </tbody>
       </table>
+      <div className="d-flex justify-content-between">
+        <button
+          className="btn btn-secondary"
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </button>
+        <span>
+          Page {currentPage} of {totalPages}
+        </span>
+        {userData.length < 5 ? (
+          <button className="btn btn-secondary">End</button>
+        ) : (
+          <button
+            className="btn btn-secondary"
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </button>
+        )}
+      </div>
     </div>
   );
 }

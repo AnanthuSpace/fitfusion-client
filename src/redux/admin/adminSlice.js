@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "sonner";
-import { adminLogin, handleBlockTrainer, handleUnblockTrainer, handleBlockUser, handleUnblockUser, verifyTrainer } from "./adminThunk";
+import { adminLogin, handleBlockTrainer, handleUnblockTrainer, handleBlockUser, handleUnblockUser, verifyTrainer, fetchUser, fetchTrainers } from "./adminThunk";
 
 const usersDataString = localStorage.getItem("usersData");
 const usersData = usersDataString ? JSON.parse(usersDataString) : [];
@@ -115,6 +115,22 @@ const adminSlice = createSlice({
             .addCase(verifyTrainer.rejected, (state, action) => {
                 state.isLoading = false;
                 state.error = action.payload;
+            })
+
+            .addCase(fetchTrainers.fulfilled, (state) => {
+                state.isLoading = false;
+            })
+            .addCase(fetchTrainers.rejected, (state, action) => {
+                state.isLoading = false;
+                toast.error(action.payload || "Error while fetching load the trainers", { hideProgressBar: true, autoClose: 3000 })
+            })
+
+            .addCase(fetchUser.fulfilled, (state) => {
+                state.isLoading = false;
+            })
+            .addCase(fetchUser.rejected, (state, action) => {
+                state.isLoading = false;
+                toast.error(action.payload || "Error while fetching load the users", { hideProgressBar: true, autoClose: 3000 })
             })
     }
 });

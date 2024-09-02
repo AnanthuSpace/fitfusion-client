@@ -4,32 +4,63 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { localhostURL } from "../../utils/url";
 import { fetchDeitPlans } from "../../redux/users/userThunk";
+import userAxiosInstance from "../../config/axiosConfig";
 
 function TrainersList() {
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [trainers, setTrainers] = useState([]);
+  const [page, setPage] = useState(1);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const trainersData = useSelector((state) => state.user.trainersData);
+
+  useEffect(() => {
+    const fetchTrainers = async () => {
+      try {
+        setLoading(true);
+        const response = await userAxiosInstance.get(`${localhostURL}/fetchTrainerScroll`, { params: { page } });
+        setTrainers((prevTrainers) => [...prevTrainers, ...response.data]);
+        setLoading(false);
+      } catch (err) {
+        setError("Failed to load trainers.");
+        setLoading(false);
+      }
+    };
+
+    fetchTrainers();
+  }, [page]);
+
+  const handleScroll = () => {
+    if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight) {
+      setPage((prevPage) => prevPage + 1);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
 
   const handleCardClick = (trainerId) => {
-    dispatch(fetchDeitPlans({ trainerId: trainerId })).then((res) => {
+    dispatch(fetchDeitPlans({ trainerId })).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
-        navigate(`/trainer-view`, { state: { trainerId: trainerId } });
+        navigate(`/trainer-view`, { state: { trainerId } });
       }
     });
   };
 
-  const filteredTrainers = trainersData.filter((trainer) =>
+  const filteredTrainers = trainers.filter((trainer) =>
     trainer.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  if (loading) {
+  if (loading && trainers.length === 0) {
     return (
       <div className="text-center mt-4">
         <Spinner animation="border" variant="light" />
@@ -96,6 +127,11 @@ function TrainersList() {
             </Col>
           ))}
         </Row>
+        {loading && (
+          <div className="text-center mt-4">
+            <Spinner animation="border" variant="light" />
+          </div>
+        )}
       </div>
 
       <style>{`

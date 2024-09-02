@@ -1,15 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaCheck, FaTimes, FaEdit } from "react-icons/fa";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   handleBlockTrainer,
   handleUnblockTrainer,
   verifyTrainer,
+  fetchTrainers,
 } from "../../redux/admin/adminThunk";
+
 
 const TrainerManagement = () => {
   const dispatch = useDispatch();
-  const trainersData = useSelector((state) => state.admin.trainersData);
+  const [trainersData, setTrainersData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    loadTrainers(1);
+  }, []);
+
+
+  const loadTrainers = async (page) => {
+    dispatch(fetchTrainers(page)).then((res) => {
+      setTrainersData(res.payload);
+      setCurrentPage(page);
+    });
+  };
 
   const handleVerify = (trainerId, isVerified) => {
     dispatch(verifyTrainer({ trainerId, isVerified }));
@@ -27,12 +44,39 @@ const TrainerManagement = () => {
     console.log("Edit trainer with id:", id);
   };
 
+  const handlePageChange = (newPage) => {
+    loadTrainers(newPage);
+  };
+
   return (
     <div
       className="container-fluid p-3 flex-column"
       style={{ backgroundColor: "black", color: "white" }}
     >
       <h2 className="short-gradient-text-blue">Trainer Management</h2>
+      <div className="mb-3">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Search trainers..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          style={{
+            color: "white",
+            backgroundColor: "black",
+            borderColor: "white",
+            borderRadius: "4px",
+            padding: "8px",
+          }}
+        />
+        <style>
+          {`
+            .form-control::placeholder {
+              color: white;
+            }
+          `}
+        </style>
+      </div>
       <table className="table table-dark table-hover">
         <thead>
           <tr>
@@ -50,7 +94,7 @@ const TrainerManagement = () => {
         <tbody>
           {trainersData.map((trainer, index) => (
             <tr key={trainer.trainerId}>
-              <th scope="row">{index + 1}</th>
+              <th scope="row">{(currentPage - 1) * 5 + index + 1}</th>
               <td>{trainer.name}</td>
               <td>{trainer.email}</td>
               <td>{trainer.gender || "Not mentioned"}</td>
@@ -104,6 +148,30 @@ const TrainerManagement = () => {
           ))}
         </tbody>
       </table>
+
+      <div className="d-flex justify-content-between">
+        <button
+          className="btn btn-secondary"
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </button>
+        <span>
+          Page {currentPage} of {totalPages}
+        </span>
+        {trainersData.length < 5 ? (
+          <button className="btn btn-secondary">End</button>
+        ) : (
+          <button
+            className="btn btn-secondary"
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </button>
+        )}
+      </div>
     </div>
   );
 };
