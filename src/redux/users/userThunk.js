@@ -333,3 +333,26 @@ export const fetchDeitPlans = createAsyncThunk(
         }
     }
 )
+
+export const addReview = createAsyncThunk(
+    "user/addReview",
+    async ({ trainerId, reviewDetails, curruntRating, reviewCount }, { rejectWithValue }) => {
+        try {
+            const response = await userAxiosInstance.post(`${localhostURL}/add-review`, { trainerId, reviewData: reviewDetails, curruntRating, reviewCount })
+            console.log("response : ", response.data);
+            return response.data
+        } catch (error) {
+            return rejectWithValue(error.response ? error.response.data : error.message);
+        }
+    }
+)
+export const fetchReviewsByTrainer = createAsyncThunk(
+    "user/fetchReviewsByTrainer",
+    async({trainerId},{rejectWithValue}) => {
+        try {
+            console.log(trainerId);
+        } catch (error) {
+            return rejectWithValue(error.response ? error.response.data : error.message);
+        }
+    }
+)

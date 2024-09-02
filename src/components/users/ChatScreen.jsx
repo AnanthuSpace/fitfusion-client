@@ -4,6 +4,7 @@ import ChatTrainerList from "./ChatTrainerList";
 import io from "socket.io-client";
 import { localhostURL } from "../../utils/url";
 import { fetchAlreadyChattedTrainer } from "../../redux/users/userThunk";
+import EmojiPicker from "emoji-picker-react";
 
 const socket = io(localhostURL);
 
@@ -14,6 +15,7 @@ const ChatScreen = () => {
   const [selectedName, setSelectedName] = useState("");
   const [messageInput, setMessageInput] = useState("");
   const [chatHistory, setChatHistory] = useState([]);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   const userData = useSelector((state) => state.user.userData);
   const alreadyChattedTrainer = useSelector(
@@ -68,6 +70,11 @@ const ChatScreen = () => {
     }
   };
 
+  const onEmojiClick = (emojiObject) => {
+    setMessageInput(messageInput + emojiObject.emoji);
+    setShowEmojiPicker(false);
+  };
+
   return (
     <div className="d-flex flex-grow-1 overflow-hidden background-gradient-main">
       <ChatTrainerList
@@ -81,7 +88,7 @@ const ChatScreen = () => {
         {selectedName ? (
           <>
             <h4 className="chat-header glass-effect">{selectedName}</h4>
-            <div className="flex-grow-1 d-flex flex-column-reverse overflow-auto mb-3">
+            <div className="user-chat-messages flex-grow-1 d-flex flex-column-reverse overflow-auto mb-3">
               {chatHistory.map((message, index) => (
                 <div
                   key={index}
@@ -101,6 +108,17 @@ const ChatScreen = () => {
             </div>
 
             <div className="chat-input d-flex">
+              <button
+                className="btn emoji-button me-2"
+                onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+              >
+                😊
+              </button>
+              {showEmojiPicker && (
+                <div className="emoji-picker">
+                  <EmojiPicker onEmojiClick={onEmojiClick} />
+                </div>
+              )}
               <input
                 type="text"
                 className="form-control me-2 chat-txt"

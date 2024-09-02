@@ -15,20 +15,21 @@ const TrainerDeits = () => {
         {deit && deit.length > 0 ? (
           deit.map((plan, index) => (
             <Card
-              key={index}
-              className="mb-3 glass-effect"
-              style={{ color: "#fff", borderRadius: "8px" }}
-            >
-              <Card.Body>
-                <Card.Title>{plan.dietName}</Card.Title>
-                <Button
-                  className="gradient-blue-white"
-                  onClick={() => handleShow(plan)}
-                >
-                  View Details
-                </Button>
-              </Card.Body>
-            </Card>
+            key={index}
+            className="mb-3 text-white"
+            style={{ border: "1px solid white", borderRadius: "8px", background: "transparent" }}
+          >
+            <Card.Body>
+              <Card.Title>{plan.dietName}</Card.Title>
+              <Button
+                className="gradient-blue-white"
+                onClick={() => handleShow(plan)}
+              >
+                View Details
+              </Button>
+            </Card.Body>
+          </Card>
+          
           ))
         ) : (
           <h5 className="text-center text-white mt-5">
