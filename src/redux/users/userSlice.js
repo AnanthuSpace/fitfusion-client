@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registration, signupVerification, userLogin, loginVerification, editUserData, changeUserPassword, fetchAlreadyChattedTrainer, addUserDetails, fetchTrainersData, createCheckoutSession, fetchUserAndTrainer, fetchChatMessages } from "./userThunk";
+import { registration, signupVerification, userLogin, loginVerification, editUserData, fetchDeitPlans, changeUserPassword, fetchAlreadyChattedTrainer, addUserDetails, fetchTrainersData, createCheckoutSession, fetchUserAndTrainer, fetchChatMessages } from "./userThunk";
 import { toast } from "sonner";
 
 const userData = localStorage.getItem("userData") ? JSON.parse(localStorage.getItem("userData")) : null;
 const trainersData = localStorage.getItem("trainersData") ? JSON.parse(localStorage.getItem("trainersData")) : [];
 const alreadyChattedTrainer = localStorage.getItem("alreadyChattedTrainer") ? JSON.parse(localStorage.getItem("alreadyChattedTrainer")) : []
+const trainerDiet = localStorage.getItem("trainerDiet") ? JSON.parse(localStorage.getItem("trainerDiet")) : {}
 
 const userSlice = createSlice({
   name: "userSlice",
@@ -15,6 +16,7 @@ const userSlice = createSlice({
     temperoryEmail: "",
     trainersData: trainersData,
     alreadyChattedTrainer: alreadyChattedTrainer,
+    trainerDiet: trainerDiet
   },
   reducers: {
     userLogout: (state) => {
@@ -206,6 +208,16 @@ const userSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(fetchAlreadyChattedTrainer.rejected, (state) => {
+        state.isLoading = false;
+      })
+
+      .addCase(fetchDeitPlans.pending, (state) => {
+        state.error = null;
+      })
+      .addCase(fetchDeitPlans.fulfilled, (state, action) => {
+        state.isLoading = false;
+      })
+      .addCase(fetchDeitPlans.rejected, (state) => {
         state.isLoading = false;
       })
   },

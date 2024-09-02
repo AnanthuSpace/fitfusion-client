@@ -1,23 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { Card, Row, Col, Form, InputGroup, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { localhostURL } from "../../utils/url";
+import { fetchDeitPlans } from "../../redux/users/userThunk";
 
 function TrainersList() {
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const trainersData = useSelector((state) => state.user.trainersData);
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
 
-
   const handleCardClick = (trainerId) => {
-    navigate(`/trainer-view`, {state: {trainerId: trainerId}});
+    dispatch(fetchDeitPlans({ trainerId: trainerId })).then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        navigate(`/trainer-view`, { state: { trainerId: trainerId } });
+      }
+    });
   };
 
   const filteredTrainers = trainersData.filter((trainer) =>
@@ -41,7 +46,9 @@ function TrainersList() {
       <div className="text-center mb-4">
         <h2 className="gradient-text">Meet Our Trainers</h2>
         <Form className="d-flex justify-content-center mt-3">
-          <InputGroup  style={{ border: "1px solid #b249f8", borderRadius: "1rem"}}>
+          <InputGroup
+            style={{ border: "1px solid #b249f8", borderRadius: "1rem" }}
+          >
             <Form.Control
               type="text"
               placeholder="Search Trainers"

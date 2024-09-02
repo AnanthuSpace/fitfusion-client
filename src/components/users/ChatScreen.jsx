@@ -10,10 +10,8 @@ const socket = io(localhostURL);
 const ChatScreen = () => {
   const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedTrainerId, setSelectedTrainerId] = useState(null);
   const [selectedId, setSelectedId] = useState("");
   const [selectedName, setSelectedName] = useState("");
-  const [chatMessages, setChatMessages] = useState([]);
   const [messageInput, setMessageInput] = useState("");
   const [chatHistory, setChatHistory] = useState([]);
 
@@ -46,17 +44,17 @@ const ChatScreen = () => {
 
   useEffect(() => {
     socket.on("receiveMessage", (messageDetails) => {
-      setChatHistory((prevChatHistory) => [...prevChatHistory, { details: messageDetails }]);
+      setChatHistory([{ ...messageDetails }, ...chatHistory]);
     });
 
     return () => {
       socket.off("receiveMessage");
     };
-  }, [setChatMessages]);
+  }, [chatHistory]);
 
-  const handleSendMessage = () => {    
+  const handleSendMessage = () => {
     console.log(selectedId);
-    
+
     if (messageInput.trim()) {
       const message = {
         senderId: userData.userId,
@@ -66,7 +64,6 @@ const ChatScreen = () => {
 
       const firstTimeChat = chatHistory.length === 0;
       socket.emit("sendMessage", { message, firstTimeChat });
-      setChatMessages((prevMessages) => [message, ...prevMessages]);
       setMessageInput("");
     }
   };
@@ -81,49 +78,59 @@ const ChatScreen = () => {
         alreadyChattedTrainer={alreadyChattedTrainer}
       />
       <div className="col-9 p-3 d-flex flex-column">
-        {selectedName && (
-          <h4 className="chat-header glass-effect">{selectedName}</h4>
-        )}
-        <div className="flex-grow-1 d-flex flex-column-reverse overflow-auto mb-3">
-          {chatHistory.map((message, index) => (
-            <div
-              key={index}
-              className={`chat-message ${
-                message.senderId === userData.userId
-                  ? "user-chat-message"
-                  : "received-message"
-              } d-flex justify-content-${
-                message.senderId === userData.userId ? "end" : "start"
-              }`}
-            >
-              <div className="message-bubble text-white">
-                {message.messages}
-              </div>
+        {selectedName ? (
+          <>
+            <h4 className="chat-header glass-effect">{selectedName}</h4>
+            <div className="flex-grow-1 d-flex flex-column-reverse overflow-auto mb-3">
+              {chatHistory.map((message, index) => (
+                <div
+                  key={index}
+                  className={`chat-message ${
+                    message.senderId === userData.userId
+                      ? "user-chat-message"
+                      : "received-message"
+                  } d-flex justify-content-${
+                    message.senderId === userData.userId ? "end" : "start"
+                  }`}
+                >
+                  <div className="message-bubble text-white">
+                    {message.messages}
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
 
-        <div className="chat-input d-flex">
-          <input
-            type="text"
-            className="form-control me-2 chat-txt"
-            placeholder="Type a message..."
-            value={messageInput}
-            onChange={(e) => setMessageInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && messageInput.trim() !== "") {
-                handleSendMessage();
-              }
-            }}
-          />
-          <button
-            className="gradient-button-global"
-            onClick={handleSendMessage}
-            disabled={messageInput.trim() === ""}
-          >
-            Send
-          </button>
-        </div>
+            <div className="chat-input d-flex">
+              <input
+                type="text"
+                className="form-control me-2 chat-txt"
+                placeholder="Type a message..."
+                value={messageInput}
+                onChange={(e) => setMessageInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && messageInput.trim() !== "") {
+                    handleSendMessage();
+                  }
+                }}
+              />
+              <button
+                className="gradient-button-global"
+                onClick={handleSendMessage}
+                disabled={messageInput.trim() === ""}
+              >
+                Send
+              </button>
+            </div>
+          </>
+        ) : (
+          <div className="welcome-message text-white text-center mt-5">
+            <h3 className="mb-3">Welcome to the Chat!</h3>
+            <p className="lead text-white">
+              Please select a customer to start interacting and get personalized
+              fitness guidance.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

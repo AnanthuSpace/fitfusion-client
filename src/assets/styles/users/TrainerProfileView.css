@@ -6,7 +6,7 @@
 }
 
 .background-container {
-    height: 15rem;
+    height: 10rem;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(10px);

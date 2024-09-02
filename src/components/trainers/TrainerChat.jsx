@@ -47,12 +47,12 @@ function TrainerChat() {
 
   useEffect(() => {
     socket.on("receiveMessage", (messageDetails) => {
-      setChatHistory((prevChatHistory) => [...prevChatHistory, { details: messageDetails }]);
+      setChatHistory([{...messageDetails},...chatHistory ]);
     });
     return () => {
       socket.off("receiveMessage");
     };
-  }, [setMessages]);
+  });
 
   const handleSendMessage = () => {
     
@@ -65,7 +65,6 @@ function TrainerChat() {
       
       const firstTimeChat = chatHistory.length === 0 ? true : false;    
       socket.emit("sendMessage",{ message, firstTimeChat})
-      setMessages((prevMessages) => [message, ...prevMessages]);
       setNewMessage("");
     }
   };

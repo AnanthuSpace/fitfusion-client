@@ -316,3 +316,20 @@ export const fetchAlreadyChattedTrainer = createAsyncThunk(
         }
     }
 );
+
+export const fetchDeitPlans = createAsyncThunk(
+    "user/fetchDeitPlans",
+    async ({ trainerId }, { rejectWithValue }) => {
+        try {
+            const response = await userAxiosInstance.get(`${localhostURL}/fetchDeitPlans`, {
+                params: {
+                    trainerId: trainerId
+                }
+            });
+            localStorage.setItem('trainerDiet', JSON.stringify(response.data.deit));
+            return response.data.deit;
+        } catch (error) {
+            return rejectWithValue(error.response ? error.response.data : error.message);
+        }
+    }
+)

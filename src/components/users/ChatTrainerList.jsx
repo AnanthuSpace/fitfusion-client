@@ -14,7 +14,7 @@ const userId = useSelector((state) => state.user.userData.userId)
                 userId: userId,
             },
         });
-        const sortedChatHistory = response.data.sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime());
+        const sortedChatHistory = response.data.sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime());        
         setChatHistory(sortedChatHistory);
         onSelectTrainer(trainerId, trainerName);
     } catch (error) {

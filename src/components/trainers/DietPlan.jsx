@@ -3,7 +3,6 @@ import DietPlanCards from './DietPlanCards';
 import AddDietForm from './AddDietForm';
 import { Container, Row, Col } from 'react-bootstrap';
 
-// Main component for managing diet plans
 const DietPlan = () => {
   const [dietPlans, setDietPlans] = useState([]);
 

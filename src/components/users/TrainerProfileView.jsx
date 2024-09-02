@@ -1,44 +1,28 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Image, Col } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
 import { localhostURL } from "../../utils/url";
 import "../../assets/styles/users/TrainerProfileView.css";
 import SubscribeButton from "./SubscribeButton";
-import { fetchChatMessages } from "../../redux/users/userThunk";
+import TrainerDeits from "./TrainerDeits";
 
 function TrainerProfileView() {
-  const [trainerId, setTrainerId] = useState("");
+  const [TrainerId, setTrainerId] = useState("");
   const trainersData = useSelector((state) => state.user.trainersData);
-  const user = useSelector((state) => state.user.userData);
-  const isSubscribed = user?.subscribeList?.includes(trainerId);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const location = useLocation()
 
   const trainerDetails = trainersData.find(
-    (trainer) => trainer.trainerId === trainerId
+    (trainer) => trainer.trainerId === TrainerId
   );
 
-  useEffect(() => {
-    setTrainerId(location.state?.trainerId);
+  useEffect(() => {  
+    setTrainerId(location.state.trainerId);
   }, [location.state]);
 
   const handleChat = () => {
-    if (trainerDetails) {
-      dispatch(
-        fetchChatMessages({
-          userId: user.userId,
-          trainerId: trainerId,
-          isSubscribed,
-        })
-      ).then((res) => {
-        if (res.meta.requestStatus === "fulfilled") {
-          const sortedChatMessages = res.payload.sort((a, b) => new Date(b.time) - new Date(a.time));
-          navigate("/user-chat", { state: { chatMessages: sortedChatMessages } });
-        }
-      });
-    }
+    navigate("/user-chat", { state: {trainerId: TrainerId, trainerName: trainerDetails.name }});
   };
   
 
@@ -62,7 +46,7 @@ function TrainerProfileView() {
         />
 
         <Col className="icons-container">
-          <button className="glass-button" onClick={handleChat}>
+          <button className="glass-button" onClick={()=>handleChat({trainerId: TrainerId, trainerName: trainerDetails.name })}>
             Message
           </button>
           <button className="glass-button">Follow</button>
@@ -80,28 +64,14 @@ function TrainerProfileView() {
           <p>Gender: {trainerDetails.gender}</p>
         </div>
 
-        {/* Diet Plans Section */}
         <div className="diet-plans-section glass-effect">
           <h3>Diet Plans</h3>
-          {trainerDetails.dietPlans && trainerDetails.dietPlans.length > 0 ? (
-            <ul>
-              {trainerDetails.dietPlans.map((plan, index) => (
-                <li key={index}>
-                  <h5>{plan.title}</h5>
-                  <p>{plan.description}</p>
-                  {/* Add more details as needed */}
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>No diet plans available</p>
-          )}
+          <TrainerDeits/>
         </div>
 
-        {/* Media Section with Subscription Button */}
         <div className="media-section text-center glass-effect">
           <div className="w-100 contents-div">
-            <SubscribeButton trainerId={trainerId} />
+            <SubscribeButton trainerId={TrainerId} />
           </div>
         </div>
       </div>
