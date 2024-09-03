@@ -7,7 +7,7 @@ import {
   verifyTrainer,
   fetchTrainers,
 } from "../../redux/admin/adminThunk";
-
+import { Modal, Button } from "react-bootstrap";
 
 const TrainerManagement = () => {
   const dispatch = useDispatch();
@@ -15,11 +15,12 @@ const TrainerManagement = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [selectedTrainer, setSelectedTrainer] = useState(null);
 
   useEffect(() => {
     loadTrainers(1);
   }, []);
-
 
   const loadTrainers = async (page) => {
     dispatch(fetchTrainers(page)).then((res) => {
@@ -33,11 +34,39 @@ const TrainerManagement = () => {
   };
 
   const handleToggleBlock = (trainer) => {
-    if (trainer.isBlocked) {
-      dispatch(handleUnblockTrainer({ trainerId: trainer.trainerId }));
+    setSelectedTrainer(trainer);
+    setShowModal(true);
+  };
+
+  const confirmToggleBlock = () => {
+    if (selectedTrainer.isBlocked) {
+      dispatch(
+        handleUnblockTrainer({ trainerId: selectedTrainer.trainerId })
+      ).then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          const updatedTrainers = trainersData.map((t) =>
+            t.trainerId === selectedTrainer.trainerId
+              ? { ...t, isBlocked: false }
+              : t
+          );
+          setTrainersData(updatedTrainers);
+        }
+      });
     } else {
-      dispatch(handleBlockTrainer({ trainerId: trainer.trainerId }));
+      dispatch(
+        handleBlockTrainer({ trainerId: selectedTrainer.trainerId })
+      ).then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          const updatedTrainers = trainersData.map((t) =>
+            t.trainerId === selectedTrainer.trainerId
+              ? { ...t, isBlocked: true }
+              : t
+          );
+          setTrainersData(updatedTrainers);
+        }
+      });
     }
+    setShowModal(false);
   };
 
   const handleEdit = (id) => {
@@ -172,6 +201,45 @@ const TrainerManagement = () => {
           </button>
         )}
       </div>
+
+      <Modal show={showModal} centered contentClassName="p-0">
+        <Modal.Header
+          style={{ backgroundColor: "black", borderBottom: "none" }}
+        >
+          <Modal.Title className="w-100 text-center text-white">
+            Confirm Action
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ backgroundColor: "black", color: "white" }}>
+          {selectedTrainer && selectedTrainer.isBlocked
+            ? "Are you sure you want to unblock this trainer?"
+            : "Are you sure you want to block this trainer?"}
+        </Modal.Body>
+        <Modal.Footer
+          style={{
+            backgroundColor: "black",
+            borderTop: "none",
+            justifyContent: "space-between",
+          }}
+        >
+          <Button
+            variant="secondary"
+            onClick={() => setShowModal(false)}
+            style={{ width: "30%", border: "none" }}
+            className="gradient-blue-white ms-1"
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="danger"
+            className="gradient-red-white me-1"
+            onClick={confirmToggleBlock}
+            style={{ width: "30%" }}
+          >
+            Confirm
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };

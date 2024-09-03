@@ -356,3 +356,15 @@ export const fetchReviewsByTrainer = createAsyncThunk(
         }
     }
 )
+
+export const inactive = createAsyncThunk(
+    "user/inactive",
+    async({userId}, {rejectWithValue}) => {
+        try {
+            const response = await userAxiosInstance.put(`${localhostURL}/inactive`, {userId: userId})
+            return response.data
+        } catch (error) {
+            return rejectWithValue(error.response ? error.response.data : error.message);
+        }
+    }
+)

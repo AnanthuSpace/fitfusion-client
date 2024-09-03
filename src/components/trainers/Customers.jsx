@@ -9,10 +9,12 @@ function Customers() {
   const [usersData, setUsersData] = useState([]);
   const navigate = useNavigate();
 
-  const handleChatWithCustomer = ({customerId,customerName }) => {
-    navigate("/trainer-chat", { state: { customerId: customerId, customerName:customerName  } });
+  const handleChatWithCustomer = ({ customerId, customerName }) => {
+    navigate("/trainer-chat", {
+      state: { customerId: customerId, customerName: customerName },
+    });
   };
-  
+
   useEffect(() => {
     const fetchSubscribedUsers = async () => {
       try {
@@ -26,7 +28,6 @@ function Customers() {
               userIds: trainerData.subscribedUsers,
             }
           );
-          console.log(response.data.customers);
           setUsersData(response.data.customers);
         }
       } catch (error) {
@@ -45,6 +46,7 @@ function Customers() {
           <tr>
             <th scope="col">#</th>
             <th scope="col">Name</th>
+            <th scope="col">Status</th>
             <th scope="col">Email</th>
             <th scope="col">Gender</th>
             <th scope="col">Phone</th>
@@ -61,6 +63,17 @@ function Customers() {
               <tr key={user.userId}>
                 <th scope="row">{index + 1}</th>
                 <td>{user.name}</td>
+                <td>
+                  <span
+                    style={{
+                      height: "10px",
+                      width: "10px",
+                      backgroundColor: user.isActive ? "green" : "red",
+                      borderRadius: "50%",
+                      display: "inline-block",
+                    }}
+                  ></span>
+                </td>
                 <td>{user.email}</td>
                 <td>{user.gender}</td>
                 <td>{user.phone || "Not updated"}</td>
@@ -72,7 +85,12 @@ function Customers() {
                 <td>
                   <IoIosChatbubbles
                     size={24}
-                    onClick={() => handleChatWithCustomer({customerId: user.userId, customerName: user.name })}
+                    onClick={() =>
+                      handleChatWithCustomer({
+                        customerId: user.userId,
+                        customerName: user.name,
+                      })
+                    }
                   />
                 </td>
               </tr>

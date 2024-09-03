@@ -5,6 +5,7 @@ import { userLogout } from "../../redux/users/userSlice";
 import { IoIosNotifications, IoMdSettings } from "react-icons/io";
 import { FaCalculator } from "react-icons/fa";
 import { LuSendHorizonal } from "react-icons/lu";
+import { inactive } from "../../redux/users/userThunk";
 import "../../assets/styles/users/Sidebar.css";
 import {
   MdManageAccounts,
@@ -18,8 +19,13 @@ function Sidebar({ isOpen, onClose }) {
   const userData = useSelector((state) => state.user.userData)
 
   const handleLogout = () => {
-    dispatch(userLogout())
-    navigate("/login")
+    dispatch(inactive({userId: userData.userId})).then((res)=> {
+      console.log(res.payload);
+      if(res.payload.message == "User is inactive"){
+        dispatch(userLogout())
+        navigate("/login")
+      }
+    })
   };
 
   return (

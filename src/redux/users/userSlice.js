@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registration, signupVerification, userLogin, loginVerification, editUserData, fetchDeitPlans, addReview, changeUserPassword, fetchAlreadyChattedTrainer, addUserDetails, fetchTrainersData, createCheckoutSession, fetchUserAndTrainer, fetchChatMessages } from "./userThunk";
+import { registration, signupVerification, userLogin, loginVerification, editUserData, fetchDeitPlans, inactive, addReview, changeUserPassword, fetchAlreadyChattedTrainer, addUserDetails, fetchTrainersData, createCheckoutSession, fetchUserAndTrainer, fetchChatMessages } from "./userThunk";
 import { toast } from "sonner";
 
 const userData = localStorage.getItem("userData") ? JSON.parse(localStorage.getItem("userData")) : null;
@@ -229,6 +229,14 @@ const userSlice = createSlice({
         toast.success("Review added successfully", { hideProgressBar: true, autoClose: 3000 });
       })
       .addCase(addReview.rejected, (state) => {
+        state.isLoading = false;
+        toast.error(action.payload || "Failed to add review", { hideProgressBar: true, autoClose: 3000 });
+      })
+
+      .addCase(inactive.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(inactive.rejected, (state) => {
         state.isLoading = false;
         toast.error(action.payload || "Failed to add review", { hideProgressBar: true, autoClose: 3000 });
       })

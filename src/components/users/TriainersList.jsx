@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Card, Row, Col, Form, InputGroup, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { localhostURL } from "../../utils/url";
 import { fetchDeitPlans } from "../../redux/users/userThunk";
 import userAxiosInstance from "../../config/axiosConfig";
@@ -14,6 +14,7 @@ function TrainersList() {
   const [page, setPage] = useState(1);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const listDivRef = useRef(null);
 
   useEffect(() => {
     const fetchTrainers = async () => {
@@ -32,15 +33,21 @@ function TrainersList() {
   }, [page]);
 
   const handleScroll = () => {
-    if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight) {
+    const div = listDivRef.current;
+    if (div.scrollTop + div.clientHeight >= div.scrollHeight) {
       setPage((prevPage) => prevPage + 1);
     }
   };
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
+    const div = listDivRef.current;
+    if (div) {
+      div.addEventListener("scroll", handleScroll);
+    }
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      if (div) {
+        div.removeEventListener("scroll", handleScroll);
+      }
     };
   }, []);
 
@@ -96,6 +103,7 @@ function TrainersList() {
           overflowY: "scroll",
           overflowX: "hidden",
         }}
+        ref={listDivRef}
       >
         <Row>
           {filteredTrainers.map((trainer) => (

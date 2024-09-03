@@ -11,6 +11,7 @@ function UserManagement() {
   const [currentPage, setCurrentPage] = useState(1);
   const [userData, setUserData] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     loadTrainers(1);
@@ -41,6 +42,29 @@ function UserManagement() {
       style={{ backgroundColor: "black", color: "white" }}
     >
       <h2 className="short-gradient-text-blue">User Management</h2>
+      <div className="mb-3">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Search trainers..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          style={{
+            color: "white",
+            backgroundColor: "black",
+            borderColor: "white",
+            borderRadius: "4px",
+            padding: "8px",
+          }}
+        />
+        <style>
+          {`
+            .form-control::placeholder {
+              color: white;
+            }
+          `}
+        </style>
+      </div>
       <table className="table table-dark table-hover">
         <thead>
           <tr>

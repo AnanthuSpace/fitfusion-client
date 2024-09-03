@@ -26,6 +26,7 @@ const PaymentSuccess = () => {
                 </h1>
                 <p className="card-text text-white">
                   Your payment was successful. Thank you for your purchase!
+                  press continue to asess the training fecilities
                 </p>
                 <a
                   onClick={handleSubmit}
@@ -33,9 +34,6 @@ const PaymentSuccess = () => {
                 >
                   Continue
                 </a>
-                {/* <a onClick={()=>navigate(-3)} className="btn gradient-button-global mt-3">
-                  Continue
-                </a> */}
               </div>
             </div>
           </div>

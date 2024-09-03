@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { trainerRegistration } from "../../redux/trainers/trainerThunk";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "../../assets/styles/trainers/TrainerLogin.css"; // Use the same styles as login
+import "../../assets/styles/trainers/TrainerLogin.css"; 
 
 function TrainerSignup() {
   const [name, setFullName] = useState("");
@@ -16,7 +16,8 @@ function TrainerSignup() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault()
     dispatch(
       trainerRegistration({
         name,
