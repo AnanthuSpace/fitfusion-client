@@ -46,7 +46,7 @@ function App() {
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/verify-otp" element={<SignUpVerification />} />
           <Route path="/login-verify" element={<LoginVerification />} />
-          <Route path="/trainer-list" element={<TrainerListPage />} />
+          <Route path="/trainer-list" element={<UserProtecter><TrainerListPage /></UserProtecter>} />
           <Route path="/profile" element={<UserProtecter><ProfilePage /></UserProtecter>} />
           <Route path="/user-data" element={<UserProtecter><UserDetailsForm /></UserProtecter>} />
           <Route path="/trainer-view" element={<UserProtecter><TrainerViewPage /></UserProtecter>} />

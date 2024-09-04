@@ -24,12 +24,9 @@ userAxiosInstance.interceptors.response.use(
     },
     async (error) => {
         const originalRequest = error.config;
-
         if (error.response && error.response.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
-
             const refreshToken = sessionStorage.getItem("userRefreshToken");
-
             try {
                 const response = await axios.post(`${localhostURL}/auth/refresh-token`, { refreshToken });
                 const newAccessToken = response.data.accessToken;
@@ -42,7 +39,6 @@ userAxiosInstance.interceptors.response.use(
                 return Promise.reject(refreshError);
             }
         }
-
         return Promise.reject(error);
     }
 );

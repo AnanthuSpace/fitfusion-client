@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { Toaster, toast } from "sonner";
 
 const UserProtector = ({ children }) => {
   const navigate = useNavigate();
@@ -7,6 +8,7 @@ const UserProtector = ({ children }) => {
 
   useEffect(() => {
     if (!userToken) {
+      toast.warning("Please log in to access this page.");
       navigate("/login");
     }
   }, [navigate, userToken]);
@@ -15,7 +17,11 @@ const UserProtector = ({ children }) => {
     return children;
   }
 
-  return null;
+  return (
+    <>
+      <Toaster />
+    </>
+  );
 };
 
 export default UserProtector;

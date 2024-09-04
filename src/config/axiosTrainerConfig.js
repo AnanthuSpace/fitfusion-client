@@ -27,9 +27,7 @@ trainerAxiosInstance.interceptors.response.use(
 
         if (error.response && error.response.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
-
             const refreshToken = sessionStorage.getItem("trainerRefreshToken");
-
             if (refreshToken) {
                 try {
                     const response = await axios.post(`${localhostURL}/auth/refresh-token`, { refreshToken });
@@ -48,7 +46,6 @@ trainerAxiosInstance.interceptors.response.use(
                 return Promise.reject(error);
             }
         }
-
         return Promise.reject(error);
     }
 );

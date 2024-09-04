@@ -24,28 +24,21 @@ adminAxiosInstance.interceptors.response.use(
     },
     async (error) => {
         const originalRequest = error.config;
-
         if (error.response && error.response.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
-
             const refreshToken = sessionStorage.getItem("adminRefreshToken");
-
             try {
                 const response = await axios.post(`${localhostURL}/auth/refresh-token`, { refreshToken });
                 const newAccessToken = response.data.accessToken;
                 sessionStorage.setItem("adminAccessToken", newAccessToken);
-
-                
                 originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
                 return axios(originalRequest);
             } catch (refreshError) {
-                
                 sessionStorage.removeItem("adminAccessToken");
                 sessionStorage.removeItem("adminRefreshToken");
                 return Promise.reject(refreshError);
             }
         }
-
         return Promise.reject(error);
     }
 );
