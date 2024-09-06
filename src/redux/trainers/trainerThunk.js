@@ -243,3 +243,24 @@ export const fetchAlreadyChattedCustomer = createAsyncThunk(
     }
 );
 
+export const uploadVideo = createAsyncThunk(
+    "trainers/uploadVideo",
+    async (videoData, { rejectWithValue }) => {
+      try {
+        const formData = new FormData();
+        formData.append("title", videoData.title);
+        formData.append("description", videoData.description);
+        formData.append("file", videoData.file);
+  
+        const response = await axios.post("/api/upload-video", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+  
+        return response.data;
+      } catch (error) {
+        return rejectWithValue(error.response.data);
+      }
+    }
+  );

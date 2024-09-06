@@ -14,6 +14,7 @@ trainerAxiosInstance.interceptors.request.use(
         return config;
     },
     (error) => {
+        console.error("Request error:", error);
         return Promise.reject(error); 
     }
 );
@@ -32,12 +33,13 @@ trainerAxiosInstance.interceptors.response.use(
                 try {
                     const response = await axios.post(`${localhostURL}/auth/refresh-token`, { refreshToken });
                     const newAccessToken = response.data.accessToken;
-                    
+
                     sessionStorage.setItem("trainerAccessToken", newAccessToken);
-                    
+
                     originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
                     return axios(originalRequest);
                 } catch (refreshError) {
+                    console.error("Token refresh error:", refreshError);
                     sessionStorage.removeItem("trainerAccessToken");
                     sessionStorage.removeItem("trainerRefreshToken");
                     return Promise.reject(refreshError);

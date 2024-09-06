@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import "../../assets/styles/users/TrainerContainer.css";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchTrainersData } from "../../redux/users/userThunk";
+import { fetchTrainersData, fetchDeitPlans } from "../../redux/users/userThunk";
 import { localhostURL } from "../../utils/url";
 
 function TrainerContainer() {
@@ -11,6 +11,14 @@ function TrainerContainer() {
   useEffect(() => {
     dispatch(fetchTrainersData());
   }, [dispatch]);
+
+  const handleCardClick = (trainerId) => {
+    dispatch(fetchDeitPlans({ trainerId })).then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        navigate(`/trainer-view`, { state: { trainerId } });
+      }
+    });
+  };
 
   return (
     <div className="trainer-container">
@@ -27,7 +35,7 @@ function TrainerContainer() {
       ) : (
         <div className="trainer-div">
           {trainersData.slice(0, 3).map((trainer, index) => (
-            <div className="trainer-img" key={index}>
+            <div className="trainer-img" key={index} onClick={handleCardClick}>
               <img
                 src={`${localhostURL}/${trainer.profileIMG}`}
                 alt={trainer.name}

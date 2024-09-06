@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "sonner";
-import { trainerRegistration, trainerVerification, trainerLogin, editTrainer, changeTrainerPassword, updateProfilePicture, fetchAlreadyChattedCustomer, AddDietPlan, fetchDeitPlans } from "./trainerThunk";
+import { trainerRegistration, trainerVerification, trainerLogin, editTrainer, changeTrainerPassword, updateProfilePicture, uploadVideo, fetchAlreadyChattedCustomer, AddDietPlan, fetchDeitPlans } from "./trainerThunk";
 
 
 const trainerData = localStorage.getItem("trainerData") ? JSON.parse(localStorage.getItem("trainerData")) : null;
@@ -81,8 +81,7 @@ const trainerSlice = createSlice({
             .addCase(editTrainer.rejected, (state, action) => {
                 toast.error(action.payload || "Updat error", { hideProgressBar: true, autoClose: 3000 });
             })
-            .addCase(editTrainer.fulfilled, (state, action) => {
-                console.log("Action : ", action.payload);
+            .addCase(editTrainer.fulfilled, (action) => {
                 toast.success(action.payload.message, { hideProgressBar: true, autoClose: 3000 });
             })
 
@@ -148,6 +147,18 @@ const trainerSlice = createSlice({
             })
             .addCase(fetchAlreadyChattedCustomer.rejected, (state) => {
                 state.isLoading = false;
+            })
+
+            .addCase(uploadVideo.pending, (state) => {
+                state.isLoading = true;
+                state.error = null;
+            })
+            .addCase(uploadVideo.fulfilled, (state) => {
+                state.isLoading = false;
+            })
+            .addCase(uploadVideo.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload;
             })
     }
 })

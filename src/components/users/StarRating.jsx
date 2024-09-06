@@ -1,8 +1,22 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const StarRating = ({ rating, starRatedColor = "gold", numberOfStars = 5, starDimension = "24px", starSpacing = "3px" }) => {
+const StarRating = ({
+  rating,
+  starRatedColor = "gold",
+  numberOfStars = 5,
+  starDimension = "24px",
+  starSpacing = "3px",
+}) => {
   const stars = [];
+
+  StarRating.propTypes = {
+    rating: PropTypes.number.isRequired,
+    starRatedColor: PropTypes.string,
+    numberOfStars: PropTypes.number,
+    starDimension: PropTypes.string,
+    starSpacing: PropTypes.string,
+  };
 
   for (let i = 1; i <= numberOfStars; i++) {
     stars.push(
@@ -19,15 +33,7 @@ const StarRating = ({ rating, starRatedColor = "gold", numberOfStars = 5, starDi
     );
   }
 
-  return <div>{stars}</div>;
-};
-
-StarRating.propTypes = {
-  rating: PropTypes.number.isRequired,
-  starRatedColor: PropTypes.string,
-  numberOfStars: PropTypes.number,
-  starDimension: PropTypes.string,
-  starSpacing: PropTypes.string,
+  return <span>{stars}</span>;  
 };
 
 export default StarRating;

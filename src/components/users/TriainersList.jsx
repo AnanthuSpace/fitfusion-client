@@ -6,6 +6,7 @@ import { localhostURL } from "../../utils/url";
 import { fetchDeitPlans } from "../../redux/users/userThunk";
 import userAxiosInstance from "../../config/axiosConfig";
 import StarRating from "./StarRating";
+import "../../assets/styles/users/TrainersList.css"
 
 function TrainersList() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -14,7 +15,7 @@ function TrainersList() {
   const [trainers, setTrainers] = useState([]);
   const [page, setPage] = useState(1);
   const [fetching, setFetching] = useState(false);
-  const [hasMore, setHasMore] = useState(true); // To check if there are more trainers
+  const [hasMore, setHasMore] = useState(true); 
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const observer = useRef();
@@ -28,8 +29,6 @@ function TrainersList() {
           `${localhostURL}/fetchTrainerScroll`,
           { params: { page } }
         );
-
-        // If response has no trainers, set hasMore to false
         if (response.data.length === 0) {
           setHasMore(false);
         } else {
@@ -47,7 +46,7 @@ function TrainersList() {
 
   const lastTrainerElementRef = useCallback(
     (node) => {
-      if (loading || fetching || !hasMore) return; // Prevent fetching if no more data
+      if (loading || fetching || !hasMore) return;
 
       if (observer.current) observer.current.disconnect();
       observer.current = new IntersectionObserver((entries) => {
@@ -56,7 +55,7 @@ function TrainersList() {
           setTimeout(() => {
             setPage((prevPage) => prevPage + 1);
             setFetching(false);
-          }, 1000); // 2-second delay
+          }, 1000); 
         }
       });
       if (node) observer.current.observe(node);
@@ -196,54 +195,6 @@ function TrainersList() {
           </div>
         )}
       </div>
-
-      <style>{`
-        /* WebKit browsers (Chrome, Safari) */
-        div::-webkit-scrollbar {
-          width: 12px;
-          background-color: transparent;
-        }
-        div::-webkit-scrollbar-thumb {
-          background-color: #b249f8;
-          border-radius: 10px;
-        }
-        /* Firefox */
-        div {
-          scrollbar-width: thin;
-          scrollbar-color: #b249f8 transparent;
-        }
-        .glass-card {
-          background: rgba(255, 255, 255, 0.1);
-          border: 1px solid rgba(255, 255, 255, 0.2);
-          border-radius: 8px;
-          backdrop-filter: blur(10px);
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-        .loading-spinner-wrapper {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          height: 100px;
-          width: 100%;
-          position: absolute;
-          bottom: 0;
-          background-color: rgba(0, 0, 0, 0.7); /* Optional background */
-          border-top: 1px solid #b249f8;
-        }
-        .loading-spinner {
-          text-align: center;
-        }
-        .loading-spinner .spinner-border {
-          width: 3rem;
-          height: 3rem;
-          border-width: 0.5rem;
-          border-color: white transparent white transparent; /* White spinner */
-        }
-        .loading-spinner p {
-          color: white; /* Text color for the "Loading more trainers..." message */
-          margin-top: 0.5rem;
-        }
-      `}</style>
     </div>
   );
 }

@@ -2,40 +2,86 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { trainerLogout } from "../../redux/trainers/trainerSlice";
-// import { IoMdNotifications } from "react-icons/io";
+import { IoMdLogOut } from "react-icons/io";
+import { MdVideoCall } from "react-icons/md";
+import VideoUploadModal from "./VideoUploadModal";
 import { Modal, Button } from "react-bootstrap";
+import { uploadVideo } from "../../redux/trainers/trainerThunk";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../assets/styles/trainers/TrainerNavbar.css";
 
 function TrainerNavbar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [showModal, setShowModal] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [showVideoModal, setShowVideoModal] = useState(false);
+  const [videoData, setVideoData] = useState({
+    title: "",
+    description: "",
+    file: null,
+  });
 
   const handleLogout = () => {
     dispatch(trainerLogout());
     navigate("/trainer");
   };
 
-  const handleShow = () => setShowModal(true);
-  const handleClose = () => setShowModal(false);
+  const handleUploadVideos = () => setShowVideoModal(true);
+
+  const handleVideoUploadClose = () => setShowVideoModal(false);
+  const handleLogoutClose = () => setShowLogoutModal(false);
+
+  const handleVideoUpload = (e) => {
+    e.preventDefault();
+    console.log("Video Data:", videoData);
+    dispatch(uploadVideo(videoData));
+    handleVideoUploadClose();
+  };
+
+  const handleChange = (e) => {
+    setVideoData({
+      ...videoData,
+      [e.target.name]:
+        e.target.name === "file" ? e.target.files[0] : e.target.value,
+    });
+  };
+
   return (
     <>
       <nav className="navbar navbar-dark bg-dark border-bottom border-secondary">
-        <div className="container-fluid">
+        <div className="container-fluid d-flex justify-content-between align-items-center">
           <span className="navbar-brand text-white fw-bold">FITFUSION</span>
-          <a
-            className="text-white ms-auto text-decoration-none"
-            onClick={handleShow}
-            style={{ cursor: "pointer" }}
-          >
-            Logout
-          </a>
+          <div className="d-flex align-items-center">
+            <MdVideoCall
+              className="fs-4 text-white me-3"
+              onClick={handleUploadVideos}
+              style={{ cursor: "pointer" }}
+            />
+            <IoMdLogOut
+              className="fs-4 text-white"
+              onClick={() => setShowLogoutModal(true)}
+              style={{ cursor: "pointer" }}
+            />
+          </div>
         </div>
       </nav>
 
+      {/* Video Upload Modal */}
+      <VideoUploadModal
+        show={showVideoModal}
+        handleClose={handleVideoUploadClose}
+        videoData={videoData}
+        handleChange={handleChange}
+        handleVideoUpload={handleVideoUpload}
+      />
+
       {/* Logout Modal */}
-      <Modal show={showModal} centered contentClassName="p-0">
+      <Modal
+        show={showLogoutModal}
+        centered
+        contentClassName="p-0"
+        backdrop="static"
+      >
         <Modal.Header
           style={{ backgroundColor: "black", borderBottom: "none" }}
         >
@@ -55,18 +101,19 @@ function TrainerNavbar() {
         >
           <Button
             variant="secondary"
-            onClick={handleClose}
+            onClick={handleLogoutClose}
             style={{ width: "30%", border: "none" }}
-            className="gradient-blue-white ms-1"
+            className="gradient-blue-white"
           >
             Cancel
           </Button>
           <Button
-            variant="danger"
-            className="gradient-red-white me-1"
+            variant="secondary"
             onClick={handleLogout}
-            style={{ width: "30%" }}
+            style={{ width: "30%", border: "none" }}
+            className="gradient-blue-white"
           >
+            <IoMdLogOut className="fs-4 text-white" />
             Logout
           </Button>
         </Modal.Footer>

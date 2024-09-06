@@ -5,21 +5,26 @@ import { fetchDeitPlans } from '../../redux/trainers/trainerThunk';
 
 const DietPlanCards = () => {
   const [selectedPlan, setSelectedPlan] = useState(null);
+  const [ diet, setDiet] = useState([])
   const dispatch = useDispatch();
-  const dietPlans = useSelector((state) => state.trainer.diet); 
 
   const handleClose = () => setSelectedPlan(null);
   const handleShow = (plan) => setSelectedPlan(plan);
 
   useEffect(() => {
-    dispatch(fetchDeitPlans()); 
+    dispatch(fetchDeitPlans())
+    .then((res)=>{
+      let arr = res.payload.data.diet
+      setDiet(arr)
+    }
+    )
   }, [dispatch]);
 
   return (
     <>
       <div className="diet-plan-cards">
-        {dietPlans && dietPlans.length > 0 ? (
-          dietPlans.map((plan, index) => (
+        {diet && diet.length > 0 ? (
+          diet.map((plan, index) => (
             <Card 
               key={index} 
               className="mb-3 glass-effect" 

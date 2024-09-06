@@ -1,22 +1,14 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../assets/styles/trainers/TrainerSideBar.css";
-import { IoMdLogOut, IoIosSend } from "react-icons/io";
-import { FaHome, FaUsers, FaDumbbell,FaUserCircle } from "react-icons/fa";
+import { IoIosSend } from "react-icons/io";
+import { FaHome, FaUsers, FaDumbbell, FaUserCircle } from "react-icons/fa";
 import { MdOutlineFastfood } from "react-icons/md";
-import { useDispatch } from "react-redux";
-import { trainerLogout } from "../../redux/trainers/trainerSlice";
 import { useNavigate, useLocation } from "react-router-dom";
 
 function TrainerSideBar() {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-
-  const Logout = () => {
-    dispatch(trainerLogout());
-    navigate("/trainer");
-  };
 
   const isActive = (path) => location.pathname === path;
 
@@ -26,7 +18,6 @@ function TrainerSideBar() {
       style={{ width: "60px", backgroundColor: "#101113" }}
     >
       <div className="mb-4">
-        {/* Ensure FaDumbbell icon is always white */}
         <FaDumbbell
           className="fs-2 text-white"
           onClick={() => navigate("/trainer-console")}
@@ -72,9 +63,6 @@ function TrainerSideBar() {
             }`}
             onClick={() => navigate("/trainer-chat")}
           />
-        </li>
-        <li className="nav-item my-3">
-          <IoMdLogOut className="fs-4 text-secondary" onClick={Logout} />
         </li>
       </ul>
     </div>
