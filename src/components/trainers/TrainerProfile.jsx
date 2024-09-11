@@ -64,7 +64,8 @@ function TrainerProfile() {
       };
       reader.readAsDataURL(file);
 
-      dispatch(updateProfilePicture(file));
+      dispatch(updateProfilePicture(file))
+      // .then((res)=>setProfileImage(res.payload))
     }
   };
 
@@ -75,7 +76,7 @@ function TrainerProfile() {
           <div className="card text-center bg-dark text-white">
             <div className="position-relative">
               <img
-                src={`${localhostURL}/${trainer?.profileIMG}`}
+                src={`${profileIMG}`}
                 className="card-img-top mx-auto mt-4"
                 alt="profileIMG"
                 style={{ width: "130px", height: "130px", borderRadius: "50%" }}

@@ -5,10 +5,18 @@ import { IoIosSend } from "react-icons/io";
 import { FaHome, FaUsers, FaDumbbell, FaUserCircle } from "react-icons/fa";
 import { MdOutlineFastfood } from "react-icons/md";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 function TrainerSideBar() {
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch()
+
+  const trainerImg = useSelector((state)=>state.trainer.trainerData.profileIMG)
+  
+  const handleProfileFetch = () => {
+    dispatch(trainerImg)
+  }
 
   const isActive = (path) => location.pathname === path;
 
@@ -37,7 +45,7 @@ function TrainerSideBar() {
             className={`fs-4 ${
               isActive("/trainer-profile") ? "text-white" : "text-secondary"
             }`}
-            onClick={() => navigate("/trainer-profile")}
+            onClick={handleProfileFetch}
           />
         </li>
         <li className="nav-item my-3">

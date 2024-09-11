@@ -195,6 +195,8 @@ export const updateProfilePicture = createAsyncThunk(
                     'Content-Type': 'multipart/form-data',
                 },
             });
+            console.log(response.data.profileImage);
+
             return response.data.profileImage;
         } catch (error) {
             return rejectWithValue(error.response.data);
@@ -246,21 +248,33 @@ export const fetchAlreadyChattedCustomer = createAsyncThunk(
 export const uploadVideo = createAsyncThunk(
     "trainers/uploadVideo",
     async (videoData, { rejectWithValue }) => {
-      try {
-        const formData = new FormData();
-        formData.append("title", videoData.title);
-        formData.append("description", videoData.description);
-        formData.append("file", videoData.file);
-  
-        const response = await axios.post("/api/upload-video", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
-  
-        return response.data;
-      } catch (error) {
-        return rejectWithValue(error.response.data);
-      }
+        try {
+            const formData = new FormData();
+            formData.append("title", videoData.title);
+            formData.append("description", videoData.description);
+            formData.append("videoFile", videoData.file);
+
+            const response = await trainerAxiosInstance.put(`${localhostURL}/trainer/upload-video`, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+
+            return response.data;
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
     }
-  );
+);
+
+export const fetchProfileImg = createAsyncThunk(
+    "trainers/fetchProfileImg",
+    async (trainerImg, { rejectWithValue }) => {
+        try {
+            const response = await trainerAxiosInstance.get(`${localhostURL}/trainer/profileimg`)
+            console.log(response)
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+)
