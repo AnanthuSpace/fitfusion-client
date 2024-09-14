@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  editTrainer,
-  changeTrainerPassword,
-  updateProfilePicture,
-} from "../../redux/trainers/trainerThunk";
+import { editTrainer, changeTrainerPassword, updateProfilePicture, fetchProfileImg} from "../../redux/trainers/trainerThunk";
 import { FaEdit } from "react-icons/fa";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../assets/styles/trainers/TrainerProfile.css";
-import { localhostURL } from "../../utils/url";
 
 function TrainerProfile() {
   const trainer = useSelector((state) => state.trainer.trainerData);
@@ -18,18 +13,14 @@ function TrainerProfile() {
   const [gender, setGender] = useState(trainer?.gender || "");
   const [phone, setPhone] = useState(trainer?.phone || "");
   const [address, setAddress] = useState(trainer?.address || "");
-  const [qualification, setQualification] = useState(
-    trainer?.qualification || ""
-  );
+  const [qualification, setQualification] = useState( trainer?.qualification || "");
   const [achivements, setAchievements] = useState(trainer?.achivements || "");
   const [showModal, setShowModal] = useState(false);
   const [oldPassword, setOldPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
+  const [newPassword, setNewPassword] = useState(trainer?.achivements || "");
   const [feePerMonth, setFeePerMonth] = useState("");
   const [experience, setExperience] = useState("");
-  const [profileIMG, setProfileImage] = useState(
-    trainer?.profileIMG || "/Trainer-profile.jpg"
-  );
+  const [profileIMG, setProfileImage] = useState( trainer?.profileIMG || "/Trainer-profile.jpg" );
 
   const handleUpdate = () => {
     dispatch(
@@ -65,9 +56,15 @@ function TrainerProfile() {
       reader.readAsDataURL(file);
 
       dispatch(updateProfilePicture(file))
-      // .then((res)=>setProfileImage(res.payload))
+      .then((res)=>setProfileImage(res.payload))
     }
   };
+  useEffect(() => {
+    if (profileIMG) {
+      dispatch(fetchProfileImg(profileIMG))
+        .then((res) => setProfileImage(res.payload.result))
+    }
+  }, [dispatch]);
 
   return (
     <div className="container mt-5">

@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "sonner";
-import { trainerRegistration, trainerVerification, trainerLogin, editTrainer, changeTrainerPassword, updateProfilePicture, uploadVideo, fetchAlreadyChattedCustomer, AddDietPlan, fetchDeitPlans } from "./trainerThunk";
+import { trainerRegistration, trainerVerification, trainerLogin, editTrainer, changeTrainerPassword, updateProfilePicture, fetchProfileImg,  uploadVideo, fetchAlreadyChattedCustomer, AddDietPlan, fetchDeitPlans } from "./trainerThunk";
 
 
 const trainerData = localStorage.getItem("trainerData") ? JSON.parse(localStorage.getItem("trainerData")) : null;
@@ -155,8 +155,21 @@ const trainerSlice = createSlice({
             })
             .addCase(uploadVideo.fulfilled, (state) => {
                 state.isLoading = false;
+                toast.success("Video upload successfully", { hideProgressBar: true, autoClose: 3000 });
             })
             .addCase(uploadVideo.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload;
+            })
+
+            .addCase(fetchProfileImg.pending, (state) => {
+                state.isLoading = true;
+                state.error = null;
+            })
+            .addCase(fetchProfileImg.fulfilled, (state) => {
+                state.isLoading = false;
+            })
+            .addCase(fetchProfileImg.rejected, (state, action) => {
                 state.isLoading = false;
                 state.error = action.payload;
             })

@@ -30,6 +30,7 @@ import TrainerCustomersPage from "./pages/trainers/TrainerCustomersPage";
 import TrainerDietPage from "./pages/trainers/TrainerDietPage";
 import { Toaster } from "sonner";
 import "./assets/styles/App.css";
+import TutorialVideoPage from "./pages/trainers/TutorialVideoPage";
 
 
 
@@ -64,6 +65,7 @@ function App() {
           <Route path="/customers" element={<TrainerProtector><TrainerCustomersPage /></TrainerProtector>} />
           <Route path="/trainer-chat" element={<TrainerProtector><TrainerChatPage /></TrainerProtector>} />
           <Route path="/diet" element={<TrainerProtector><TrainerDietPage /></TrainerProtector>} />
+          <Route path="/videos" element={<TrainerProtector><TutorialVideoPage/></TrainerProtector>} />
 
 
           {/* Admin Routes */}

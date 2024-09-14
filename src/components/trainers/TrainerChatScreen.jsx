@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import EmojiPicker from "emoji-picker-react";
+import { MdOutlineVideocam } from "react-icons/md";
 
 const TrainerChatScreen = ({
   newMessage,
@@ -21,7 +22,10 @@ const TrainerChatScreen = ({
     <div className="col-9 p-3 chat-window d-flex flex-column">
       {currentCustomerName ? (
         <>
-          <h4 className="chat-header glass-effect">{currentCustomerName}</h4>
+          <div className="d-flex justify-content-between align-items-center chat-header glass-effect">
+            <h4>{currentCustomerName}</h4>
+            <MdOutlineVideocam style={{ cursor: 'pointer', fontSize: '2rem' }} />
+          </div>
           <div className="chat-messages flex-grow-1 d-flex flex-column-reverse overflow-auto mb-3">
             {chatHistory.map((message, index) => (
               <div

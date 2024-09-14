@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import { Button } from "react-bootstrap";
 import { FaMinus, FaPlus } from "react-icons/fa";
 import { useDispatch } from "react-redux";
-import { AddDietPlan } from "../../redux/trainers/trainerThunk"; // Ensure the correct import path
+import { AddDietPlan } from "../../redux/trainers/trainerThunk"; 
 
 const AddDietForm = ({ trainerId }) => {
   const dispatch = useDispatch();

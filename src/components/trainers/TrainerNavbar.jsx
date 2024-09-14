@@ -33,9 +33,10 @@ function TrainerNavbar() {
 
   const handleVideoUpload = (e) => {
     e.preventDefault();
-    console.log("Video Data:", videoData);
-    dispatch(uploadVideo(videoData));
-    handleVideoUploadClose();
+    dispatch(uploadVideo(videoData)).then((res) => {
+      console.log(res.payload);
+      handleVideoUploadClose();
+    });
   };
 
   const handleChange = (e) => {
@@ -103,7 +104,7 @@ function TrainerNavbar() {
             variant="secondary"
             onClick={handleLogoutClose}
             style={{ width: "30%", border: "none" }}
-            className="gradient-blue-white"
+            className="gradient-red-white"
           >
             Cancel
           </Button>
