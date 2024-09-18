@@ -36,10 +36,9 @@ function VideoUploadModal({
             className="d-flex justify-content-center align-items-center"
             style={{ height: "100%", width: "100%" }}
           >
-            <Lottie
-              options={defaultOptions}
-              style={{ width: "100%", height: "100%" }}
-            />
+            <div style={{ width: "100%", height: "100%" }}>
+              <Lottie options={defaultOptions} />
+            </div>
           </div>
         </Modal.Body>
       ) : (

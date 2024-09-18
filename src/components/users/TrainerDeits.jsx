@@ -11,7 +11,6 @@ const TrainerDeits = () => {
   return (
     <>
       <div className="diet-plan-cards">
-        {console.log(deit)}
         {deit && deit.length > 0 ? (
           deit.map((plan, index) => (
             <Card

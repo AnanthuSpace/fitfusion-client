@@ -4,8 +4,6 @@ import { useNavigate } from "react-router-dom";
 function TrainerLoginProtector({ children }) {
   const navigate = useNavigate(); 
   const trainerToken = sessionStorage.getItem("trainerAccessToken");
-console.log(trainerToken);
-
   useEffect(() => {
     if (trainerToken) {
       navigate("/trainer-console");

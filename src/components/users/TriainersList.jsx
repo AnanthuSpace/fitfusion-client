@@ -114,19 +114,20 @@ function TrainersList() {
             if (filteredTrainers.length === index + 1) {
               return (
                 <Col
-                  ref={lastTrainerElementRef}
-                  md={4}
-                  lg={3}
-                  className="mb-4"
-                  key={trainer.trainerId}
+                ref={lastTrainerElementRef}
+                md={4}
+                lg={3}
+                className="mb-4"
+                key={trainer.trainerId}
                 >
+                  {console.log(trainer.profileIMG)}
                   <Card
                     className="h-100 text-center glass-card"
-                    onClick={() => handleCardClick(trainer.trainerId)}
+                    onClick={() => handleCardClick(trainer.trainerId)}     
                   >
                     <Card.Img
                       variant="top"
-                      src={`${localhostURL}/${trainer.profileIMG}`}
+                      src={`${trainer.profileIMG}`}
                       alt={trainer.name}
                       style={{
                         width: "100%",
@@ -158,7 +159,7 @@ function TrainersList() {
                   >
                     <Card.Img
                       variant="top"
-                      src={`${localhostURL}/${trainer.profileIMG}`}
+                      src={`${trainer.profileIMG}`}
                       alt={trainer.name}
                       style={{
                         width: "100%",

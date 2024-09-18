@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ChatTrainerList from "./ChatTrainerList";
-import io from "socket.io-client";
 import { localhostURL } from "../../utils/url";
+import io from "socket.io-client";
+import { MdOutlineVideocam } from "react-icons/md";
 import { fetchAlreadyChattedTrainer } from "../../redux/users/userThunk";
 import EmojiPicker from "emoji-picker-react";
+import VideoCallScreen from "../common/VideoCallScreen";
 
 const socket = io(localhostURL);
 
@@ -16,6 +18,7 @@ const ChatScreen = () => {
   const [messageInput, setMessageInput] = useState("");
   const [chatHistory, setChatHistory] = useState([]);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [showVideoCall, setShowVideoCall] = useState(false);
 
   const userData = useSelector((state) => state.user.userData);
   const alreadyChattedTrainer = useSelector(
@@ -75,6 +78,15 @@ const ChatScreen = () => {
     setShowEmojiPicker(false);
   };
 
+  
+  const handleVideoCallClick = () => {
+    setShowVideoCall(true);
+  };
+
+  const handleCloseVideoCall = () => {
+    setShowVideoCall(false);
+  };
+
   return (
     <div className="d-flex flex-grow-1 overflow-hidden background-gradient-main">
       <ChatTrainerList
@@ -85,9 +97,18 @@ const ChatScreen = () => {
         alreadyChattedTrainer={alreadyChattedTrainer}
       />
       <div className="col-9 p-3 d-flex flex-column">
+      {showVideoCall && (
+        <VideoCallScreen onClose={handleCloseVideoCall} />
+      )}
         {selectedName ? (
           <>
-            <h4 className="chat-header glass-effect">{selectedName}</h4>
+            <div className="d-flex justify-content-between align-items-center chat-header glass-effect">
+              <h4>{selectedName}</h4>
+              <MdOutlineVideocam
+                style={{ cursor: "pointer", fontSize: "2rem" }}
+                onClick={handleVideoCallClick}
+              />
+            </div>
             <div className="user-chat-messages flex-grow-1 d-flex flex-column-reverse overflow-auto mb-3">
               {chatHistory.map((message, index) => (
                 <div

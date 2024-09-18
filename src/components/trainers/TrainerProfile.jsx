@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { editTrainer, changeTrainerPassword, updateProfilePicture, fetchProfileImg} from "../../redux/trainers/trainerThunk";
+import { editTrainer, changeTrainerPassword, updateProfilePicture, fetchTrainerProfile} from "../../redux/trainers/trainerThunk";
 import { FaEdit } from "react-icons/fa";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../assets/styles/trainers/TrainerProfile.css";
@@ -18,9 +18,13 @@ function TrainerProfile() {
   const [showModal, setShowModal] = useState(false);
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState(trainer?.achivements || "");
-  const [feePerMonth, setFeePerMonth] = useState("");
-  const [experience, setExperience] = useState("");
+  const [feePerMonth, setFeePerMonth] = useState(trainer?.feePerMonth ||"");
+  const [experience, setExperience] = useState(trainer?.experience || "");
   const [profileIMG, setProfileImage] = useState( trainer?.profileIMG || "/Trainer-profile.jpg" );
+
+  useEffect(() => {    
+      dispatch(fetchTrainerProfile())
+  }, []);
 
   const handleUpdate = () => {
     dispatch(
@@ -59,21 +63,15 @@ function TrainerProfile() {
       .then((res)=>setProfileImage(res.payload))
     }
   };
-  useEffect(() => {
-    if (profileIMG) {
-      dispatch(fetchProfileImg(profileIMG))
-        .then((res) => setProfileImage(res.payload.result))
-    }
-  }, [dispatch]);
 
   return (
     <div className="container mt-5">
       <div className="row">
         <div className="col-md-4 mb-3">
-          <div className="card text-center bg-dark text-white">
+          <div className="card text-center glass-effect text-white">
             <div className="position-relative">
               <img
-                src={`${profileIMG}`}
+                src={`${trainer.profileIMG}`}
                 className="card-img-top mx-auto mt-4"
                 alt="profileIMG"
                 style={{ width: "130px", height: "130px", borderRadius: "50%" }}
@@ -100,7 +98,7 @@ function TrainerProfile() {
           </div>
         </div>
         <div className="col-md-8">
-          <div className="card bg-dark text-white">
+          <div className="card glass-effect text-white">
             <div className="card-body">
               <h5 className="card-title">Profile Information</h5>
               <div className="row">

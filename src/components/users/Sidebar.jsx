@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { userLogout } from "../../redux/users/userSlice";
 import { IoIosNotifications, IoMdSettings } from "react-icons/io";
-import { FaCalculator } from "react-icons/fa";
+import { FaCircleDollarToSlot } from "react-icons/fa6";
 import { LuSendHorizonal } from "react-icons/lu";
 import { inactive } from "../../redux/users/userThunk";
 import "../../assets/styles/users/Sidebar.css";
@@ -62,8 +62,8 @@ function Sidebar({ isOpen, onClose }) {
             </div>
             <div className="sidebar-list">
               <p>
-                <FaCalculator />
-                <span>IBM Calculator</span>
+                <FaCircleDollarToSlot />
+                <span>Subscription History</span>
               </p>
             </div>
             <div className="sidebar-list">

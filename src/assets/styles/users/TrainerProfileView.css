@@ -89,7 +89,7 @@
 }
 
 .media-section {
-    width: 40%;
+    width: 70%;
     text-align: center;
     height: 40vh;
 }
@@ -117,3 +117,21 @@
     background-color: #b249f8;
     border-radius: 2px;
 }
+
+
+.subscribe-button-container {
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .subscribe-button-container .glass-button {
+
+    margin: auto;
+  }
+  
+
+  

@@ -348,7 +348,7 @@ export const addReview = createAsyncThunk(
 )
 export const fetchReviewsByTrainer = createAsyncThunk(
     "user/fetchReviewsByTrainer",
-    async({trainerId},{rejectWithValue}) => {
+    async ({ trainerId }, { rejectWithValue }) => {
         try {
             console.log(trainerId);
         } catch (error) {
@@ -359,9 +359,37 @@ export const fetchReviewsByTrainer = createAsyncThunk(
 
 export const inactive = createAsyncThunk(
     "user/inactive",
-    async({userId}, {rejectWithValue}) => {
+    async ({ userId }, { rejectWithValue }) => {
         try {
-            const response = await userAxiosInstance.put(`${localhostURL}/inactive`, {userId: userId})
+            const response = await userAxiosInstance.put(`${localhostURL}/inactive`, { userId: userId })
+            return response.data
+        } catch (error) {
+            return rejectWithValue(error.response ? error.response.data : error.message);
+        }
+    }
+)
+
+export const fetchReviewFeedback = createAsyncThunk(
+    "user/fetchReviewFeedback",
+    async ({ trainerId }, { rejectWithValue }) => {
+        try {
+            const response = await userAxiosInstance.get(`${localhostURL}/get-review`, {
+                params: { trainerId: trainerId }
+            })
+            return response.data.data
+        } catch (error) {
+            return rejectWithValue(error.response ? error.response.data : error.message);
+        }
+    }
+)
+
+export const fetchSingleTrainer = createAsyncThunk(
+    "user/fetchSingleTrainer",
+    async ({trainerId}, { rejectWithValue}) => {
+        try {
+            const response = await userAxiosInstance.get(`${localhostURL}/fetch-single-trainer`, {
+                params: { trainerId: trainerId }
+            })
             return response.data
         } catch (error) {
             return rejectWithValue(error.response ? error.response.data : error.message);

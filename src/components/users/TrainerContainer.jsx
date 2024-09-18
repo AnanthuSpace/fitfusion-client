@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import "../../assets/styles/users/TrainerContainer.css";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTrainersData, fetchDeitPlans } from "../../redux/users/userThunk";
-import { localhostURL } from "../../utils/url";
 
 function TrainerContainer() {
   const dispatch = useDispatch();
@@ -37,7 +36,7 @@ function TrainerContainer() {
           {trainersData.slice(0, 3).map((trainer, index) => (
             <div className="trainer-img" key={index} onClick={handleCardClick}>
               <img
-                src={`${localhostURL}/${trainer.profileIMG}`}
+                src={`${trainer.profileIMG}`}
                 alt={trainer.name}
               />
               <div className="trainer-name">{trainer.name}</div>

@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "sonner";
-import { trainerRegistration, trainerVerification, trainerLogin, editTrainer, changeTrainerPassword, updateProfilePicture, fetchProfileImg,  uploadVideo, fetchAlreadyChattedCustomer, AddDietPlan, fetchDeitPlans } from "./trainerThunk";
+import { trainerRegistration, trainerVerification, trainerLogin, editTrainer, changeTrainerPassword, updateProfilePicture, fetchTrainerProfile,  uploadVideo, fetchAlreadyChattedCustomer, AddDietPlan, fetchDeitPlans } from "./trainerThunk";
 
 
 const trainerData = localStorage.getItem("trainerData") ? JSON.parse(localStorage.getItem("trainerData")) : null;
@@ -162,14 +162,16 @@ const trainerSlice = createSlice({
                 state.error = action.payload;
             })
 
-            .addCase(fetchProfileImg.pending, (state) => {
+            .addCase(fetchTrainerProfile.pending, (state) => {
                 state.isLoading = true;
                 state.error = null;
             })
-            .addCase(fetchProfileImg.fulfilled, (state) => {
+            .addCase(fetchTrainerProfile.fulfilled, (state, action) => {
+                state.trainerData = action.payload
+                localStorage.setItem('trainerData', JSON.stringify(state.trainerData));
                 state.isLoading = false;
             })
-            .addCase(fetchProfileImg.rejected, (state, action) => {
+            .addCase(fetchTrainerProfile.rejected, (state, action) => {
                 state.isLoading = false;
                 state.error = action.payload;
             })

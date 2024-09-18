@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Image, Col } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
-import { localhostURL } from "../../utils/url";
 import "../../assets/styles/users/TrainerProfileView.css";
 import SubscribeButton from "./SubscribeButton";
 import TrainerDeits from "./TrainerDeits";
 import ReviewModal from "./ReviewModal";
 import StarRating from "./StarRating";
+import TrainerReviews from "./TrainerReviews";
 
 function TrainerProfileView() {
   const [TrainerId, setTrainerId] = useState("");
@@ -52,7 +52,7 @@ function TrainerProfileView() {
           className="background-image"
         />
         <img
-          src={`${localhostURL}/${trainerDetails.profileIMG}`}
+          src={`${trainerDetails.profileIMG}`}
           alt={trainerDetails.name}
           className="profile-image"
         />
@@ -67,28 +67,38 @@ function TrainerProfileView() {
         </Col>
       </div>
 
-      <div className="bottom-sections d-flex">
-        <div className="details-section glass-effect">
-          <h3>Trainer Details</h3>
-          <p>Name: {trainerDetails.name}</p>
-          <p>Achievements: {trainerDetails.achivements}</p>
-          <p>Qualification: {trainerDetails.qualification}</p>
-          <p>Experience: {trainerDetails.experience} year</p>
-          <p>Gender: {trainerDetails.gender}</p>
-          <div>
-            <span>Rating:</span>
-            <StarRating rating={trainerDetails.rating} />
+      <div className="bottom-sections d-flex flex-column glass-effect md-2">
+        <div className="row">
+          <div className="col-md-4 details-section">
+            <h3>Trainer Details</h3>
+            <p>Name: {trainerDetails.name}</p>
+            <p>Achievements: {trainerDetails.achivements}</p>
+            <p>Qualification: {trainerDetails.qualification}</p>
+            <p>Experience: {trainerDetails.experience} year</p>
+            <p>Gender: {trainerDetails.gender}</p>
+            <div>
+              <span>Rating:</span>
+              <StarRating rating={trainerDetails.rating} />
+            </div>
+          </div>
+
+          <div className="col-md-8 media-section text-center">
+            <div className="subscribe-button-container">
+              <SubscribeButton trainerId={TrainerId} />
+            </div>
           </div>
         </div>
 
-        <div className="diet-plans-section glass-effect">
-          <h3>Diet Plans</h3>
-          <TrainerDeits />
-        </div>
+        <div className="row mt-4">
+          <div className="col-4 diet-plans-section">
+            <h3>Diet Plans</h3>
+            <TrainerDeits />
+          </div>
 
-        <div className="media-section text-center glass-effect">
-          <div className="w-100 contents-div">
-            <SubscribeButton trainerId={TrainerId} />
+          <div className="col-md-8 media-section text-center">
+            <div className="subscribe-button-container">
+              <TrainerReviews trainerId={TrainerId} />
+            </div>
           </div>
         </div>
       </div>

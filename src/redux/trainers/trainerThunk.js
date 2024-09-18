@@ -268,17 +268,13 @@ export const uploadVideo = createAsyncThunk(
     }
 );
 
-export const fetchProfileImg = createAsyncThunk(
-    "trainers/fetchProfileImg",
-    async (trainerImg, { rejectWithValue }) => {
+export const fetchTrainerProfile = createAsyncThunk(
+    "trainers/fetchTrainerProfile",
+    async (_, { rejectWithValue }) => {
         try {
-            const response = await trainerAxiosInstance.get(`${localhostURL}/trainer/get-profile`, {
-                params: {
-                    profile: trainerImg
-                }
-            })
-            localStorage.setItem(`trainerData.profileIMG: `, response.data.result)
-            return response.data
+            const response = await trainerAxiosInstance.get(`${localhostURL}/trainer/get-profile`)
+            console.log(`trainerData.profileIMG: `, response.data.result)
+            return response.data.result
         } catch (error) {
             return rejectWithValue(error.response.data);
         }
