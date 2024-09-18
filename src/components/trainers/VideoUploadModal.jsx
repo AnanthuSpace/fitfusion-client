@@ -48,6 +48,7 @@ function VideoUploadModal({
           </Modal.Header>
           <Modal.Body className="p-0">
             <Form onSubmit={handleVideoUpload} style={{ padding: "20px" }}>
+              {/* Video Title */}
               <Form.Group className="mb-3">
                 <Form.Label className="text-white">Video Title</Form.Label>
                 <Form.Control
@@ -58,6 +59,8 @@ function VideoUploadModal({
                   required
                 />
               </Form.Group>
+
+              {/* Description */}
               <Form.Group className="mb-3">
                 <Form.Label className="text-white">Description</Form.Label>
                 <Form.Control
@@ -69,15 +72,30 @@ function VideoUploadModal({
                   required
                 />
               </Form.Group>
+
+              {/* Video File Upload */}
               <Form.Group className="mb-3">
                 <Form.Label className="text-white">Upload Video</Form.Label>
                 <Form.Control
                   type="file"
-                  name="file"
+                  name="videoFile"
                   onChange={handleChange}
                   required
                 />
               </Form.Group>
+
+              {/* Thumbnail Upload */}
+              <Form.Group className="mb-3">
+                <Form.Label className="text-white">Upload Thumbnail</Form.Label>
+                <Form.Control
+                  type="file"
+                  name="thumbnail"
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+
+              {/* Modal Footer with Cancel and Upload buttons */}
               <Modal.Footer style={{ borderTop: "none" }}>
                 <Button
                   className="gradient-red-white"

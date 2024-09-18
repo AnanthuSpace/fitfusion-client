@@ -33,19 +33,22 @@ function TrainerNavbar() {
 
   const handleVideoUpload = (e) => {
     e.preventDefault();
+    console.log(videoData); 
     dispatch(uploadVideo(videoData)).then((res) => {
       console.log(res.payload);
       handleVideoUploadClose();
     });
   };
+  
 
   const handleChange = (e) => {
+    const { name, value, files } = e.target;
     setVideoData({
       ...videoData,
-      [e.target.name]:
-        e.target.name === "file" ? e.target.files[0] : e.target.value,
+      [name]: files ? files[0] : value,  
     });
   };
+  
 
   return (
     <>

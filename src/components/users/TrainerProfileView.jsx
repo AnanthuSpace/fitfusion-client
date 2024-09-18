@@ -63,7 +63,6 @@ function TrainerProfileView() {
           <button className="glass-button" onClick={handleReviewClick}>
             Review
           </button>
-          <button className="glass-button">Follow</button>
         </Col>
       </div>
 

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registration, signupVerification, userLogin, loginVerification, editUserData, fetchDeitPlans, fetchSingleTrainer, fetchReviewFeedback, inactive, addReview, changeUserPassword, fetchAlreadyChattedTrainer, addUserDetails, fetchTrainersData, createCheckoutSession, fetchUserAndTrainer, fetchChatMessages } from "./userThunk";
+import { registration, signupVerification, userLogin, loginVerification, editUserData,fetchVideos, fetchDeitPlans, fetchSingleTrainer, fetchReviewFeedback, inactive, addReview, changeUserPassword, fetchAlreadyChattedTrainer, addUserDetails, fetchTrainersData, createCheckoutSession, fetchUserAndTrainer, fetchChatMessages } from "./userThunk";
 import { toast } from "sonner";
 
 const userData = localStorage.getItem("userData") ? JSON.parse(localStorage.getItem("userData")) : null;
@@ -253,6 +253,14 @@ const userSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(fetchSingleTrainer.rejected, (state, action) => {
+        state.isLoading = false;
+        toast.error(action.payload || "Failed to add review", { hideProgressBar: true, autoClose: 3000 });
+      })
+
+      .addCase(fetchVideos.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(fetchVideos.rejected, (state, action) => {
         state.isLoading = false;
         toast.error(action.payload || "Failed to add review", { hideProgressBar: true, autoClose: 3000 });
       })

@@ -1,49 +1,65 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { createCheckoutSession } from '../../redux/users/userThunk';
-import { Spinner } from 'react-bootstrap';
-import '../../assets/styles/users/SubscribeButton.css'
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { createCheckoutSession, fetchVideos } from "../../redux/users/userThunk";
+import { Spinner } from "react-bootstrap";
+import VideoPlayer from "../common/VideoPlayer";
+import "../../assets/styles/users/SubscribeButton.css";
 
 function SubscribeButton({ trainerId }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.userData);
   const loading = useSelector((state) => state.user.isLoading);
+  const [videos, setVideos] = useState([]);
+  const [selectedVideo, setSelectedVideo] = useState(null);
 
   const handleSubscribeClick = () => {
     dispatch(createCheckoutSession({ trainerId, amount: 100 }));
   };
 
+  useEffect(() => {
+    dispatch(fetchVideos(trainerId)).then((res) =>
+      setVideos(res.payload.data.videos)
+    );
+  }, [dispatch, trainerId]);
+
   const isSubscribed = user?.subscribeList?.includes(trainerId);
 
+  const handleThumbnailClick = (videoUrl) => {
+    setSelectedVideo(videoUrl);
+  };
+
+  const handleCloseVideoPlayer = () => {
+    setSelectedVideo(null);
+  };
+
   return (
-    <div className='video-main'>
+    <div className="video-main">
+      {selectedVideo && (
+        <VideoPlayer videoUrl={selectedVideo} onClose={handleCloseVideoPlayer} />
+      )}
       {isSubscribed ? (
         <div className="video-thumbnails-container mt-5">
           <div className="video-grid">
-            <div className="video-thumbnail">
-              <img src="https://via.placeholder.com/150" alt="Video 1" />
-              <p>Video 1</p>
-            </div>
-            <div className="video-thumbnail">
-              <img src="https://via.placeholder.com/150" alt="Video 2" />
-              <p>Video 2</p>
-            </div>
-            <div className="video-thumbnail">
-              <img src="https://via.placeholder.com/150" alt="Video 3" />
-              <p>Video 3</p>
-            </div>
-            <div className="video-thumbnail">
-              <img src="https://via.placeholder.com/150" alt="Video 4" />
-              <p>Video 4</p>
-            </div>
-            <div className="video-thumbnail">
-              <img src="https://via.placeholder.com/150" alt="Video 5" />
-              <p>Video 5</p>
-            </div>
-            <div className="video-thumbnail">
-              <img src="https://via.placeholder.com/150" alt="Video 6" />
-              <p>Video 6</p>
-            </div>
+            {videos.map((video, index) => (
+              <div key={index} className="video-thumbnail">
+                <img
+                  src={video.thumbnail}
+                  alt={
+                    typeof video.videoUrl === "string" &&
+                    video.videoUrl.includes("-")
+                      ? video.videoUrl.split("-")[1]
+                      : "Video"
+                  }
+                  onClick={() => handleThumbnailClick(video.videoUrl)}
+                />
+                {/* <p>
+                  {typeof video.videoUrl === "string" &&
+                  video.videoUrl.includes("-")
+                    ? video.videoUrl.split("-")[1]
+                    : "Unnamed Video"}
+                </p> */}
+              </div>
+            ))}
           </div>
           <button className="view-more-button">View More</button>
         </div>
@@ -61,11 +77,11 @@ function SubscribeButton({ trainerId }) {
                 size="sm"
                 role="status"
                 aria-hidden="true"
-              />{' '}
+              />{" "}
               Processing...
             </>
           ) : (
-            'Subscribe $100'
+            "Subscribe $100"
           )}
         </button>
       )}

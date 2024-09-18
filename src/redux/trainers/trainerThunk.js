@@ -252,15 +252,15 @@ export const uploadVideo = createAsyncThunk(
             const formData = new FormData();
             formData.append("title", videoData.title);
             formData.append("description", videoData.description);
-            formData.append("videoFile", videoData.file);
-
+            formData.append("videoFile", videoData.videoFile);
+            formData.append("thumbnail", videoData.thumbnail);
+            
             const response = await trainerAxiosInstance.put(`${localhostURL}/trainer/upload-video`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
             });
-
-            localStorage.setItem(`trainerData.profileIMG: `, response.data)
+            console.log(response.data);
             return response.data;
         } catch (error) {
             return rejectWithValue(error.response.data);

@@ -42,7 +42,7 @@ function BootstrapHeader() {
               }`}
             >
               <Link className="nav-link text-white" to="/class">
-                Class
+                Tutorials
               </Link>
             </li>
             <li
