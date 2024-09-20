@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllVideos } from "../../redux/users/userThunk";
+import VideoPlayerModal from "../common/VideoPlayer";
 
 const TutorilasList = () => {
   const dispatch = useDispatch();
@@ -9,12 +10,13 @@ const TutorilasList = () => {
     (state) => state.user.userData.subscribeList
   );
   const [videos, setVideos] = useState([]);
+  const [selectedVideo, setSelectedVideo] = useState(null);
 
   useEffect(() => {
     if (subscriptionList && subscriptionList.length > 0) {
       dispatch(fetchAllVideos(subscriptionList))
         .then((res) => {
-          if (res.payload && res.payload.data ) {
+          if (res.payload && res.payload.data) {
             setVideos(res.payload.data);
           } else {
             setVideos([]);
@@ -27,16 +29,28 @@ const TutorilasList = () => {
     }
   }, [dispatch, subscriptionList]);
 
+  const handleThumbnailClick = (videoUrl) => {
+    setSelectedVideo(videoUrl);
+  };
+
+  const handleCloseVideoPlayer = () => {
+    setSelectedVideo(null);
+  };
+
   return (
     <div className="container mt-4">
       <div className="row">
-        {console.log(videos)}
         {videos && videos.length > 0 ? (
           videos.map((video, index) => (
-            <div className="col-md-4 mb-4" key={index}>
-              <div className="card bg-dark text-white">
+            <div
+              className="col-md-4 mb-4"
+              key={index}
+              onClick={() => handleThumbnailClick(video.videoUrl)}
+              style={{ cursor: "pointer" }}
+            >
+              <div className="card glass-effect text-white">
                 <img
-                  src={video.thumbnail || "https://via.placeholder.com/300x200"}
+                  src={video.thumbnail}
                   className="card-img-top"
                   alt={video.title || "Video thumbnail"}
                   style={{ height: "200px", objectFit: "cover" }}
@@ -62,6 +76,12 @@ const TutorilasList = () => {
           </div>
         )}
       </div>
+      {selectedVideo && (
+        <VideoPlayerModal
+          videoUrl={selectedVideo}
+          onClose={handleCloseVideoPlayer}
+        />
+      )}
     </div>
   );
 };

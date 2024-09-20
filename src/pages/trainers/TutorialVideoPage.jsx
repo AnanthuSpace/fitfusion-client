@@ -6,11 +6,11 @@ import Videos from "../../components/trainers/Videos";
 const TutorialVideoPage = () => {
   return (
     <>
-      <div className="d-flex vh-100 trainer-gradient-bg">
+      <div className="d-flex trainer-gradient-bg h-100">
         <TrainerSideBar />
         <div className="flex-grow-1 d-flex flex-column">
           <TrainerNavbar />
-          <h1 className="text-white ms-4 mt-1">Contents</h1>
+          <h2 className="text-white ms-4 mt-1">Contents</h2>
           <div className="d-flex justify-content-center align-items-center flex-grow-1">
             <Videos />
           </div>

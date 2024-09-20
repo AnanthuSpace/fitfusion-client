@@ -80,10 +80,9 @@ const userSlice = createSlice({
       .addCase(userLogin.rejected, (state, action) => {
         state.error = action.payload;
         state.isLoading = false;
+        toast.error( state.error, { hideProgressBar: true, autoClose: 3000 });
       })
 
-
-      // Login verification
       .addCase(loginVerification.pending, (state) => {
         state.isLoading = true;
       })
@@ -96,6 +95,8 @@ const userSlice = createSlice({
       })
       .addCase(loginVerification.rejected, (state, action) => {
         state.error = action.payload;
+        console.log(action.payload);
+        
         toast.error(action.payload || "Verification failed", { hideProgressBar: true, autoClose: 3000 });
         state.isLoading = false;
       })

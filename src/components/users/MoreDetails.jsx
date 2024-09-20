@@ -44,7 +44,7 @@ function UserDetailsForm() {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-5 background-gradient-main">
       <div className="row justify-content-center">
         <div className="col-md-8 col-lg-6">
           <h2 className="text-center mb-4">Personal Details</h2>
@@ -54,7 +54,7 @@ function UserDetailsForm() {
             onSubmit={handleSubmit}
           >
             {({ values }) => (
-              <Form className="p-4 border rounded shadow-sm bg-light">
+              <Form className="p-4 border rounded shadow-sm glass-effect">
                 <div className="form-group mb-3">
                   <label>Age</label>
                   <Field

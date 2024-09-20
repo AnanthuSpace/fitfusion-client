@@ -39,23 +39,17 @@ function SignUpVerification() {
   };
 
   return (
-    <div>
+    <div className="background-gradient-main" style={{ overflow:"hidden"}}>
       <div className="signup-nav-bar">
         <div className="signup-logo">
-          <h1>FitFusion</h1>
-        </div>
-        <div className="signup-nav-list">
-          <ul>
-            <li>Home</li>
-            <li>About</li>
-            <li>Contact</li>
-          </ul>
+          <h1 className="gradient-text">FitFusion</h1>
         </div>
       </div>
       <div className="verify-container">
         <div className="verify">
           {otp.map((digit, index) => (
             <input
+            className="bg-transparent text-white"
               key={index}
               ref={(el) => (inputRefs.current[index] = el)}
               type="text"
@@ -69,11 +63,11 @@ function SignUpVerification() {
             />
           ))}
         </div>
-        <div className="verify-btn">
+        <div className="user-chat-messages mt-5">
           {!isLoading ? (
-            <button onClick={handleSubmit}>Verify</button>
+            <button className="beamember" onClick={handleSubmit}>Verify</button>
           ) : (
-            <button disabled>Loading...</button>
+            <button className="beamember" disabled>Loading...</button>
           )}
         </div>
       </div>

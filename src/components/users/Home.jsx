@@ -22,7 +22,7 @@ function Home() {
               </h1>
               <div className="buttons">
                 <div className="empty ">
-                  <button className="beamember ">BE A MEMBER</button>
+                  <button className="beamember">BE A MEMBER</button>
                   <button className="learn">LEARN MORE</button>
                 </div>
               </div>

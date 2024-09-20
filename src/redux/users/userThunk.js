@@ -76,6 +76,7 @@ export const userLogin = createAsyncThunk(
     "userSlice/userLogin",
     async ({ email }, { rejectWithValue }) => {
         try {
+            
             email = email.trim();
             const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailPattern.test(email)) {

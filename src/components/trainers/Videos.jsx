@@ -1,38 +1,83 @@
-import React from "react";
-import Card from "react-bootstrap/Card";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
+import { useEffect } from "react";
+import { Table, Card } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 
 const Videos = () => {
+  const dispatch = useDispatch()
+  const trainerId = useSelector((state)=>state.trainer.trainerData.trainerId)
+  useEffect(()=>{
+  console.log(trainerId);
+  })
   return (
-    <div
-      className="d-flex justify-content-center align-items-center"
-      style={{
-        width: "98%",
-        height: "95%",
-        maxHeight: "500px",
-        overflowY: "scroll",
-        overflowX: "hidden",
-        position: "relative",
-      }}
-    >
-      <Row xs={1} md={4} className="g-4">
-        {Array.from({ length: 8 }).map((_, idx) => (
-          <Col key={idx}>
-            <Card className="glass-effect" tyle={{ height: "auto" }}>
-              <Card.Img variant="top" src="whychooseus.jpg" />
-              <Card.Body className="text-white">
-                <Card.Title>Card title</Card.Title>
-                <Card.Text>
-                  This is a longer card with supporting text below as a natural
-                  lead-in to additional content. This content is a little bit
-                  longer.
-                </Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
-      </Row>
+    <div className="text-white h-100 w-100 glass-effect">
+      <Table>
+        <thead style={{
+                  width: "150px",
+                  backgroundColor: "transparent",
+                  border: "none",
+                }}>
+          <tr>
+            <td className="text-white" style={{backgroundColor: "transparent"}}>Video</td>
+            <td className="text-white" style={{backgroundColor: "transparent"}}>Title</td>
+            <td className="text-white" style={{backgroundColor: "transparent"}}>Discription</td>
+            <td className="text-white" style={{backgroundColor: "transparent"}}>Actions</td>
+          </tr>
+        </thead>
+        <tbody>
+          {Array.from({ length: 4}).map((_, idx) => (
+            <tr
+              key={idx}
+            >
+              <td
+                style={{
+                  width: "150px",
+                  backgroundColor: "transparent",
+                  border: "none",
+                }}
+              >
+                <Card.Img
+                  variant="top"
+                  src="whychooseus.jpg"
+                  alt="Thumbnail"
+                  style={{
+                    width: "150px",
+                    height: "100px",
+                    objectFit: "cover",
+                    borderRadius: "4px",
+                  }}
+                />
+              </td>
+              <td
+                style={{
+                  backgroundColor: "transparent",
+                  color: "#fff",
+                  border: "none",
+                }}
+              >
+                Video Title {idx + 1}
+              </td>
+              <td
+                style={{
+                  backgroundColor: "transparent",
+                  color: "#fff",
+                  border: "none",
+                }}
+              >
+                This is a brief description for video {idx + 1}.
+              </td>
+              <td style={{ backgroundColor: "transparent", border: "none" }}>
+                <button variant="info" className="me-2">
+                  View
+                </button>
+                <button variant="warning" className="me-2">
+                  Edit
+                </button>
+                <button variant="danger">Delete</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
     </div>
   );
 };

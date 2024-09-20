@@ -8,7 +8,7 @@ const TutorialsPage = () => {
 
   return (
     <>
-      <div className="top-0 w-100 background-gradient-main h-100">
+      <div className="top-0 w-100 background-gradient-main h-auto">
         <BootstrapHeader />
         {user && user.subscribeList && user.subscribeList.length > 0 ? (
           <TutorilasList />

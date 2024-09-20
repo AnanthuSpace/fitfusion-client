@@ -14,8 +14,8 @@ function Login() {
   const handleSubmit = async () => {
     const emailId = email.toLowerCase();
     dispatch(userLogin({ email: emailId }))
-      .unwrap()
-      .then((response) => {
+    .unwrap()
+    .then((response) => {      
         if (response) {
           navigate("/login-verify");
         }
