@@ -28,9 +28,10 @@ import PaymentFailed from "./components/users/PaymentFailed";
 import ChatPage from "./pages/users/ChatPage";
 import TrainerCustomersPage from "./pages/trainers/TrainerCustomersPage";
 import TrainerDietPage from "./pages/trainers/TrainerDietPage";
+import TutorialVideoPage from "./pages/trainers/TutorialVideoPage";
+import TutorialsPage from "./pages/users/TutorialsPage";
 import { Toaster } from "sonner";
 import "./assets/styles/App.css";
-import TutorialVideoPage from "./pages/trainers/TutorialVideoPage";
 
 
 
@@ -54,6 +55,7 @@ function App() {
           <Route path="/payment-success" element={<UserProtecter><PaymentSuccess /></UserProtecter>} />
           <Route path="/payment-failed" element={<UserProtecter><PaymentFailed /></UserProtecter>} />
           <Route path="/user-chat" element={<UserProtecter><ChatPage /></UserProtecter>} />
+          <Route path="/tutorials" element={<UserProtecter><TutorialsPage /></UserProtecter>} />
 
 
           {/* Trainer Routes */}

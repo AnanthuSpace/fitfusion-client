@@ -32,7 +32,7 @@ const TrainerDeits = () => {
           ))
         ) : (
           <h5 className="text-center text-white mt-5">
-            No diet plans are found. Please add some.
+            No diet plans are available
           </h5>
         )}
       </div>

@@ -1,45 +1,39 @@
-/* Card Styling */
 .profile-card {
     border-radius: 1rem;
 }
 
-/* Modal Overlay */
 .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Adjusted opacity */
+    background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1050;
 }
 
-/* Modal Content */
 .modal-content {
-    background-color: #000; /* Dark background */
+    background-color: #000;
     padding: 20px;
-    border: none; /* Removed border */
-    border-radius: 0; /* Removed border radius */
+    border: none;
+    border-radius: 0;
     width: 400px;
 }
 
-/* Modal Footer */
 .modal-footer {
     display: flex;
     justify-content: space-between;
     color: white;
 }
 
-/* Button Styling */
 .btn-black {
     background-color: black;
     color: white;
 }
 
-/* Form Control Styling in Modal */
 .modal-content .form-control {
     background-color: transparent !important;
     border: 1px solid white !important;
@@ -47,17 +41,15 @@
     width: 100%;
 }
 
-/* Label Styling in Modal */
 .modal-content label {
     color: white;
 }
 
-/* Modal Body and Footer Text Color */
-.modal-body, .modal-footer {
+.modal-body,
+.modal-footer {
     color: white;
 }
 
-/* Edit Icon Styling */
 .edit-icon {
     position: absolute;
     cursor: pointer;
@@ -66,13 +58,11 @@
     right: 0px;
 }
 
-/* Updated Modal Overlay Styling */
 .modal-overlay {
-    background-color: rgba(0, 0, 0, 0.8); /* Ensuring a consistent overlay style */
+    background-color: rgba(0, 0, 0, 0.8);
     z-index: 999;
 }
 
-/* Updated Modal Content Styling */
 .modal-content {
     background-color: #222;
     padding: 20px;

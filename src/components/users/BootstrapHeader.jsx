@@ -41,7 +41,7 @@ function BootstrapHeader() {
                 location.pathname === "/class" ? "active" : ""
               }`}
             >
-              <Link className="nav-link text-white" to="/class">
+              <Link className="nav-link text-white" to="/tutorials">
                 Tutorials
               </Link>
             </li>

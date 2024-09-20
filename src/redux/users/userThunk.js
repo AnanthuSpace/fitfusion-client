@@ -4,6 +4,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import userAxiosInstance from "../../config/axiosConfig";
 import { loadStripe } from '@stripe/stripe-js';
 import { PublishableKey } from "../../utils/publishKey";
+import { create } from "lodash";
 
 
 
@@ -401,9 +402,22 @@ export const fetchVideos = createAsyncThunk(
     "user/fetchVideos",
     async (trainerId, { rejectWithValue }) => {
         try {
-            console.log(trainerId);
             const response = await userAxiosInstance.get(`${localhostURL}/fetch-trainer-videos`, {
                 params: { trainerId: trainerId }
+            })
+            return response.data
+        } catch (error) {
+            return rejectWithValue(error.response ? error.response.data : error.message);
+        }
+    }
+)
+
+export const fetchAllVideos = createAsyncThunk(
+    "user/fetchAllVideos",
+    async (subcriptionList, { rejectWithValue }) => {
+        try {
+            const response = await userAxiosInstance.get(`${localhostURL}/fetch-all-videos`, {
+                params: { subcriptionList: subcriptionList }
             })
             return response.data
         } catch (error) {

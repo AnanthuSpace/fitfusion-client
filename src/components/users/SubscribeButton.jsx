@@ -17,9 +17,13 @@ function SubscribeButton({ trainerId }) {
   };
 
   useEffect(() => {
-    dispatch(fetchVideos(trainerId)).then((res) =>
-      setVideos(res.payload.data.videos)
-    );
+    dispatch(fetchVideos(trainerId)).then((res) => {
+      if (res.payload && res.payload.data && res.payload.data.videos) {
+        setVideos(res.payload.data.videos);
+      } else {
+        setVideos([]); 
+      }
+    });
   }, [dispatch, trainerId]);
 
   const isSubscribed = user?.subscribeList?.includes(trainerId);
@@ -38,52 +42,58 @@ function SubscribeButton({ trainerId }) {
         <VideoPlayer videoUrl={selectedVideo} onClose={handleCloseVideoPlayer} />
       )}
       {isSubscribed ? (
-        <div className="video-thumbnails-container mt-5">
-          <div className="video-grid">
-            {videos.map((video, index) => (
-              <div key={index} className="video-thumbnail">
-                <img
-                  src={video.thumbnail}
-                  alt={
-                    typeof video.videoUrl === "string" &&
-                    video.videoUrl.includes("-")
-                      ? video.videoUrl.split("-")[1]
-                      : "Video"
-                  }
-                  onClick={() => handleThumbnailClick(video.videoUrl)}
-                />
-                {/* <p>
-                  {typeof video.videoUrl === "string" &&
-                  video.videoUrl.includes("-")
-                    ? video.videoUrl.split("-")[1]
-                    : "Unnamed Video"}
-                </p> */}
-              </div>
-            ))}
+        videos.length > 0 ? (
+          <div className="video-thumbnails-container mt-5">
+            <div className="video-grid">
+              {videos.map((video, index) => (
+                <div key={index} className="video-thumbnail">
+                  <img
+                    src={video.thumbnail}
+                    alt={
+                      typeof video.videoUrl === "string" &&
+                      video.videoUrl.includes("-")
+                        ? video.videoUrl.split("-")[1]
+                        : "Video"
+                    }
+                    onClick={() => handleThumbnailClick(video.videoUrl)}
+                  />
+                    {/* <p>
+                      {typeof video.videoUrl === "string" &&
+                      video.videoUrl.includes("-")
+                        ? video.videoUrl.split("-")[1]
+                        : "Unnamed Video"}
+                    </p> */}
+                </div>
+              ))}
+            </div>
+            <button className="view-more-button">View More</button>
           </div>
-          <button className="view-more-button">View More</button>
-        </div>
+        ) : (
+          <p className="text-white text-center">No videos available at the moment.</p>
+        )
       ) : (
-        <button
-          className="glass-button"
-          onClick={handleSubscribeClick}
-          disabled={loading}
-        >
-          {loading ? (
-            <>
-              <Spinner
-                as="span"
-                animation="border"
-                size="sm"
-                role="status"
-                aria-hidden="true"
-              />{" "}
-              Processing...
-            </>
-          ) : (
-            "Subscribe $100"
-          )}
-        </button>
+        videos.length > 0 && (
+          <button
+            className="glass-button"
+            onClick={handleSubscribeClick}
+            disabled={loading}
+          >
+            {loading ? (
+              <>
+                <Spinner
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                />{" "}
+                Processing...
+              </>
+            ) : (
+              "Subscribe $100"
+            )}
+          </button>
+        )
       )}
     </div>
   );
