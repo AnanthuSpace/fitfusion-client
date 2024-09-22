@@ -2,27 +2,28 @@ import React, { useRef, useState, useEffect } from "react";
 import { MdOutlineVideocamOff, MdCallEnd } from "react-icons/md";
 import { io } from "socket.io-client";
 import { localhostURL } from "../../utils/url";
+
+// Create the socket connection
 const socket = io(localhostURL);
 
-const VideoCallScreen = ({ onClose }) => {
+const VideoCallScreen = ({ onClose, receiverId, senderId }) => {
   const localVideoRef = useRef(null);
   const remoteVideoRef = useRef(null);
   const [localStream, setLocalStream] = useState(null);
   const [remoteStream, setRemoteStream] = useState(null);
   const peerConnection = useRef(null);
+  const roomId = [senderId, receiverId].sort().join("-");
 
-  // ICE Servers (STUN)
   const servers = {
-    iceServers: [
-      { urls: "stun:stun.l.google.com:19302" }, // Public STUN server
-    ],
+    iceServers: [{ urls: "stun:stun.l.google.com:19302" }], 
   };
 
   useEffect(() => {
-    // Listen for WebRTC offer from remote peer
+    socket.emit("joinVideoRoom", { senderId: senderId, receiverId: receiverId });
+
     socket.on("offer", async (offer) => {
       console.log("Received offer", offer);
-      await handleOffer(offer);
+      await handleOffer(offer); 
     });
 
     socket.on("answer", async (answer) => {
@@ -32,7 +33,6 @@ const VideoCallScreen = ({ onClose }) => {
       );
     });
 
-    // Listen for ICE candidates from the remote peer
     socket.on("ice-candidate", (candidate) => {
       console.log("Received ICE candidate", candidate);
       if (candidate) {
@@ -41,16 +41,14 @@ const VideoCallScreen = ({ onClose }) => {
     });
 
     return () => {
-      // Clean up socket listeners when the component unmounts
       socket.off("offer");
       socket.off("answer");
       socket.off("ice-candidate");
     };
-  }, []);
+  }, [senderId, receiverId]);
 
   const startCall = async () => {
     try {
-      // Get local video/audio stream
       const stream = await navigator.mediaDevices.getUserMedia({
         video: true,
         audio: true,
@@ -61,44 +59,44 @@ const VideoCallScreen = ({ onClose }) => {
       // Create a new peer connection
       peerConnection.current = new RTCPeerConnection(servers);
 
-      // Add local stream to the connection
-      stream
-        .getTracks()
-        .forEach((track) => peerConnection.current.addTrack(track, stream));
+      // Add tracks from the local stream to the peer connection
+      stream.getTracks().forEach((track) =>
+        peerConnection.current.addTrack(track, stream)
+      );
 
-      // When a remote track is received, set it to remote video
       peerConnection.current.ontrack = (event) => {
         setRemoteStream(event.streams[0]);
         remoteVideoRef.current.srcObject = event.streams[0];
       };
 
-      // Handle ICE candidates
       peerConnection.current.onicecandidate = (event) => {
         if (event.candidate) {
           socket.emit("ice-candidate", { candidate: event.candidate, roomId });
         }
       };
 
-      // Create an offer and set it as the local description
+      // Create an offer and set local description
       const offer = await peerConnection.current.createOffer();
       await peerConnection.current.setLocalDescription(offer);
 
       console.log("Offer created:", offer);
-      // Send the offer to the backend via socket.io
+      // Send the offer to the backend
       socket.emit("offer", { offer, roomId });
     } catch (error) {
       console.error("Error starting video call:", error);
     }
   };
 
-
   const handleOffer = async (offer) => {
+    // Create peer connection if not already established
     peerConnection.current = new RTCPeerConnection(servers);
 
-    // Set the remote description with the offer
-    await peerConnection.current.setRemoteDescription(new RTCSessionDescription(offer));
+    // Set the remote description as the incoming offer
+    await peerConnection.current.setRemoteDescription(
+      new RTCSessionDescription(offer)
+    );
 
-    // Get local video/audio stream
+    // Get the local media stream and set it up
     const stream = await navigator.mediaDevices.getUserMedia({
       video: true,
       audio: true,
@@ -106,25 +104,22 @@ const VideoCallScreen = ({ onClose }) => {
     setLocalStream(stream);
     localVideoRef.current.srcObject = stream;
 
-    // Add local stream to peer connection
-    stream.getTracks().forEach((track) => peerConnection.current.addTrack(track, stream));
+    stream.getTracks().forEach((track) =>
+      peerConnection.current.addTrack(track, stream)
+    );
 
-    // Handle remote stream
     peerConnection.current.ontrack = (event) => {
       setRemoteStream(event.streams[0]);
       remoteVideoRef.current.srcObject = event.streams[0];
     };
 
-    // Create an answer and set it as the local description
     const answer = await peerConnection.current.createAnswer();
     await peerConnection.current.setLocalDescription(answer);
 
-    // Send the answer to the remote peer via the backend
     socket.emit("answer", { answer, roomId });
   };
 
   const endCall = () => {
-    // Stop local video stream
     if (localStream) {
       localStream.getTracks().forEach((track) => track.stop());
     }
@@ -133,7 +128,7 @@ const VideoCallScreen = ({ onClose }) => {
     }
     setLocalStream(null);
     setRemoteStream(null);
-    onClose(); // Close the modal when the call ends
+    onClose();
   };
 
   return (

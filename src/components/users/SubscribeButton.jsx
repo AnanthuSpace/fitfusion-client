@@ -5,7 +5,7 @@ import { Spinner } from "react-bootstrap";
 import VideoPlayer from "../common/VideoPlayer";
 import "../../assets/styles/users/SubscribeButton.css";
 
-function SubscribeButton({ trainerId }) {
+function SubscribeButton({ trainerId, trainerName, amount }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.userData);
   const loading = useSelector((state) => state.user.isLoading);
@@ -13,7 +13,7 @@ function SubscribeButton({ trainerId }) {
   const [selectedVideo, setSelectedVideo] = useState(null);
 
   const handleSubscribeClick = () => {
-    dispatch(createCheckoutSession({ trainerId, amount: 100 }));
+    dispatch(createCheckoutSession({ trainerId, trainerName, amount, userName: user.name }));
   };
 
   useEffect(() => {
@@ -42,7 +42,7 @@ function SubscribeButton({ trainerId }) {
         <VideoPlayer videoUrl={selectedVideo} onClose={handleCloseVideoPlayer} />
       )}
       {isSubscribed ? (
-        videos.length > 0 ? (
+        videos.length >= 0 ? (
           <div className="video-thumbnails-container mt-5">
             <div className="video-grid">
               {videos.map((video, index) => (
@@ -72,29 +72,31 @@ function SubscribeButton({ trainerId }) {
           <p className="text-white text-center">No videos available at the moment.</p>
         )
       ) : (
-        videos.length > 0 && (
+      isSubscribed ? (
+          <p className="text-white text-center">You are already subscribed!</p>
+      ) : (
           <button
-            className="glass-button"
-            onClick={handleSubscribeClick}
-            disabled={loading}
+              className="glass-button"
+              onClick={handleSubscribeClick}
+              disabled={loading}
           >
-            {loading ? (
-              <>
-                <Spinner
-                  as="span"
-                  animation="border"
-                  size="sm"
-                  role="status"
-                  aria-hidden="true"
-                />{" "}
-                Processing...
-              </>
-            ) : (
-              "Subscribe $100"
-            )}
+              {loading ? (
+                  <>
+                      <Spinner
+                          as="span"
+                          animation="border"
+                          size="sm"
+                          role="status"
+                          aria-hidden="true"
+                      />{" "}
+                      Processing...
+                  </>
+              ) : (
+                  `Subscribe $ ${amount}`
+              )}
           </button>
-        )
-      )}
+      ))}
+      
     </div>
   );
 }

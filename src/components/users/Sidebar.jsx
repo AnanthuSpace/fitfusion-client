@@ -60,7 +60,7 @@ function Sidebar({ isOpen, onClose }) {
                 <span>Notification</span>
               </p>
             </div>
-            <div className="sidebar-list">
+            <div className="sidebar-list" onClick={()=>navigate("/history")}>
               <p>
                 <FaCircleDollarToSlot />
                 <span>Subscription History</span>

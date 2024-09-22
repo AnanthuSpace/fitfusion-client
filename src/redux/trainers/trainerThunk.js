@@ -254,14 +254,14 @@ export const uploadVideo = createAsyncThunk(
             formData.append("description", videoData.description);
             formData.append("videoFile", videoData.videoFile);
             formData.append("thumbnail", videoData.thumbnail);
-            
+
             const response = await trainerAxiosInstance.put(`${localhostURL}/trainer/upload-video`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
             });
             console.log(response.data);
-            return response.data; 
+            return response.data;
         } catch (error) {
             return rejectWithValue(error.response.data);
         }
@@ -273,10 +273,33 @@ export const fetchTrainerProfile = createAsyncThunk(
     async (_, { rejectWithValue }) => {
         try {
             const response = await trainerAxiosInstance.get(`${localhostURL}/trainer/get-profile`)
-            console.log(`trainerData.profileIMG: `, response.data.result)
             return response.data.result
         } catch (error) {
             return rejectWithValue(error.response.data);
+        }
+    }
+)
+
+export const getPersonalVideos = createAsyncThunk(
+    "trainers/getPersonalVideos",
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await trainerAxiosInstance.get(`${localhostURL}/trainer/get-videos`)
+            return response.data.result
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+)
+
+export const TrainerransactionHistory = createAsyncThunk(
+    "trainer/TrainerransactionHistory",
+    async(_, {rejectWithValue})=> {
+        try {
+            const response = await trainerAxiosInstance.get(`${localhostURL}/trainer/fetch-transaction-history`)
+            return response.data
+        } catch (error) {
+            return rejectWithValue(error.response ? error.response.data : error.message);
         }
     }
 )

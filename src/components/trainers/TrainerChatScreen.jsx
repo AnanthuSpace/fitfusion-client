@@ -10,6 +10,8 @@ const TrainerChatScreen = ({
   handleSendMessage,
   currentCustomerName,
   chatHistory,
+  receiverId,
+  currentCustomerId
 }) => {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const trainerId = useSelector((state) => state.trainer.trainerData.trainerId);
@@ -26,6 +28,8 @@ const TrainerChatScreen = ({
 
   const handleCloseVideoCall = () => {
     setShowVideoCall(false);
+    receiverId={receiverId}
+    senderId={currentCustomerId}
   };
 
   return (

@@ -94,6 +94,7 @@ function TrainerChat() {
         currentCustomerName={selectedName}
         currentCustomerId={selectedId}
         chatHistory={chatHistory}
+        receiverId={trainerData.trainerId}
       />
     </div>
   );

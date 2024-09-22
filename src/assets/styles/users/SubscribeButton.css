@@ -46,13 +46,16 @@
     margin-top: 20px;
     padding: 10px;
     text-align: center;
-    background-color: #007bff;
+    background-color: linear-gradient(90deg, #b249f8 0%, #ff1cf7 100%) ;
     color: #fff;
     border: none;
     border-radius: 4px;
     cursor: pointer;
 }
+.view-more-button :hover{
+    background: linear-gradient(90deg, #ff1cf7 0%, #b249f8 100%) !important;
+}
 
 .view-more-button:hover {
-    background-color: #0056b3;
+    background-color: #b249f8;
 }

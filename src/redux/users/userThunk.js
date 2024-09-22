@@ -76,7 +76,7 @@ export const userLogin = createAsyncThunk(
     "userSlice/userLogin",
     async ({ email }, { rejectWithValue }) => {
         try {
-            
+
             email = email.trim();
             const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailPattern.test(email)) {
@@ -234,14 +234,16 @@ export const addUserDetails = createAsyncThunk(
 
 export const createCheckoutSession = createAsyncThunk(
     'user/createCheckoutSession',
-    async ({ trainerId, amount }, { rejectWithValue }) => {
+    async ({ trainerId, trainerName, amount, userName }, { rejectWithValue }) => {
         try {
             const stripe = await loadStripe(PublishableKey);
             const response = await userAxiosInstance.post(
                 `${localhostURL}/create-checkout-session`,
                 {
                     trainerId,
+                    trainerName,
                     amount,
+                    userName
                 },
                 {
                     headers: {
@@ -387,17 +389,18 @@ export const fetchReviewFeedback = createAsyncThunk(
 
 export const fetchSingleTrainer = createAsyncThunk(
     "user/fetchSingleTrainer",
-    async ({ trainerId }, { rejectWithValue }) => {
-        try {
-            const response = await userAxiosInstance.get(`${localhostURL}/fetch-single-trainer`, {
-                params: { trainerId: trainerId }
-            })
-            return response.data
-        } catch (error) {
-            return rejectWithValue(error.response ? error.response.data : error.message);
-        }
+    async ({ TrainerId }, { rejectWithValue }) => {
+      try {        
+        const response = await userAxiosInstance.get(`${localhostURL}/fetch-single-trainer`, {
+          params: { trainerId: TrainerId }
+        });
+        return response.data;
+      } catch (error) {
+        return rejectWithValue(error.response ? error.response.data : error.message);
+      }
     }
-)
+  );
+  
 
 export const fetchVideos = createAsyncThunk(
     "user/fetchVideos",
@@ -420,6 +423,18 @@ export const fetchAllVideos = createAsyncThunk(
             const response = await userAxiosInstance.get(`${localhostURL}/fetch-all-videos`, {
                 params: { subcriptionList: subcriptionList }
             })
+            return response.data
+        } catch (error) {
+            return rejectWithValue(error.response ? error.response.data : error.message);
+        }
+    }
+)
+
+export const transactionnHistory = createAsyncThunk(
+    "user/transactionnHistory",
+    async(_, {rejectWithValue})=> {
+        try {
+            const response = await userAxiosInstance.get(`${localhostURL}/fetch-transaction-history`)
             return response.data
         } catch (error) {
             return rejectWithValue(error.response ? error.response.data : error.message);

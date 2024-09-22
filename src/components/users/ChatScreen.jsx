@@ -78,7 +78,6 @@ const ChatScreen = () => {
     setShowEmojiPicker(false);
   };
 
-  
   const handleVideoCallClick = () => {
     setShowVideoCall(true);
   };
@@ -97,9 +96,13 @@ const ChatScreen = () => {
         alreadyChattedTrainer={alreadyChattedTrainer}
       />
       <div className="col-9 p-3 d-flex flex-column">
-      {showVideoCall && (
-        <VideoCallScreen onClose={handleCloseVideoCall} />
-      )}
+        {showVideoCall && (
+          <VideoCallScreen
+            onClose={handleCloseVideoCall}
+            receiverId={selectedId}
+            senderId={userData.userId}
+          />
+        )}
         {selectedName ? (
           <>
             <div className="d-flex justify-content-between align-items-center chat-header glass-effect">

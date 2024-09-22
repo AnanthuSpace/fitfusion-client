@@ -45,7 +45,7 @@ body,
 }
 
 .view-more-button {
-  background: linear-gradient(to right, #4B63DD 0%, #0524BF 99%);
+  background: linear-gradient(to right, #b249f8 0%, #ff1cf7 99%);
   border: none;
   color: white;
   transition: background 0.3s ease;
@@ -218,6 +218,7 @@ body,
 }
 
 .local-video {
+  width: 13rem;
   height: 10rem;
   position: absolute;
   bottom: 2rem;

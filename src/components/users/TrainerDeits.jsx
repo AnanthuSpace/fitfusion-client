@@ -21,7 +21,7 @@ const TrainerDeits = () => {
             <Card.Body>
               <Card.Title>{plan.dietName}</Card.Title>
               <Button
-                className="gradient-blue-white"
+                className="gradient-button-global"
                 onClick={() => handleShow(plan)}
               >
                 View Details

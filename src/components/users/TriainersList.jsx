@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { localhostURL } from "../../utils/url";
 import { fetchDeitPlans } from "../../redux/users/userThunk";
-import userAxiosInstance from "../../config/axiosConfig";
 import StarRating from "./StarRating";
 import "../../assets/styles/users/TrainersList.css"
+import axios from "axios";
 
 function TrainersList() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -25,7 +25,7 @@ function TrainersList() {
     const fetchTrainers = async () => {
       try {
         setLoading(true);
-        const response = await userAxiosInstance.get(
+        const response = await axios.get(
           `${localhostURL}/fetchTrainerScroll`,
           { params: { page } }
         );

@@ -8,22 +8,24 @@ import TrainerDeits from "./TrainerDeits";
 import ReviewModal from "./ReviewModal";
 import StarRating from "./StarRating";
 import TrainerReviews from "./TrainerReviews";
+import { fetchSingleTrainer } from "../../redux/users/userThunk";
 
 function TrainerProfileView() {
   const [TrainerId, setTrainerId] = useState("");
   const [allReview, setAllReview] = useState([]);
   const [showReviewModal, setShowReviewModal] = useState(false);
-  const trainersData = useSelector((state) => state.user.trainersData);
+  const [trainerDetails, setTrainerDetails] = useState("")
   const navigate = useNavigate();
   const location = useLocation();
-
-  const trainerDetails = trainersData.find(
-    (trainer) => trainer.trainerId === TrainerId
-  );
+  const dispatch = useDispatch()
 
   useEffect(() => {
     setTrainerId(location.state.trainerId);
   }, [location.state]);
+
+useEffect(()=> {  
+  dispatch(fetchSingleTrainer({TrainerId})).then((res)=>setTrainerDetails(res.payload.data))
+})
 
   const handleChat = () => {
     navigate("/user-chat", {
@@ -51,6 +53,8 @@ function TrainerProfileView() {
           alt="Background"
           className="background-image"
         />
+        {/* {console.log(trainerDetails.profileIMG)
+        } */}
         <img
           src={`${trainerDetails.profileIMG}`}
           alt={trainerDetails.name}
@@ -83,7 +87,7 @@ function TrainerProfileView() {
 
           <div className="col-md-8 media-section text-center">
             <div className="subscribe-button-container">
-              <SubscribeButton trainerId={TrainerId} />
+              <SubscribeButton trainerId={TrainerId} trainerName={trainerDetails.name} amount={trainerDetails.feePerMonth}/>
             </div>
           </div>
         </div>

@@ -30,6 +30,8 @@ import TrainerCustomersPage from "./pages/trainers/TrainerCustomersPage";
 import TrainerDietPage from "./pages/trainers/TrainerDietPage";
 import TutorialVideoPage from "./pages/trainers/TutorialVideoPage";
 import TutorialsPage from "./pages/users/TutorialsPage";
+import TransactionHistoryPage from "./pages/users/TransactionHistoryPage";
+import TrainerHistoryPage from "./pages/trainers/TrainerHistoryPage";
 import { Toaster } from "sonner";
 import "./assets/styles/App.css";
 
@@ -48,7 +50,7 @@ function App() {
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/verify-otp" element={<SignUpVerification />} />
           <Route path="/login-verify" element={<LoginVerification />} />
-          <Route path="/trainer-list" element={<UserProtecter><TrainerListPage /></UserProtecter>} />
+          <Route path="/trainer-list" element={<TrainerListPage />} />
           <Route path="/profile" element={<UserProtecter><ProfilePage /></UserProtecter>} />
           <Route path="/user-data" element={<UserProtecter><UserDetailsForm /></UserProtecter>} />
           <Route path="/trainer-view" element={<UserProtecter><TrainerViewPage /></UserProtecter>} />
@@ -56,6 +58,7 @@ function App() {
           <Route path="/payment-failed" element={<UserProtecter><PaymentFailed /></UserProtecter>} />
           <Route path="/user-chat" element={<UserProtecter><ChatPage /></UserProtecter>} />
           <Route path="/tutorials" element={<UserProtecter><TutorialsPage /></UserProtecter>} />
+          <Route path="/history" element={<UserProtecter><TransactionHistoryPage /></UserProtecter>} />
 
 
           {/* Trainer Routes */}
@@ -68,6 +71,7 @@ function App() {
           <Route path="/trainer-chat" element={<TrainerProtector><TrainerChatPage /></TrainerProtector>} />
           <Route path="/diet" element={<TrainerProtector><TrainerDietPage /></TrainerProtector>} />
           <Route path="/videos" element={<TrainerProtector><TutorialVideoPage/></TrainerProtector>} />
+          <Route path="/transaction-history" element={<TrainerProtector><TrainerHistoryPage/></TrainerProtector>} />
 
 
           {/* Admin Routes */}

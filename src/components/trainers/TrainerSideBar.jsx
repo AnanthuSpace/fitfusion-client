@@ -5,6 +5,7 @@ import { IoIosSend } from "react-icons/io";
 import { FaHome, FaUsers, FaDumbbell, FaUserCircle } from "react-icons/fa";
 import { MdOutlineFastfood, MdOutlineVideoLibrary } from "react-icons/md";
 import { useNavigate, useLocation } from "react-router-dom";
+import { FaCircleDollarToSlot } from "react-icons/fa6";
 
 function TrainerSideBar() {
   const navigate = useNavigate();
@@ -70,6 +71,14 @@ function TrainerSideBar() {
               isActive("/videos") ? "text-white" : "text-secondary"
             }`}
             onClick={() => navigate("/videos")}
+          />
+        </li>
+        <li className="nav-item my-3">
+          <FaCircleDollarToSlot
+            className={`fs-4 ${
+              isActive("/transaction-history") ? "text-white" : "text-secondary"
+            }`}
+            onClick={() => navigate("/transaction-history")}
           />
         </li>
       </ul>

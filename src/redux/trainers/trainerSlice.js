@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "sonner";
-import { trainerRegistration, trainerVerification, trainerLogin, editTrainer, changeTrainerPassword, updateProfilePicture, fetchTrainerProfile,  uploadVideo, fetchAlreadyChattedCustomer, AddDietPlan, fetchDeitPlans } from "./trainerThunk";
+import { trainerRegistration, trainerVerification, trainerLogin, TrainerransactionHistory, getPersonalVideos, editTrainer, changeTrainerPassword, updateProfilePicture, fetchTrainerProfile,  uploadVideo, fetchAlreadyChattedCustomer, AddDietPlan, fetchDeitPlans } from "./trainerThunk";
 
 
 const trainerData = localStorage.getItem("trainerData") ? JSON.parse(localStorage.getItem("trainerData")) : null;
@@ -175,6 +175,23 @@ const trainerSlice = createSlice({
                 state.isLoading = false;
                 state.error = action.payload;
             })
+
+            .addCase(getPersonalVideos.fulfilled, (state, action) => {
+                state.trainerData = action.payload
+                state.isLoading = false;
+            })
+            .addCase(getPersonalVideos.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload;
+            })
+
+            .addCase(TrainerransactionHistory.fulfilled, (state) => {
+                state.isLoading = false;
+              })
+              .addCase(TrainerransactionHistory.rejected, (state, action) => {
+                state.isLoading = false;
+                toast.error(action.payload || "Failed to fetch history", { hideProgressBar: true, autoClose: 3000 });
+              })
     }
 })
 

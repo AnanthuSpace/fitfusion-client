@@ -65,7 +65,7 @@ const ReviewModal = ({ show, handleClose, trainerDetails, allReview }) => {
               emptyStarColor="#ddd"
             />
           </Form.Group>
-          <Button variant="primary" type="submit" className="mt-3">
+          <Button type="submit" className="mt-3 gradient-button-global">
             Submit
           </Button>
         </Form>
