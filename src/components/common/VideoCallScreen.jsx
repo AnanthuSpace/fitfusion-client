@@ -12,7 +12,7 @@ const VideoCallScreen = ({ onClose, receiverId, senderId }) => {
   const [localStream, setLocalStream] = useState(null);
   const [remoteStream, setRemoteStream] = useState(null);
   const peerConnection = useRef(null);
-  const roomId = [senderId, receiverId].sort().join("-");
+  const roomId = [senderId, receiverId].sort().join("_");
 
   const servers = {
     iceServers: [{ urls: "stun:stun.l.google.com:19302" }], 

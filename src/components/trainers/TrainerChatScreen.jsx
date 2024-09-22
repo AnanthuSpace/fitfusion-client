@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import EmojiPicker from "emoji-picker-react";
 import { MdOutlineVideocam } from "react-icons/md";
-import VideoCallScreen from "../common/VideoCallScreen";
+import TrainerVideoCreen from "./TrainerVideoCreen";
 
 const TrainerChatScreen = ({
   newMessage,
@@ -11,7 +11,7 @@ const TrainerChatScreen = ({
   currentCustomerName,
   chatHistory,
   receiverId,
-  currentCustomerId
+  currentCustomerId,
 }) => {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const trainerId = useSelector((state) => state.trainer.trainerData.trainerId);
@@ -28,14 +28,16 @@ const TrainerChatScreen = ({
 
   const handleCloseVideoCall = () => {
     setShowVideoCall(false);
-    receiverId={receiverId}
-    senderId={currentCustomerId}
   };
 
   return (
     <div className="col-9 p-3 chat-window d-flex flex-column">
       {showVideoCall && (
-        <VideoCallScreen onClose={handleCloseVideoCall} />
+        <TrainerVideoCreen
+          onClose={handleCloseVideoCall}
+          receiverId={receiverId}
+          currentCustomerId={currentCustomerId}
+        />
       )}
       <>
         {currentCustomerName ? (
@@ -110,8 +112,8 @@ const TrainerChatScreen = ({
           <div className="welcome-message text-center mt-5">
             <h3 className="mb-3">Welcome to the Chat!</h3>
             <p className="lead">
-              Please select a trainer to start interacting and get
-              personalized fitness guidance.
+              Please select a trainer to start interacting and get personalized
+              fitness guidance.
             </p>
           </div>
         )}
