@@ -19,48 +19,73 @@ const ChatScreen = () => {
   const [chatHistory, setChatHistory] = useState([]);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [showVideoCall, setShowVideoCall] = useState(false);
+  const [onlineStatus, setOnlineStatus] = useState(false);
 
   const userData = useSelector((state) => state.user.userData);
   const alreadyChattedTrainer = useSelector(
     (state) => state.user.alreadyChattedTrainer
   );
 
-  useEffect(() => {
-    if (selectedId !== "") {
-      try {
-        socket.emit("joinRoom", {
-          userId: userData.userId,
-          trainerId: selectedId,
-        });
-      } catch (error) {
-        console.log("Error : ", error);
-      }
-    }
-  }, [selectedId]);
-
-  useEffect(() => {
-    dispatch(fetchAlreadyChattedTrainer(userData.alreadychattedTrainers));
-  }, [dispatch, userData.alreadychattedTrainers]);
-
-  const handleSelectTrainer = (trainerId, trainerName) => {
+  const handleSelectTrainer = (trainerId, trainerName) => {    
     setSelectedId(trainerId);
     setSelectedName(trainerName);
+
+    socket.emit("enterTheChatPage", { user: userData.userId });
+    socket.emit("joinRoom", {
+      sender: userData.userId,
+      reciver: trainerId,
+    });
   };
 
   useEffect(() => {
+    if (userData.alreadychattedTrainers) {
+      dispatch(fetchAlreadyChattedTrainer(userData.alreadychattedTrainers));
+    }
+  }, [dispatch, userData.alreadychattedTrainers]);
+
+  useEffect(() => {
     socket.on("receiveMessage", (messageDetails) => {
-      setChatHistory([{ ...messageDetails }, ...chatHistory]);
+      setChatHistory((prevChatHistory) => [
+        { ...messageDetails },
+        ...prevChatHistory,
+      ]);
     });
 
     return () => {
       socket.off("receiveMessage");
     };
-  }, [chatHistory]);
+  }, []);
+
+  useEffect(() => {
+    socket.on("userIsOnline", ({ user_id }) => {
+      console.log("User online: ", user_id); 
+      if (user_id === selectedId) {
+        setOnlineStatus(true);
+      }
+    });
+
+    socket.on("userIsOffline", ({ user_id }) => {
+      console.log("User offline: ", user_id); 
+      if (user_id === selectedId) {
+        setOnlineStatus(false);
+      }
+    });
+
+    return () => {
+      socket.off("userIsOnline");
+      socket.off("userIsOffline");
+    };
+  }, [selectedId]);
+
+  useEffect(() => {
+    return () => {
+      socket.emit("leaveTheChatPage", { user: userData.userId });
+    };
+  }, [userData.userId]);
+
 
   const handleSendMessage = () => {
-    console.log(selectedId);
-
-    if (messageInput.trim()) {
+    if (messageInput.trim() && selectedId) {
       const message = {
         senderId: userData.userId,
         recieverId: selectedId,
@@ -77,6 +102,7 @@ const ChatScreen = () => {
     setMessageInput(messageInput + emojiObject.emoji);
     setShowEmojiPicker(false);
   };
+
 
   const handleVideoCallClick = () => {
     setShowVideoCall(true);
@@ -106,7 +132,24 @@ const ChatScreen = () => {
         {selectedName ? (
           <>
             <div className="d-flex justify-content-between align-items-center chat-header glass-effect">
-              <h4>{selectedName}</h4>
+            <div>
+  <h4 className="m-0">{selectedName}</h4>
+  <div className="d-flex align-items-center">
+    {/* <span
+      className="status-dot"
+      style={{
+        backgroundColor: onlineStatus ? "green" : "red",
+        width: "10px",
+        height: "10px",
+        borderRadius: "50%",
+        display: "inline-block",
+        marginRight: "8px",
+      }}
+    ></span> */}
+    {onlineStatus ? "online" : "offline"}
+  </div>
+</div>
+
               <MdOutlineVideocam
                 style={{ cursor: "pointer", fontSize: "2rem" }}
                 onClick={handleVideoCallClick}
@@ -125,7 +168,20 @@ const ChatScreen = () => {
                   }`}
                 >
                   <div className="message-bubble text-white">
-                    {message.messages}
+                    {message.text}
+                    <small
+                      className="message-time"
+                      style={{
+                        color: "white",
+                        display: "block",
+                        marginTop: "5px",
+                      }}
+                    >
+                      {new Date(message.time).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </small>
                   </div>
                 </div>
               ))}

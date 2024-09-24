@@ -3,7 +3,6 @@ import { MdOutlineVideocamOff, MdCallEnd } from "react-icons/md";
 import { io } from "socket.io-client";
 import { localhostURL } from "../../utils/url";
 
-// Create the socket connection
 const socket = io(localhostURL);
 
 const VideoCallScreen = ({ onClose, receiverId, senderId }) => {
@@ -56,10 +55,8 @@ const VideoCallScreen = ({ onClose, receiverId, senderId }) => {
       setLocalStream(stream);
       localVideoRef.current.srcObject = stream;
 
-      // Create a new peer connection
       peerConnection.current = new RTCPeerConnection(servers);
 
-      // Add tracks from the local stream to the peer connection
       stream.getTracks().forEach((track) =>
         peerConnection.current.addTrack(track, stream)
       );
@@ -75,12 +72,10 @@ const VideoCallScreen = ({ onClose, receiverId, senderId }) => {
         }
       };
 
-      // Create an offer and set local description
       const offer = await peerConnection.current.createOffer();
       await peerConnection.current.setLocalDescription(offer);
 
       console.log("Offer created:", offer);
-      // Send the offer to the backend
       socket.emit("offer", { offer, roomId });
     } catch (error) {
       console.error("Error starting video call:", error);
@@ -88,15 +83,13 @@ const VideoCallScreen = ({ onClose, receiverId, senderId }) => {
   };
 
   const handleOffer = async (offer) => {
-    // Create peer connection if not already established
+
     peerConnection.current = new RTCPeerConnection(servers);
 
-    // Set the remote description as the incoming offer
     await peerConnection.current.setRemoteDescription(
       new RTCSessionDescription(offer)
     );
 
-    // Get the local media stream and set it up
     const stream = await navigator.mediaDevices.getUserMedia({
       video: true,
       audio: true,
