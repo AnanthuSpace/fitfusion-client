@@ -282,9 +282,9 @@ export const fetchTrainerProfile = createAsyncThunk(
 
 export const getPersonalVideos = createAsyncThunk(
     "trainers/getPersonalVideos",
-    async (_, { rejectWithValue }) => {
+    async ({ newPage }, { rejectWithValue }) => {
         try {
-            const response = await trainerAxiosInstance.get(`${localhostURL}/trainer/get-videos`)
+            const response = await trainerAxiosInstance.get(`${localhostURL}/trainer/get-videos`, { params: { page: newPage } })     
             return response.data.result
         } catch (error) {
             return rejectWithValue(error.response.data);
@@ -294,7 +294,7 @@ export const getPersonalVideos = createAsyncThunk(
 
 export const TrainerransactionHistory = createAsyncThunk(
     "trainer/TrainerransactionHistory",
-    async(_, {rejectWithValue})=> {
+    async (_, { rejectWithValue }) => {
         try {
             const response = await trainerAxiosInstance.get(`${localhostURL}/trainer/fetch-transaction-history`)
             return response.data

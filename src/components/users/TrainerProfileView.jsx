@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Image, Col } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../../assets/styles/users/TrainerProfileView.css";
@@ -11,25 +11,27 @@ import TrainerReviews from "./TrainerReviews";
 import { fetchSingleTrainer } from "../../redux/users/userThunk";
 
 function TrainerProfileView() {
-  const [TrainerId, setTrainerId] = useState("");
+  const [trainerId, setTrainerId] = useState("");
   const [allReview, setAllReview] = useState([]);
   const [showReviewModal, setShowReviewModal] = useState(false);
-  const [trainerDetails, setTrainerDetails] = useState("")
+  const [trainerDetails, setTrainerDetails] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setTrainerId(location.state.trainerId);
   }, [location.state]);
 
-useEffect(()=> {  
-  dispatch(fetchSingleTrainer({TrainerId})).then((res)=>setTrainerDetails(res.payload.data))
-})
+  useEffect(() => {
+    dispatch(fetchSingleTrainer({ trainerId:location.state.trainerId })).then((res) =>
+      setTrainerDetails(res.payload.data)
+    );
+  }, [trainerId]);
 
   const handleChat = () => {
     navigate("/user-chat", {
-      state: { trainerId: TrainerId, trainerName: trainerDetails.name },
+      state: { trainerId: trainerId, trainerName: trainerDetails.name },
     });
   };
 
@@ -47,19 +49,20 @@ useEffect(()=> {
 
   return (
     <div className="container-div">
+      {console.log(trainerDetails)}
       <div className="background-container">
         <Image
           src="/purple.jpg"
           alt="Background"
           className="background-image"
         />
-        {/* {console.log(trainerDetails.profileIMG)
-        } */}
         <img
           src={`${trainerDetails.profileIMG}`}
           alt={trainerDetails.name}
           className="profile-image"
         />
+        {console.log()
+        }
         <Col className="icons-container">
           <button className="glass-button" onClick={handleChat}>
             Message
@@ -87,7 +90,11 @@ useEffect(()=> {
 
           <div className="col-md-8 media-section text-center">
             <div className="subscribe-button-container">
-              <SubscribeButton trainerId={TrainerId} trainerName={trainerDetails.name} amount={trainerDetails.feePerMonth}/>
+              <SubscribeButton
+                trainerId={trainerId}
+                trainerName={trainerDetails.name}
+                amount={trainerDetails.feePerMonth}
+              />
             </div>
           </div>
         </div>
@@ -100,7 +107,7 @@ useEffect(()=> {
 
           <div className="col-md-8 media-section text-center">
             <div className="subscribe-button-container">
-              <TrainerReviews trainerId={TrainerId} />
+              <TrainerReviews trainerId={trainerId} />
             </div>
           </div>
         </div>

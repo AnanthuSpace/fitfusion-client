@@ -389,10 +389,12 @@ export const fetchReviewFeedback = createAsyncThunk(
 
 export const fetchSingleTrainer = createAsyncThunk(
     "user/fetchSingleTrainer",
-    async ({ TrainerId }, { rejectWithValue }) => {
+    async ({ trainerId }, { rejectWithValue }) => {
       try {        
+        console.log(trainerId)
+        
         const response = await userAxiosInstance.get(`${localhostURL}/fetch-single-trainer`, {
-          params: { trainerId: TrainerId }
+          params: { trainerId: trainerId }
         });
         return response.data;
       } catch (error) {

@@ -69,7 +69,7 @@ function TrainersList() {
 
   const handleCardClick = (trainerId) => {
     dispatch(fetchDeitPlans({ trainerId })).then((res) => {
-      if (res.meta.requestStatus === "fulfilled") {
+      if (res.meta.requestStatus === "fulfilled") {        
         navigate(`/trainer-view`, { state: { trainerId } });
       }
     });

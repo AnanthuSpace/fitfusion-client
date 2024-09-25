@@ -26,7 +26,7 @@ const ChatScreen = () => {
     (state) => state.user.alreadyChattedTrainer
   );
 
-  const handleSelectTrainer = (trainerId, trainerName) => {    
+  const handleSelectTrainer = (trainerId, trainerName) => {
     setSelectedId(trainerId);
     setSelectedName(trainerName);
 
@@ -58,14 +58,14 @@ const ChatScreen = () => {
 
   useEffect(() => {
     socket.on("userIsOnline", ({ user_id }) => {
-      console.log("User online: ", user_id); 
+      console.log("User online: ", user_id);
       if (user_id === selectedId) {
         setOnlineStatus(true);
       }
     });
 
     socket.on("userIsOffline", ({ user_id }) => {
-      console.log("User offline: ", user_id); 
+      console.log("User offline: ", user_id);
       if (user_id === selectedId) {
         setOnlineStatus(false);
       }
@@ -82,7 +82,6 @@ const ChatScreen = () => {
       socket.emit("leaveTheChatPage", { user: userData.userId });
     };
   }, [userData.userId]);
-
 
   const handleSendMessage = () => {
     if (messageInput.trim() && selectedId) {
@@ -102,7 +101,6 @@ const ChatScreen = () => {
     setMessageInput(messageInput + emojiObject.emoji);
     setShowEmojiPicker(false);
   };
-
 
   const handleVideoCallClick = () => {
     setShowVideoCall(true);
@@ -132,10 +130,10 @@ const ChatScreen = () => {
         {selectedName ? (
           <>
             <div className="d-flex justify-content-between align-items-center chat-header glass-effect">
-            <div>
-  <h4 className="m-0">{selectedName}</h4>
-  <div className="d-flex align-items-center">
-    {/* <span
+              <div>
+                <h4 className="m-0">{selectedName}</h4>
+                <div className="d-flex align-items-center">
+                  {/* <span
       className="status-dot"
       style={{
         backgroundColor: onlineStatus ? "green" : "red",
@@ -146,9 +144,9 @@ const ChatScreen = () => {
         marginRight: "8px",
       }}
     ></span> */}
-    {onlineStatus ? "online" : "offline"}
-  </div>
-</div>
+                  {onlineStatus ? "online" : "offline"}
+                </div>
+              </div>
 
               <MdOutlineVideocam
                 style={{ cursor: "pointer", fontSize: "2rem" }}
@@ -168,7 +166,7 @@ const ChatScreen = () => {
                   }`}
                 >
                   <div className="message-bubble text-white">
-                    {message.text}
+                    {message.messages}
                     <small
                       className="message-time"
                       style={{
