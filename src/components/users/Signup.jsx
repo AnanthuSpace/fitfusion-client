@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FcGoogle } from "react-icons/fc";
-import { registration } from "../../redux/users/userThunk";
-import { toast } from "react-toastify";
+import { Modal, Button } from "react-bootstrap";
+import { GoogleLogin } from "@react-oauth/google";
+import { googleSignUpUser, registration } from "../../redux/users/userThunk";
+import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
 import "../../assets/styles/users/Signup.css";
 
@@ -11,6 +12,8 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
+  const [googleToken, setGoogleToken] = useState(null);
+  const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => state.user);
@@ -31,10 +34,33 @@ function Signup() {
     });
   };
 
+  const handleGoogleResponse = (response) => {
+    if (response.credential) {
+      setGoogleToken(response.credential);
+      toggleModal();
+    } else {
+      toast.error("Google registration failed", response);
+    }
+  };
+
+  const handlePasswordSubmit = () => {
+    dispatch(googleSignUpUser({ token: googleToken, password, confirmPass })).then(
+      (result) => {
+        if (result.meta.requestStatus === "fulfilled") {
+          navigate("/");
+        }
+      }
+    );
+    toggleModal();
+  };
+
+  const toggleModal = () => {
+    setShowModal(!showModal);
+  };
+
   return (
     <>
       <div className="signup-page background-gradient-main">
-        
         <div className="signup-nav-bar">
           <div className="signup-logo">
             <h1 className="gradient-text">FitFusion</h1>
@@ -114,16 +140,60 @@ function Signup() {
               privacy policy & Terms of Service.
             </p>
             OR
-            <button className="signup-google">
-              <FcGoogle />
-              SIGN UP WITH GOOGLE
-            </button>
+            <div className="mt-4 d-flex flex-column align-items-center">
+              <GoogleLogin
+                onSuccess={handleGoogleResponse}
+                onError={handleGoogleResponse}
+                useOneTap
+              />
+            </div>
             <p className="signup-allready" onClick={() => navigate("/login")}>
               Already have an account?
             </p>
           </div>
         </div>
       </div>
+
+      <Modal show={showModal} onHide={toggleModal} centered>
+        <Modal.Header className="bg-blac text-white">
+          <Modal.Title>Enter Password</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="bg-dark">
+          <div className="form-group mb-3">
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              className="form-control"
+              id="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <div className="form-group mb-3">
+            <label htmlFor="confirmPass">Confirm Password</label>
+            <input
+              type="password"
+              className="form-control"
+              id="confirmPass"
+              placeholder="Confirm Password"
+              value={confirmPass}
+              onChange={(e) => setConfirmPass(e.target.value)}
+            />
+          </div>
+        </Modal.Body>
+        <Modal.Footer className="bg-dark">
+          <Button variant="secondary" onClick={toggleModal}>
+            Cancel
+          </Button>
+          <Button
+            className="gradient-button-global"
+            onClick={handlePasswordSubmit}
+          >
+            Submit
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }

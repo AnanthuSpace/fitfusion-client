@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "sonner";
-import { trainerRegistration, trainerVerification, trainerLogin, TrainerransactionHistory, getPersonalVideos, editTrainer, changeTrainerPassword, updateProfilePicture, fetchTrainerProfile,  uploadVideo, fetchAlreadyChattedCustomer, AddDietPlan, fetchDeitPlans } from "./trainerThunk";
+import { trainerRegistration, trainerVerification, trainerLogin, googleLogin, TrainerransactionHistory, googleSignUp, getPersonalVideos, editTrainer, changeTrainerPassword, updateProfilePicture, fetchTrainerProfile,  uploadVideo, fetchAlreadyChattedCustomer, AddDietPlan, fetchDeitPlans } from "./trainerThunk";
 
 
 const trainerData = localStorage.getItem("trainerData") ? JSON.parse(localStorage.getItem("trainerData")) : null;
@@ -44,6 +44,17 @@ const trainerSlice = createSlice({
                 state.isLoading = false;
             })
 
+            .addCase(googleSignUp.fulfilled, (state, action) => {
+                toast.success(action.payload, { hideProgressBar: true, autoClose: 3000 });
+                state.isLoading = false;
+            })
+            .addCase(googleSignUp.rejected, (state, action) => {
+                state.error = action.payload;
+                console.log(action.payload);
+                toast.error(action.payload || "Registration failed", { hideProgressBar: true, autoClose: 3000 });
+                state.isLoading = false;
+            })
+
 
             // Signup verification
             .addCase(trainerVerification.pending, (state) => {
@@ -76,10 +87,20 @@ const trainerSlice = createSlice({
                 state.isLoading = false;
             })
 
-
+            .addCase(googleLogin.fulfilled, (state, action) => {
+                state.trainerData = action.payload.trainerData;
+                localStorage.setItem('trainerData', JSON.stringify(state.trainerData));
+                toast.success("Login successfully", { hideProgressBar: true, autoClose: 3000 });
+                state.isLoading = false;
+            })
+            .addCase(googleLogin.rejected, (state, action) => {
+                state.error = action.payload;
+                toast.error(action.payload || "Authentication failed", { hideProgressBar: true, autoClose: 3000 });
+                state.isLoading = false;
+            })
 
             .addCase(editTrainer.rejected, (state, action) => {
-                toast.error(action.payload || "Updat error", { hideProgressBar: true, autoClose: 3000 });
+                toast.error(action.payload || "Update error", { hideProgressBar: true, autoClose: 3000 });
             })
             .addCase(editTrainer.fulfilled, (action) => {
                 toast.success(action.payload.message, { hideProgressBar: true, autoClose: 3000 });

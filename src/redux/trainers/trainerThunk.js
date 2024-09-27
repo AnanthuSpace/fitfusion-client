@@ -38,6 +38,25 @@ export const trainerRegistration = createAsyncThunk(
     }
 );
 
+export const googleSignUp = createAsyncThunk(
+    "trainer/googleSignUp",
+    async ({ token, password, confirmPass }, { rejectWithValue }) => {
+        try {
+            if (password !== confirmPass) {
+                return rejectWithValue("Passwords do not match");
+            } else if (password.length < 6) {
+                return rejectWithValue("Password must be at least 6 characters long!");
+            } else {
+                const response = await axios.post(`${localhostURL}/trainer/google-signup`, { token, password })
+                return response.data
+            }
+        } catch (error) {
+            if (error.response.data.message === "Internal server error") return rejectWithValue("Verification failed, try again");
+            return rejectWithValue(error.response.data.message);
+        }
+    }
+)
+
 export const trainerVerification = createAsyncThunk(
     "trainerSlice/trainerVerification",
     async ({ completeOtp, temperoryEmail }, { rejectWithValue }) => {
@@ -80,6 +99,25 @@ export const trainerLogin = createAsyncThunk(
                 localStorage.setItem("trainerRefreshToken", refreshToken);
                 return response.data;
             }
+        } catch (error) {
+            return rejectWithValue(error.response?.data?.message || error.message);
+        }
+    }
+)
+
+export const googleLogin = createAsyncThunk(
+    "trainer/googleLogin",
+    async (token, { rejectWithValue }) => {
+        try {
+            const response = await axios.post(`${localhostURL}/trainer/google-login`, { token })
+            if (response.data.success === false) {
+                return rejectWithValue(response.data.message);
+            } else {
+                const { accessToken, refreshToken } = response.data;
+                sessionStorage.setItem("trainerAccessToken", accessToken);
+                localStorage.setItem("trainerRefreshToken", refreshToken);
+                return response.data;
+            };
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || error.message);
         }
@@ -284,7 +322,7 @@ export const getPersonalVideos = createAsyncThunk(
     "trainers/getPersonalVideos",
     async ({ newPage }, { rejectWithValue }) => {
         try {
-            const response = await trainerAxiosInstance.get(`${localhostURL}/trainer/get-videos`, { params: { page: newPage } })     
+            const response = await trainerAxiosInstance.get(`${localhostURL}/trainer/get-videos`, { params: { page: newPage } })
             return response.data.result
         } catch (error) {
             return rejectWithValue(error.response.data);

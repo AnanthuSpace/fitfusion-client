@@ -1,23 +1,30 @@
 import React, { useState } from "react";
-import { FcGoogle } from "react-icons/fc";
+import { GoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { trainerRegistration } from "../../redux/trainers/trainerThunk";
+import {
+  googleSignUp,
+  trainerRegistration,
+} from "../../redux/trainers/trainerThunk";
+import { Modal, Button } from "react-bootstrap";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "../../assets/styles/trainers/TrainerLogin.css"; 
+import "../../assets/styles/trainers/TrainerLogin.css";
+import { toast } from "sonner";
 
 function TrainerSignup() {
   const [name, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
+  const [googleToken, setGoogleToken] = useState(null);
+  const [showModal, setShowModal] = useState(false);
   const { isLoading } = useSelector((state) => state.trainer);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     dispatch(
       trainerRegistration({
         name,
@@ -30,6 +37,30 @@ function TrainerSignup() {
         navigate("/trainer-otp");
       }
     });
+  };
+
+  const handleGoogleResponse = (response) => {
+    if (response.credential) {
+      setGoogleToken(response.credential);
+      toggleModal();
+    } else {
+      toast.error("Google registration failed", response);
+    }
+  };
+
+  const handlePasswordSubmit = () => {
+    dispatch(googleSignUp({ token: googleToken, password, confirmPass })).then(
+      (result) => {
+        if (result.meta.requestStatus === "fulfilled") {
+          navigate("/trainer-otp");
+        }
+      }
+    );
+    toggleModal();
+  };
+
+  const toggleModal = () => {
+    setShowModal(!showModal);
   };
 
   return (
@@ -116,11 +147,13 @@ function TrainerSignup() {
                 )}
               </button>
             </form>
-            <div className="mt-4 d-flex align-items-center justify-content-center">
-              <u className="me-2">
-                <p className="mb-0">Or sign up with</p>
-              </u>
-              <FcGoogle size={20} />
+
+            <div className="mt-4 d-flex flex-column align-items-center">
+              <GoogleLogin
+                onSuccess={handleGoogleResponse}
+                onError={handleGoogleResponse}
+                useOneTap
+              />
             </div>
 
             <u>
@@ -138,6 +171,47 @@ function TrainerSignup() {
           © 2024 FITFUSION. All rights reserved.
         </footer>
       </div>
+
+      <Modal show={showModal} onHide={toggleModal} centered>
+        <Modal.Header className="bg-blac text-white">
+          <Modal.Title>Enter Password</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="bg-dark">
+          <div className="form-group mb-3">
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              className="form-control"
+              id="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <div className="form-group mb-3">
+            <label htmlFor="confirmPass">Confirm Password</label>
+            <input
+              type="password"
+              className="form-control"
+              id="confirmPass"
+              placeholder="Confirm Password"
+              value={confirmPass}
+              onChange={(e) => setConfirmPass(e.target.value)}
+            />
+          </div>
+        </Modal.Body>
+        <Modal.Footer className="bg-dark">
+          <Button variant="secondary" onClick={toggleModal}>
+            Cancel
+          </Button>
+          <Button
+            className="gradient-blue-white"
+            onClick={handlePasswordSubmit}
+          >
+            Submit
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }

@@ -4,9 +4,6 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import userAxiosInstance from "../../config/axiosConfig";
 import { loadStripe } from '@stripe/stripe-js';
 import { PublishableKey } from "../../utils/publishKey";
-import { create } from "lodash";
-
-
 
 // Registration Thunk
 export const registration = createAsyncThunk(
@@ -44,6 +41,28 @@ export const registration = createAsyncThunk(
         }
     }
 );
+
+export const googleSignUpUser = createAsyncThunk(
+    "user/googleSignUpUser",
+    async ({ token, password, confirmPass }, { rejectWithValue }) => {
+        try {
+            if (password !== confirmPass) {
+                return rejectWithValue("Passwords do not match");
+            } else if (password.length < 6) {
+                return rejectWithValue("Password must be at least 6 characters long!");
+            } else {
+                const response = await axios.post(`${localhostURL}/google-signup`, { token, password })
+                const { accessToken, refreshToken } = response.data.data
+                sessionStorage.setItem("userAccessToken", accessToken);
+                localStorage.setItem("userRefreshToken", refreshToken);
+                return response.data.data
+            }
+        } catch (error) {
+            if (error.response.data.message === "Internal server error") return rejectWithValue("Verification failed, try again");
+            return rejectWithValue(error.response.data.message);
+        }
+    }
+)
 
 // Signup Verification Thunk
 export const signupVerification = createAsyncThunk(
@@ -94,6 +113,26 @@ export const userLogin = createAsyncThunk(
         }
     }
 );
+
+
+export const googleLoginUser = createAsyncThunk(
+    "trainer/googleLoginUser",
+    async (token, { rejectWithValue }) => {
+        try {
+            const response = await axios.post(`${localhostURL}/google-login`, { token })
+            if (response.data.success === false) {
+                return rejectWithValue(response.data.message);
+            } else {
+                const { accessToken, refreshToken } = response.data;
+                sessionStorage.setItem("userAccessToken", accessToken);
+                localStorage.setItem("userRefreshToken", refreshToken);
+                return response.data.userData;
+            };
+        } catch (error) {
+            return rejectWithValue(error.response?.data?.message || error.message);
+        }
+    }
+)
 
 
 export const fetchTrainersData = createAsyncThunk(
@@ -390,19 +429,19 @@ export const fetchReviewFeedback = createAsyncThunk(
 export const fetchSingleTrainer = createAsyncThunk(
     "user/fetchSingleTrainer",
     async ({ trainerId }, { rejectWithValue }) => {
-      try {        
-        console.log(trainerId)
-        
-        const response = await userAxiosInstance.get(`${localhostURL}/fetch-single-trainer`, {
-          params: { trainerId: trainerId }
-        });
-        return response.data;
-      } catch (error) {
-        return rejectWithValue(error.response ? error.response.data : error.message);
-      }
+        try {
+            console.log(trainerId)
+
+            const response = await userAxiosInstance.get(`${localhostURL}/fetch-single-trainer`, {
+                params: { trainerId: trainerId }
+            });
+            return response.data;
+        } catch (error) {
+            return rejectWithValue(error.response ? error.response.data : error.message);
+        }
     }
-  );
-  
+);
+
 
 export const fetchVideos = createAsyncThunk(
     "user/fetchVideos",
@@ -434,7 +473,7 @@ export const fetchAllVideos = createAsyncThunk(
 
 export const transactionnHistory = createAsyncThunk(
     "user/transactionnHistory",
-    async(_, {rejectWithValue})=> {
+    async (_, { rejectWithValue }) => {
         try {
             const response = await userAxiosInstance.get(`${localhostURL}/fetch-transaction-history`)
             return response.data

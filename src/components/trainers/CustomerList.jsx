@@ -1,10 +1,12 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import trainerAxiosInstance from "../../config/axiosTrainerConfig";
 import { localhostURL } from "../../utils/url";
 import { useSelector } from "react-redux";
 
 const CustomerList = ({ searchTerm, setSearchTerm, onSelectCustomer, setChatHistory, alreadyChattedCustomer }) => {
     const trainerId = useSelector((state) => state.trainer.trainerData.trainerId);
+
+    const [filteredCustomers, setFilteredCustomers] = useState([]);
 
     const handleCreateRoom = async (userId, userName) => {
         try {
@@ -22,9 +24,12 @@ const CustomerList = ({ searchTerm, setSearchTerm, onSelectCustomer, setChatHist
         }
     };
 
-    const filteredCustomers = alreadyChattedCustomer.filter((customer) =>
-        customer.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    useEffect(() => {
+        const filtered = alreadyChattedCustomer.filter((customer) =>
+          customer.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setFilteredCustomers(filtered);
+      }, [searchTerm, alreadyChattedCustomer]); 
 
     return (
         <div className="col-3 p-2 user-list border-end" style={{ borderWidth: '1px', borderColor: 'white' }}>

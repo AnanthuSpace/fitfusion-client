@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { trainerLogin } from "../../redux/trainers/trainerThunk";
-import "../../assets/styles/trainers/TrainerLogin.css"; 
+import { googleLogin, trainerLogin } from "../../redux/trainers/trainerThunk";
+import { GoogleLogin } from "@react-oauth/google";
+import { ToastContainer } from "react-toastify";
+import { toast } from "sonner";
+import "../../assets/styles/trainers/TrainerLogin.css";
 
 function TrainerLogin() {
   const navigate = useNavigate();
@@ -21,8 +24,22 @@ function TrainerLogin() {
     });
   };
 
+  const handleGoogleResponse = (response) => {
+    const token = response.credential;
+    if (token) {
+      dispatch(googleLogin(token)).then((result) => {
+        if (result.meta.requestStatus === "fulfilled") {
+          navigate("/trainer-console");
+        }
+      });
+    } else {
+      toast.error("Google registration failed", response);
+    }
+  };
+
   return (
     <>
+      <ToastContainer />
       <div className="admin-login-container trainer-gradient-bg">
         <nav className="navbar navbar-light admin-navbar">
           <div className="container">
@@ -72,11 +89,23 @@ function TrainerLogin() {
                 disabled={isLoading}
               >
                 {isLoading ? (
-                  <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                  <span
+                    className="spinner-border spinner-border-sm"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
                 ) : (
                   "Login"
                 )}
-              </button>
+              </button>{" "}
+              <br />
+              <div className="d-flex justify-content-center">
+                <GoogleLogin
+                  onSuccess={handleGoogleResponse}
+                  onError={handleGoogleResponse}
+                  className="btn"
+                />
+              </div>
             </form>
             <u>
               <p
@@ -88,7 +117,6 @@ function TrainerLogin() {
             </u>
           </div>
         </div>
-
         <footer className="text-center admin-footer">
           © 2024 FITFUSION. All rights reserved.
         </footer>
