@@ -27,7 +27,7 @@ function Login() {
     const token = response.credential;
     if (token) {
       dispatch(googleLoginUser(token)).then((response) => {
-        if (response) {
+        if (response.meta.requestStatus !== "rejected") {
           navigate("/");
         }
       });

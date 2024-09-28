@@ -111,12 +111,16 @@ export const googleLogin = createAsyncThunk(
         try {
             const response = await axios.post(`${localhostURL}/trainer/google-login`, { token })
             if (response.data.success === false) {
-                return rejectWithValue(response.data.message);
+                return rejectWithValue(response.data.success === false);
             } else {
                 const { accessToken, refreshToken } = response.data;
-                sessionStorage.setItem("trainerAccessToken", accessToken);
-                localStorage.setItem("trainerRefreshToken", refreshToken);
-                return response.data;
+                if (response.data === "NotExisted") {
+                    rejectWithValue(response.data)
+                } else {
+                    sessionStorage.setItem("trainerAccessToken", accessToken);
+                    localStorage.setItem("trainerRefreshToken", refreshToken);
+                    return response.data;
+                }
             };
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || error.message);
@@ -338,6 +342,24 @@ export const TrainerransactionHistory = createAsyncThunk(
             return response.data
         } catch (error) {
             return rejectWithValue(error.response ? error.response.data : error.message);
+        }
+    }
+)
+
+export const EditVideos = createAsyncThunk(
+    "trainer/EditVideos", 
+    async(videoData, {rejectWithValue}) => {
+        try {
+            console.log(videoData);
+            
+            const formData = new FormData();
+            formData.append("title", videoData.title)
+            formData.append("description", videoData.title)
+            formData.append("thumbnail", videoData.thumbnail);
+
+            const response = await trainerAxiosInstance.put(`${localhostURL}/trainer/edit-video`)
+        } catch (error) {
+            return rejectWithValue(error.response.data);
         }
     }
 )

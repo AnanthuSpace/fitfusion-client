@@ -66,18 +66,12 @@ function Sidebar({ isOpen, onClose }) {
                 <span>Subscription History</span>
               </p>
             </div>
-            <div className="sidebar-list">
+            {/* <div className="sidebar-list">
               <p>
                 <MdSupportAgent />
                 <span>Support</span>
               </p>
-            </div>
-            <div className="sidebar-list">
-              <p>
-                <IoMdSettings />
-                <span>Settings</span>
-              </p>
-            </div>
+            </div> */}
             <div className="sidebar-list" onClick={handleLogout}>
               <p>
                 <MdOutlineLogout />

@@ -3,12 +3,23 @@ import { Table, Card } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { getPersonalVideos } from "../../redux/trainers/trainerThunk";
 import VideoPlayerModal from "../common/VideoPlayer";
+import EditVideoModal from "./EditVideoModal";
 
 const Videos = () => {
   const dispatch = useDispatch();
+
   const [videos, setVideos] = useState([]);
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [showEditModal, setShowEditModal] = useState(false); 
+  const [videoToEdit, setVideoToEdit] = useState(null); 
+
+  const truncateText = (text, limit) => {
+    if (text.length > limit) {
+      return text.substring(0, limit) + "...";
+    }
+    return text;
+  };
 
   useEffect(() => {
     loadVideos(1);
@@ -29,8 +40,18 @@ const Videos = () => {
     setSelectedVideo(null);
   };
 
-  const handleVideoEdit = () => {
-    console.log("wrkng");
+  const handleVideoEdit = (video) => {
+    setVideoToEdit(video); // Set the video to be edited
+    setShowEditModal(true); // Show the modal
+  };
+
+  const handleSaveEditedVideo = (updatedVideo) => {
+    // Update the video list with the edited video
+    setVideos((prevVideos) =>
+      prevVideos.map((video) =>
+        video._id === updatedVideo._id ? updatedVideo : video
+      )
+    );
   };
 
   const handlePageChange = (newPage) => {
@@ -45,8 +66,6 @@ const Videos = () => {
           onClose={handleCloseVideoPlayer}
         />
       )}
-      {console.log(videos)}
-
       <Table className="w-100">
         <thead>
           <tr>
@@ -72,7 +91,7 @@ const Videos = () => {
               className="text-white"
               style={{ backgroundColor: "transparent", width: "400px" }}
             >
-              uploadDate
+              Upload Date
             </th>
             <th
               className="text-white"
@@ -118,7 +137,7 @@ const Videos = () => {
                     textOverflow: "ellipsis",
                   }}
                 >
-                  {video.title || "No Title"}
+                  {truncateText(video.title || "No Title", 50)}
                 </td>
                 <td
                   style={{
@@ -131,7 +150,7 @@ const Videos = () => {
                     textOverflow: "ellipsis",
                   }}
                 >
-                  {video.description || "No Description available."}
+                  {truncateText(video.description || "No Description available.", 40)}
                 </td>
                 <td
                   style={{
@@ -174,7 +193,6 @@ const Videos = () => {
                   >
                     Edit
                   </button>
-                  {/* <button variant="danger">Delete</button> */}
                 </td>
               </tr>
             ))
@@ -187,6 +205,8 @@ const Videos = () => {
           )}
         </tbody>
       </Table>
+
+      {/* Pagination */}
       <div className="d-flex justify-content-between">
         <button
           className="btn btn-secondary"
@@ -206,6 +226,16 @@ const Videos = () => {
           </button>
         )}
       </div>
+
+      {/* Edit Video Modal */}
+      {videoToEdit && (
+        <EditVideoModal
+          show={showEditModal}
+          onHide={() => setShowEditModal(false)}
+          video={videoToEdit}
+          onSave={handleSaveEditedVideo}
+        />
+      )}
     </div>
   );
 };

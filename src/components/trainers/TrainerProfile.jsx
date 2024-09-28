@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { editTrainer, changeTrainerPassword, updateProfilePicture, fetchTrainerProfile} from "../../redux/trainers/trainerThunk";
+import {
+  editTrainer,
+  changeTrainerPassword,
+  updateProfilePicture,
+  fetchTrainerProfile,
+} from "../../redux/trainers/trainerThunk";
 import { FaEdit } from "react-icons/fa";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../assets/styles/trainers/TrainerProfile.css";
@@ -13,17 +18,21 @@ function TrainerProfile() {
   const [gender, setGender] = useState(trainer?.gender || "");
   const [phone, setPhone] = useState(trainer?.phone || "");
   const [address, setAddress] = useState(trainer?.address || "");
-  const [qualification, setQualification] = useState( trainer?.qualification || "");
+  const [qualification, setQualification] = useState(
+    trainer?.qualification || ""
+  );
   const [achivements, setAchievements] = useState(trainer?.achivements || "");
   const [showModal, setShowModal] = useState(false);
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState(trainer?.achivements || "");
-  const [feePerMonth, setFeePerMonth] = useState(trainer?.feePerMonth ||"");
+  const [feePerMonth, setFeePerMonth] = useState(trainer?.feePerMonth || "");
   const [experience, setExperience] = useState(trainer?.experience || "");
-  const [profileIMG, setProfileImage] = useState( trainer?.profileIMG || "/Trainer-profile.jpg" );
+  const [profileIMG, setProfileImage] = useState(
+    trainer?.profileIMG || "/Trainer-profile.jpg"
+  );
 
-  useEffect(() => {    
-      dispatch(fetchTrainerProfile())
+  useEffect(() => {
+    dispatch(fetchTrainerProfile())
   }, []);
 
   const handleUpdate = () => {
@@ -36,7 +45,7 @@ function TrainerProfile() {
         qualification,
         achivements,
         feePerMonth,
-        experience
+        experience,
       })
     );
   };
@@ -59,8 +68,9 @@ function TrainerProfile() {
       };
       reader.readAsDataURL(file);
 
-      dispatch(updateProfilePicture(file))
-      .then((res)=>setProfileImage(res.payload))
+      dispatch(updateProfilePicture(file)).then((res) =>
+        setProfileImage(res.payload)
+      );
     }
   };
 

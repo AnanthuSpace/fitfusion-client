@@ -23,7 +23,6 @@ const TutorilasList = () => {
           }
         })
         .catch((error) => {
-          console.error("Error fetching videos:", error);
           setVideos([]);
         });
     }
@@ -35,6 +34,13 @@ const TutorilasList = () => {
 
   const handleCloseVideoPlayer = () => {
     setSelectedVideo(null);
+  };
+
+  const truncateText = (text, limit) => {
+    if (text.length > limit) {
+      return text.substring(0, limit) + "...";
+    }
+    return text;
   };
 
   return (
@@ -56,9 +62,14 @@ const TutorilasList = () => {
                   style={{ height: "200px", objectFit: "cover" }}
                 />
                 <div className="card-body">
-                  <h5 className="card-title">{video.title || "Video Title"}</h5>
+                  <h5 className="card-title">
+                    {truncateText(video.title || "Video Title", 50)}
+                  </h5>
                   <p className="card-text">
-                    {video.description || "No description available."}
+                    {truncateText(
+                      video.description || "No description available.",
+                      60
+                    )}
                   </p>
                   <p className="card-text">
                     <small className="text-muted">
