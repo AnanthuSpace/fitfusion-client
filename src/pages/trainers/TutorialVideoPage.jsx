@@ -10,7 +10,6 @@ const TutorialVideoPage = () => {
         <TrainerSideBar />
         <div className="flex-grow-1 d-flex flex-column">
           <TrainerNavbar />
-          {/* <h2 className="text-white ms-4 mt-1">Contents</h2> */}
           <div className="d-flex justify-content-center align-items-center flex-grow-1 m-3">
             <Videos />
           </div>

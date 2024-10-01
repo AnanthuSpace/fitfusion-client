@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { Table, Card } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { getPersonalVideos } from "../../redux/trainers/trainerThunk";
+import {
+  getPersonalVideos,
+  toggleVideoListing,
+} from "../../redux/trainers/trainerThunk";
 import VideoPlayerModal from "../common/VideoPlayer";
 import EditVideoModal from "./EditVideoModal";
 
@@ -11,8 +14,8 @@ const Videos = () => {
   const [videos, setVideos] = useState([]);
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [showEditModal, setShowEditModal] = useState(false); 
-  const [videoToEdit, setVideoToEdit] = useState(null); 
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [videoToEdit, setVideoToEdit] = useState(null);
 
   const truncateText = (text, limit) => {
     if (text.length > limit) {
@@ -41,17 +44,28 @@ const Videos = () => {
   };
 
   const handleVideoEdit = (video) => {
-    setVideoToEdit(video); // Set the video to be edited
-    setShowEditModal(true); // Show the modal
+    setVideoToEdit(video);
+    setShowEditModal(true);
   };
 
   const handleSaveEditedVideo = (updatedVideo) => {
-    // Update the video list with the edited video
     setVideos((prevVideos) =>
       prevVideos.map((video) =>
-        video._id === updatedVideo._id ? updatedVideo : video
+        video.videoId === updatedVideo.videoId ? updatedVideo : video
       )
     );
+  };
+
+  const handleToggleListing = (videoId, listed) => {
+    dispatch(toggleVideoListing({ videoId, listed: !listed })).then(() => {
+      setVideos((prevVideos) =>
+        prevVideos.map((video) =>
+          video.videoId === videoId
+            ? { ...video, listed: !video.listed }
+            : video
+        )
+      );
+    });
   };
 
   const handlePageChange = (newPage) => {
@@ -89,13 +103,13 @@ const Videos = () => {
             </th>
             <th
               className="text-white"
-              style={{ backgroundColor: "transparent", width: "400px" }}
+              style={{ backgroundColor: "transparent", width: "300px" }}
             >
               Upload Date
             </th>
             <th
               className="text-white"
-              style={{ backgroundColor: "transparent", width: "150px" }}
+              style={{ backgroundColor: "transparent", width: "250px" }}
             >
               Actions
             </th>
@@ -111,6 +125,8 @@ const Videos = () => {
                     backgroundColor: "transparent",
                     border: "none",
                     paddingRight: "15px",
+                    verticalAlign: "middle", // Center vertically
+                    textAlign: "center", // Center horizontally
                   }}
                 >
                   <Card.Img
@@ -135,6 +151,8 @@ const Videos = () => {
                     whiteSpace: "nowrap",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
+                    verticalAlign: "middle", // Center vertically
+                    textAlign: "center", // Center horizontally
                   }}
                 >
                   {truncateText(video.title || "No Title", 50)}
@@ -148,9 +166,14 @@ const Videos = () => {
                     whiteSpace: "nowrap",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
+                    verticalAlign: "middle", // Center vertically
+                    textAlign: "center", // Center horizontally
                   }}
                 >
-                  {truncateText(video.description || "No Description available.", 40)}
+                  {truncateText(
+                    video.description || "No Description available.",
+                    40
+                  )}
                 </td>
                 <td
                   style={{
@@ -161,6 +184,8 @@ const Videos = () => {
                     whiteSpace: "nowrap",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
+                    verticalAlign: "middle", // Center vertically
+                    textAlign: "center", // Center horizontally
                   }}
                 >
                   {video.uploadDate
@@ -173,12 +198,13 @@ const Videos = () => {
                       })
                     : "No Date."}
                 </td>
-
                 <td
                   style={{
                     width: "150px",
                     backgroundColor: "transparent",
                     border: "none",
+                    verticalAlign: "middle", // Center vertically
+                    textAlign: "center", // Center horizontally
                   }}
                 >
                   <button
@@ -192,6 +218,18 @@ const Videos = () => {
                     onClick={() => handleVideoEdit(video)}
                   >
                     Edit
+                  </button>
+                  <button
+                    className={`me-2 ${
+                      video.listed
+                        ? "gradient-blue-white"
+                        : "gradient-red-white"
+                    }`}
+                    onClick={() =>
+                      handleToggleListing(video.videoId, video.listed)
+                    }
+                  >
+                    {video.listed ? "Unlist" : "List"}{" "}
                   </button>
                 </td>
               </tr>

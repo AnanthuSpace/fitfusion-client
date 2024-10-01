@@ -347,19 +347,28 @@ export const TrainerransactionHistory = createAsyncThunk(
 )
 
 export const EditVideos = createAsyncThunk(
-    "trainer/EditVideos", 
-    async(videoData, {rejectWithValue}) => {
+    "trainer/EditVideos",
+    async (videoData, { rejectWithValue }) => {
         try {
-            console.log(videoData);
-            
-            const formData = new FormData();
-            formData.append("title", videoData.title)
-            formData.append("description", videoData.title)
-            formData.append("thumbnail", videoData.thumbnail);
-
-            const response = await trainerAxiosInstance.put(`${localhostURL}/trainer/edit-video`)
+            const response = await trainerAxiosInstance.put(`${localhostURL}/trainer/edit-video`, videoData)
+            return response.data
         } catch (error) {
             return rejectWithValue(error.response.data);
         }
     }
 )
+
+export const toggleVideoListing = createAsyncThunk(
+    "trainer/toggleVideoListing",
+    async ({ videoId, listed }, { rejectWithValue }) => {
+        try {
+            const response = await trainerAxiosInstance.patch(`${localhostURL}/trainer/toggleListing`, {
+                videoId,
+                listed,
+            });
+            return response.data;
+        } catch (error) {
+            return rejectWithValue(error.response.data || "Error toggling video listing");
+        }
+    }
+);

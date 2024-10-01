@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "sonner";
-import { trainerRegistration, trainerVerification, trainerLogin, EditVideos, googleLogin, TrainerransactionHistory, googleSignUp, getPersonalVideos, editTrainer, changeTrainerPassword, updateProfilePicture, fetchTrainerProfile, uploadVideo, fetchAlreadyChattedCustomer, AddDietPlan, fetchDeitPlans } from "./trainerThunk";
+import { trainerRegistration, trainerVerification, trainerLogin, toggleVideoListing, EditVideos, googleLogin, TrainerransactionHistory, googleSignUp, getPersonalVideos, editTrainer, changeTrainerPassword, updateProfilePicture, fetchTrainerProfile, uploadVideo, fetchAlreadyChattedCustomer, AddDietPlan, fetchDeitPlans } from "./trainerThunk";
 
 
 const trainerData = localStorage.getItem("trainerData") ? JSON.parse(localStorage.getItem("trainerData")) : null;
@@ -214,10 +214,20 @@ const trainerSlice = createSlice({
                 toast.error(action.payload || "Failed to fetch history", { hideProgressBar: true, autoClose: 3000 });
             })
 
-            .addCase(EditVideos.fulfilled, (state) => {
+            .addCase(EditVideos.fulfilled, (state, action) => {
                 state.isLoading = false;
+                toast.success(action.payload.message)
             })
             .addCase(EditVideos.rejected, (state, action) => {
+                state.isLoading = false;
+                toast.error(action.payload || "Failed to update the video", { hideProgressBar: true, autoClose: 3000 });
+            })
+
+            .addCase(toggleVideoListing.fulfilled, (state, action) => {
+                state.isLoading = false;
+                toast.success(action.payload.response.message)
+            })
+            .addCase(toggleVideoListing.rejected, (state, action) => {
                 state.isLoading = false;
                 toast.error(action.payload || "Failed to update the video", { hideProgressBar: true, autoClose: 3000 });
             })

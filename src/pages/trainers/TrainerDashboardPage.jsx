@@ -3,6 +3,7 @@ import TrainerNavbar from "../../components/trainers/TrainerNavbar";
 import TrainerSideBar from "../../components/trainers/TrainerSideBar";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../assets/styles/trainers/TrainerConsole.css";
+import MyChart from "../../components/trainers/MyChart";
 // import TrainerDashobord from "../../components/trainers/TrainerDashobord";
 
 function TrainerDashboardPage() {
@@ -12,12 +13,16 @@ function TrainerDashboardPage() {
         <TrainerSideBar />
         <div className="flex-grow-1 d-flex flex-column trainer-gradient-bg">
           <TrainerNavbar />
-          <div className="glass-effect mt-3 mb-3 h-100">
-            {/* <TrainerDashobord /> */}
-            <h3>Dashboard</h3>
+            <h4 className="text-white m-3">Hi, Welcome back</h4>
+            <div className="w-100 d-flex justify-content-center align-items-center p-4">
+              <MyChart />
+            </div>
+            {/* <div className="w-100 d-flex justify-content-between align-items-center">
+              <MyChart />
+              <MyChart />
+            </div> */}
           </div>
         </div>
-      </div>
     </>
   );
 }
