@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "sonner";
-import { adminLogin, handleBlockTrainer, handleUnblockTrainer, handleBlockUser, handleUnblockUser, verifyTrainer, fetchUser, fetchTrainers, fetchIndividualTrainer } from "./adminThunk";
+import { adminLogin, handleBlockTrainer, handleUnblockTrainer, handleBlockUser, fetchNewUsersAndTrainers, fetchDataForDashboard, handleUnblockUser, verifyTrainer, fetchUser, fetchTrainers, fetchIndividualTrainer } from "./adminThunk";
 
 const usersDataString = localStorage.getItem("usersData");
 const usersData = usersDataString ? JSON.parse(usersDataString) : [];
@@ -143,6 +143,22 @@ const adminSlice = createSlice({
             .addCase(fetchIndividualTrainer.rejected, (state, action) => {
                 state.isLoading = false;
                 toast.error(action.payload || "Error while fetching load the users", { hideProgressBar: true, autoClose: 3000 })
+            })
+            
+            .addCase(fetchDataForDashboard.fulfilled, (state) => {
+                state.isLoading = false;
+            })
+            .addCase(fetchDataForDashboard.rejected, (state, action) => {
+                state.isLoading = false;
+                toast.error(action.payload || "Error while fetching load the data", { hideProgressBar: true, autoClose: 3000 })
+            })
+
+            .addCase(fetchNewUsersAndTrainers.fulfilled, (state) => {
+                state.isLoading = false;
+            })
+            .addCase(fetchNewUsersAndTrainers.rejected, (state, action) => {
+                state.isLoading = false;
+                toast.error(action.payload || "Error while fetching load the data", { hideProgressBar: true, autoClose: 3000 })
             })
     }
 });

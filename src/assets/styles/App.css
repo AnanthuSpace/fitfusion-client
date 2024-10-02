@@ -306,3 +306,20 @@ video {
     background-position: -200% 0;
   }
 }
+
+.admin-console .overflow-auto::-webkit-scrollbar {
+  width: 8px; 
+}
+
+.admin-console .overflow-auto::-webkit-scrollbar-track {
+  background: #212529; 
+}
+
+.admin-console .overflow-auto::-webkit-scrollbar-thumb {
+  background-color: #ff4500; 
+  border-radius: 10px; 
+}
+
+.admin-console .overflow-auto::-webkit-scrollbar-thumb:hover {
+  background: #ff6347; 
+}
