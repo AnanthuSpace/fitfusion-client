@@ -116,7 +116,7 @@ const Videos = () => {
           </tr>
         </thead>
         <tbody>
-          {videos ? (
+          {videos.length >= 0 ? (
             videos.map((video, idx) => (
               <tr key={idx}>
                 <td
@@ -236,8 +236,24 @@ const Videos = () => {
             ))
           ) : (
             <tr>
-              <td colSpan="4" className="text-center text-white">
-                Loading videos...
+              <td
+                colSpan="5"
+                className="text-center text-muted py-5"
+                style={{
+                  width: "150px",
+                  backgroundColor: "transparent",
+                  border: "none",
+                  verticalAlign: "middle", 
+                  textAlign: "center", 
+                }}
+              >
+                <div className="d-flex flex-column align-items-center">
+                  <i
+                    className="bi bi-folder-x"
+                    style={{ fontSize: "3rem" }}
+                  ></i>
+                  <h3 className="mt-3 text-white">No videos available</h3>
+                </div>
               </td>
             </tr>
           )}

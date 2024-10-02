@@ -6,7 +6,7 @@ function TrainerLoginProtector({ children }) {
   const trainerToken = sessionStorage.getItem("trainerAccessToken");
   useEffect(() => {
     if (trainerToken) {
-      navigate("/trainer-console");
+      navigate("/trainer-profile");
     }
   }, [navigate, trainerToken]);
 

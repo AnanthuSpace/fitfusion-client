@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "sonner";
-import { adminLogin, handleBlockTrainer, handleUnblockTrainer, handleBlockUser, handleUnblockUser, verifyTrainer, fetchUser, fetchTrainers } from "./adminThunk";
+import { adminLogin, handleBlockTrainer, handleUnblockTrainer, handleBlockUser, handleUnblockUser, verifyTrainer, fetchUser, fetchTrainers, fetchIndividualTrainer } from "./adminThunk";
 
 const usersDataString = localStorage.getItem("usersData");
 const usersData = usersDataString ? JSON.parse(usersDataString) : [];
@@ -14,6 +14,7 @@ const adminSlice = createSlice({
         usersData: usersData,
         trainersData: trainersData,
         error: null,
+        isLoading: false,
     },
     reducers: {
         adminLogout: (state) => {
@@ -103,6 +104,9 @@ const adminSlice = createSlice({
                 toast.error(state.error, { hideProgressBar: true, autoClose: 3000 });
             })
 
+            .addCase(verifyTrainer.pending, (state, action) => {
+                state.isLoading = true;
+            })
 
             .addCase(verifyTrainer.fulfilled, (state, action) => {
                 state.isLoading = false;
@@ -129,6 +133,14 @@ const adminSlice = createSlice({
                 state.isLoading = false;
             })
             .addCase(fetchUser.rejected, (state, action) => {
+                state.isLoading = false;
+                toast.error(action.payload || "Error while fetching load the users", { hideProgressBar: true, autoClose: 3000 })
+            })
+
+            .addCase(fetchIndividualTrainer.fulfilled, (state) => {
+                state.isLoading = false;
+            })
+            .addCase(fetchIndividualTrainer.rejected, (state, action) => {
                 state.isLoading = false;
                 toast.error(action.payload || "Error while fetching load the users", { hideProgressBar: true, autoClose: 3000 })
             })

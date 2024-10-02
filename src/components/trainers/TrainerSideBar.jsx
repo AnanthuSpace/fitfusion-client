@@ -21,18 +21,18 @@ function TrainerSideBar() {
       <div className="mb-4">
         <FaDumbbell
           className="fs-2 text-white"
-          onClick={() => navigate("/trainer-console")}
+          onClick={() => navigate("/trainer-profile")}
         />
       </div>
       <ul className="nav flex-column text-center">
-        <li className="nav-item my-3">
+        {/* <li className="nav-item my-3">
           <FaHome
             className={`fs-4 ${
               isActive("/trainer-console") ? "text-white" : "text-secondary"
             }`}
             onClick={() => navigate("/trainer-console")}
           />
-        </li>
+        </li> */}
         <li className="nav-item my-3">
           <FaUserCircle
             className={`fs-4 ${

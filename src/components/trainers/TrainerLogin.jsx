@@ -19,7 +19,7 @@ function TrainerLogin() {
     const emailId = email.toLowerCase();
     dispatch(trainerLogin({ email: emailId, password })).then((result) => {
       if (result.meta.requestStatus === "fulfilled") {
-        navigate("/trainer-console");
+        navigate("/trainer-profile");
       }
     });
   };
@@ -29,7 +29,7 @@ function TrainerLogin() {
     if (token) {
       dispatch(googleLogin(token)).then((result) => {
         if (result.meta.requestStatus === "fulfilled") {
-          navigate("/trainer-console");
+          navigate("/trainer-profile");
         }
       });
     } else {

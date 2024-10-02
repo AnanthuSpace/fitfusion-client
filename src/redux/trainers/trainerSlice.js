@@ -197,8 +197,7 @@ const trainerSlice = createSlice({
                 state.error = action.payload;
             })
 
-            .addCase(getPersonalVideos.fulfilled, (state, action) => {
-                state.trainerData = action.payload
+            .addCase(getPersonalVideos.fulfilled, (state) => {
                 state.isLoading = false;
             })
             .addCase(getPersonalVideos.rejected, (state, action) => {

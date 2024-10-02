@@ -1,0 +1,28 @@
+.table-cell {
+    background-color: transparent;
+    vertical-align: middle;
+    text-align: center;
+    border: none;
+  }
+  
+  .thumbnail-img {
+    width: 150px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+  
+  .truncate-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .button {
+    margin-right: 8px;
+  }
+  
+  .card-img-container {
+    padding-right: 15px;
+  }
+  

@@ -2,7 +2,7 @@ import React from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import Lottie from "react-lottie";
-import animationData from "../../../public/Animation - 1726276908049 (1).json";
+import animationData from "/Animation - 1726276908049 (1).json?url";
 
 function VideoUploadModal({
   show,

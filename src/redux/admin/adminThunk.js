@@ -84,9 +84,11 @@ export const handleUnblockUser = createAsyncThunk(
 
 export const verifyTrainer = createAsyncThunk(
   "admin/verifyTrainer",
-  async ({ trainerId, isVerified }, { rejectWithValue }) => {
+  async ({ trainerId, isVerified, reason }, { rejectWithValue }) => {
     try {
-      const response = await adminAxiosInstance.patch(`${localhostURL}/admin/isverify`, { trainerId, isVerified })
+      const response = await adminAxiosInstance.patch(`${localhostURL}/admin/isverify`, { trainerId, isVerified, reason })
+      console.log(response.data);
+      
       return { data: response.data, trainerId, isVerified };
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -99,7 +101,7 @@ export const fetchTrainers = createAsyncThunk(
   async (newPage, { rejectWithValue }) => {
     try {
       const response = await adminAxiosInstance.get(`${localhostURL}/admin/loadtrainer`, { params: { page: newPage } })
-      return response.data  
+      return response.data
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -111,7 +113,19 @@ export const fetchUser = createAsyncThunk(
   async (newPage, { rejectWithValue }) => {
     try {
       const response = await adminAxiosInstance.get(`${localhostURL}/admin/loadusers`, { params: { page: newPage } })
-      return response.data  
+      return response.data
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+)
+
+export const fetchIndividualTrainer = createAsyncThunk(
+  "admin/fetchIndividualTrainer",
+  async (trainerId, { rejectWithValue }) => {
+    try {
+      const response = await adminAxiosInstance.get(`${localhostURL}/admin/get-individual-trainers`, { params: { trainerId: trainerId } })
+      return response.data
     } catch (error) {
       return rejectWithValue(error.response.data);
     }

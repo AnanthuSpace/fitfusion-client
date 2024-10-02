@@ -1,4 +1,4 @@
-import React, {useState, useRef} from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import "../../assets/styles/trainers/TrainerOtpVerification.css";
@@ -25,11 +25,10 @@ function TrainerOtpVerification() {
     }
   };
 
-
   const handleSubmit = async () => {
     const completeOtp = otp.join("");
     dispatch(
-        trainerVerification({
+      trainerVerification({
         completeOtp,
         toast,
         temperoryEmail,
@@ -47,20 +46,20 @@ function TrainerOtpVerification() {
         <div className="trainer-otp-div">
           <h1>Verify OTP</h1>
           <div className="verify">
-          {otp.map((digit, index) => (
-            <input
-              key={index}
-              ref={(el) => (inputRefs.current[index] = el)}
-              type="text"
-              placeholder="0"
-              maxLength="1"
-              value={digit}
-              onChange={(e) => handleChange(e, index)}
-              onInput={(e) =>
-                (e.target.value = e.target.value.replace(/[^0-9]/g, ""))
-              }
-            />
-          ))}
+            {otp.map((digit, index) => (
+              <input
+                key={index}
+                ref={(el) => (inputRefs.current[index] = el)}
+                type="text"
+                placeholder="0"
+                maxLength="1"
+                value={digit}
+                onChange={(e) => handleChange(e, index)}
+                onInput={(e) =>
+                  (e.target.value = e.target.value.replace(/[^0-9]/g, ""))
+                }
+              />
+            ))}
           </div>
         </div>
         <div className="trainer-verify-btn">
