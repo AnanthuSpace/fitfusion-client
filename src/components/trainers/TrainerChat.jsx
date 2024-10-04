@@ -13,6 +13,8 @@ const socket = io(localhostURL);
 function TrainerChat() {
   const [searchTerm, setSearchTerm] = useState("");
   const [messages, setMessages] = useState([]);
+  const [directChatId, setDirectChatId] = useState("");
+  const [directChatName, setDirectChatName] = useState("");
   const [newMessage, setNewMessage] = useState("");
   const [currentCustomerId, setCurrentCustomerId] = useState("");
   const [currentCustomerName, setCurrentCustomerName] = useState("");
@@ -30,6 +32,8 @@ function TrainerChat() {
   useEffect(() => {
     setCurrentCustomerId(location.state?.customerId);
     setCurrentCustomerName(location.state?.customerName);
+    setDirectChatId(location.state?.customerId);
+    setDirectChatName(location.state?.customerName);
   }, [location.state]);
 
   useEffect(() => {
@@ -87,6 +91,8 @@ function TrainerChat() {
         onSelectCustomer={handleSelectCustomer}
         setChatHistory={setChatHistory}
         alreadyChattedCustomer={alreadyChattedCustomer}
+        directChatId={directChatId}
+        directChatName={directChatName}
       />
 
       <TrainerChatScreen
@@ -98,6 +104,7 @@ function TrainerChat() {
         currentCustomerId={selectedId}
         chatHistory={chatHistory}
         receiverId={trainerData.trainerId}
+        directChatId={directChatId}
         socket={socket}
       />
     </div>

@@ -7,6 +7,7 @@ import { MdOutlineVideocam } from "react-icons/md";
 import { fetchAlreadyChattedTrainer } from "../../redux/users/userThunk";
 import EmojiPicker from "emoji-picker-react";
 import VideoCallScreen from "../common/VideoCallScreen";
+import { useLocation } from "react-router-dom";
 
 const socket = io(localhostURL);
 
@@ -17,9 +18,12 @@ const ChatScreen = () => {
   const [selectedName, setSelectedName] = useState("");
   const [messageInput, setMessageInput] = useState("");
   const [chatHistory, setChatHistory] = useState([]);
+  const [directChatId, setDirectChatId] = useState("");
+  const [directChatName, setDirectChatName] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [showVideoCall, setShowVideoCall] = useState(false);
   const [onlineStatus, setOnlineStatus] = useState(false);
+  const location = useLocation();
 
   const userData = useSelector((state) => state.user.userData);
   const alreadyChattedTrainer = useSelector(
@@ -110,6 +114,16 @@ const ChatScreen = () => {
     setShowVideoCall(false);
   };
 
+  useEffect(() => {
+    if (location.state) {
+      setDirectChatId(location.state.trainerId || "");   
+      setDirectChatName(location.state.trainerName || ""); 
+    } else {
+      setDirectChatId("");  
+      setDirectChatName("");
+    }
+  }, [location.state]);
+
   return (
     <div className="d-flex flex-grow-1 overflow-hidden background-gradient-main">
       <ChatTrainerList
@@ -118,6 +132,8 @@ const ChatScreen = () => {
         onSelectTrainer={handleSelectTrainer}
         setChatHistory={setChatHistory}
         alreadyChattedTrainer={alreadyChattedTrainer}
+        directChatId={directChatId}
+        directChatName={directChatName}
       />
       <div className="col-9 p-3 d-flex flex-column">
         {showVideoCall && (
@@ -133,17 +149,17 @@ const ChatScreen = () => {
               <div>
                 <h4 className="m-0">{selectedName}</h4>
                 <div className="d-flex align-items-center">
-                  {/* <span
-      className="status-dot"
-      style={{
-        backgroundColor: onlineStatus ? "green" : "red",
-        width: "10px",
-        height: "10px",
-        borderRadius: "50%",
-        display: "inline-block",
-        marginRight: "8px",
-      }}
-    ></span> */}
+                  <span
+                    className="status-dot"
+                    style={{
+                      backgroundColor: onlineStatus ? "green" : "red",
+                      width: "10px",
+                      height: "10px",
+                      borderRadius: "50%",
+                      display: "inline-block",
+                      marginRight: "8px",
+                    }}
+                  ></span>
                   {onlineStatus ? "online" : "offline"}
                 </div>
               </div>

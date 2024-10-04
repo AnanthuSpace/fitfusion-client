@@ -36,9 +36,13 @@ function VideoUploadModal({
             className="d-flex justify-content-center align-items-center"
             style={{ height: "100%", width: "100%" }}
           >
-            <div style={{ width: "100%", height: "100%" }}>
-              <Lottie options={defaultOptions} />
-            </div>
+            {animationData ? (
+              <div style={{ width: "100%", height: "100%" }}>
+                <Lottie options={defaultOptions} />
+              </div>
+            ) : (
+              <p className="text-white">Loading animation...</p>
+            )}
           </div>
         </Modal.Body>
       ) : (
@@ -88,7 +92,6 @@ function VideoUploadModal({
                 />
               </Form.Group>
 
-              {/* Modal Footer with Cancel and Upload buttons */}
               <Modal.Footer style={{ borderTop: "none" }}>
                 <Button
                   className="gradient-red-white"

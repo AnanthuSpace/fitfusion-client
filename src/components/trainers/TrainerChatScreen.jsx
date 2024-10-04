@@ -13,6 +13,7 @@ const TrainerChatScreen = ({
   receiverId,
   currentCustomerId,
   socket,
+  directChatId
 }) => {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const trainerId = useSelector((state) => state.trainer.trainerData.trainerId);
@@ -54,7 +55,7 @@ const TrainerChatScreen = ({
         socket.off("userIsOffline");
       };
     }
-  }, [socket, trainerId, currentCustomerId]);
+  }, [socket, trainerId, currentCustomerId,  directChatId]);
 
   return (
     <div className="col-9 p-3 chat-window d-flex flex-column">
@@ -71,7 +72,7 @@ const TrainerChatScreen = ({
             <div>
               <h4 className="m-0">{currentCustomerName}</h4>
               <div className="d-flex align-items-center">
-                {/* <span
+                <span
                   className="status-dot"
                   style={{
                     backgroundColor: onlineStatus ? "green" : "red",
@@ -81,7 +82,7 @@ const TrainerChatScreen = ({
                     display: "inline-block",
                     marginRight: "8px",
                   }}
-                ></span> */}
+                ></span>
                 {onlineStatus ? "online" : "offline"}
               </div>
             </div>
