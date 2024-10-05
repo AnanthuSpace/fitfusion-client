@@ -14,7 +14,7 @@ const TutorialsPage = () => {
           <TutorilasList />
         ) : (
           <div className="d-flex justify-content-center align-items-center" style={{ height: "90vh" }}>
-            <div className="text-center text-white">
+            <div className="text-center text-white px-3">
               <h4 className="mb-3">No Subscriptions Yet</h4>
               <p className="fs-5">
                 You haven't subscribed to any trainers yet. Explore our trainers and subscribe
@@ -25,6 +25,36 @@ const TutorialsPage = () => {
           </div>
         )}
       </div>
+
+      <style jsx>{`
+        @media (max-width: 768px) {
+          .background-gradient-main {
+            padding-top: 1rem;
+          }
+
+          h4 {
+            font-size: 1.5rem;
+          }
+
+          p {
+            font-size: 1rem;
+          }
+        }
+
+        @media (max-width: 576px) {
+          h4 {
+            font-size: 1.25rem;
+          }
+
+          p {
+            font-size: 0.9rem;
+          }
+
+          .d-flex {
+            height: 80vh;
+          }
+        }
+      `}</style>
     </>
   );
 };

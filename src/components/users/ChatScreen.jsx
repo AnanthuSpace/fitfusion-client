@@ -95,7 +95,9 @@ const ChatScreen = () => {
         text: messageInput,
       };
 
-      const firstTimeChat = chatHistory.length === 0;
+      console.log(directChatId);
+
+      const firstTimeChat = directChatId !== "";
       socket.emit("sendMessage", { message, firstTimeChat });
       setMessageInput("");
     }
@@ -116,10 +118,10 @@ const ChatScreen = () => {
 
   useEffect(() => {
     if (location.state) {
-      setDirectChatId(location.state.trainerId || "");   
-      setDirectChatName(location.state.trainerName || ""); 
+      setDirectChatId(location.state.trainerId || "");
+      setDirectChatName(location.state.trainerName || "");
     } else {
-      setDirectChatId("");  
+      setDirectChatId("");
       setDirectChatName("");
     }
   }, [location.state]);

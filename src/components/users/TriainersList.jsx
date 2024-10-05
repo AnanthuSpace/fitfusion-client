@@ -114,45 +114,11 @@ function TrainersList() {
             if (filteredTrainers.length === index + 1) {
               return (
                 <Col
-                ref={lastTrainerElementRef}
-                md={4}
-                lg={3}
-                className="mb-4"
-                key={trainer.trainerId}
+                  ref={lastTrainerElementRef}
+                  xs={12} sm={6} md={4} lg={3} // Responsive classes
+                  className="mb-4"
+                  key={trainer.trainerId}
                 >
-                  {console.log(trainer.profileIMG)}
-                  <Card
-                    className="h-100 text-center glass-card"
-                    onClick={() => handleCardClick(trainer.trainerId)}     
-                  >
-                    <Card.Img
-                      variant="top"
-                      src={`${trainer.profileIMG}`}
-                      alt={trainer.name}
-                      style={{
-                        width: "100%",
-                        height: "200px",
-                        objectFit: "cover",
-                      }}
-                      onError={(e) => {
-                        e.target.src = "/Trainer-profile.jpg";
-                      }}
-                    />
-                    <Card.Body>
-                      <Card.Title className="text-white">
-                        {trainer.name}
-                      </Card.Title>
-                      <Card.Text className="text-white">
-                        {trainer.achivements || "No specialization"}
-                        <StarRating rating={trainer.rating} />
-                      </Card.Text>
-                    </Card.Body>
-                  </Card>
-                </Col>
-              );
-            } else {
-              return (
-                <Col md={4} lg={3} className="mb-4" key={trainer.trainerId}>
                   <Card
                     className="h-100 text-center glass-card"
                     onClick={() => handleCardClick(trainer.trainerId)}
@@ -176,7 +142,43 @@ function TrainersList() {
                       </Card.Title>
                       <Card.Text className="text-white">
                         {trainer.achivements || "No specialization"}
-                        <StarRating rating={trainer.rating} />
+                        <div className="star-rating-wrapper">
+                          <StarRating rating={trainer.rating} />
+                        </div>
+                      </Card.Text>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              );
+            } else {
+              return (
+                <Col xs={12} sm={6} md={4} lg={3} className="mb-4" key={trainer.trainerId}>
+                  <Card
+                    className="h-100 text-center glass-card"
+                    onClick={() => handleCardClick(trainer.trainerId)}
+                  >
+                    <Card.Img
+                      variant="top"
+                      src={`${trainer.profileIMG}`}
+                      alt={trainer.name}
+                      style={{
+                        width: "100%",
+                        height: "200px",
+                        objectFit: "cover",
+                      }}
+                      onError={(e) => {
+                        e.target.src = "/Trainer-profile.jpg";
+                      }}
+                    />
+                    <Card.Body>
+                      <Card.Title className="text-white">
+                        {trainer.name}
+                      </Card.Title>
+                      <Card.Text className="text-white">
+                        {trainer.achivements || "No specialization"}
+                        <div className="star-rating-wrapper">
+                          <StarRating rating={trainer.rating} />
+                        </div>
                       </Card.Text>
                     </Card.Body>
                   </Card>

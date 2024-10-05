@@ -1,51 +1,98 @@
+
 div::-webkit-scrollbar {
-    width: 12px;
-    background-color: transparent;
-  }
-  
-  div::-webkit-scrollbar-thumb {
-    background-color: #b249f8;
-    border-radius: 10px;
-  }
-  
-  div {
-    scrollbar-width: thin;
-    scrollbar-color: #b249f8 transparent;
-  }
-  
-  .glass-card {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 8px;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  .loading-spinner-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100px;
-    width: 100%;
-    position: absolute;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.7); 
-    border-top: 1px solid #b249f8;
-  }
-  
-  .loading-spinner {
-    text-align: center;
-  }
-  
-  .loading-spinner .spinner-border {
-    width: 3rem;
-    height: 3rem;
-    border-width: 0.5rem;
-    border-color: white transparent white transparent; 
-  }
-  
-  .loading-spinner p {
-    color: white; 
-    margin-top: 0.5rem;
-  }
-  
+  width: 12px;
+  background-color: transparent;
+}
+
+div::-webkit-scrollbar-thumb {
+  background-color: #b249f8;
+  border-radius: 10px;
+}
+
+div {
+  scrollbar-width: thin;
+  scrollbar-color: #b249f8 transparent;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease-in-out;
+  overflow: hidden;
+}
+
+.glass-card:hover {
+  transform: scale(1.05);
+}
+
+.star-rating-wrapper {
+  font-size: 1.25rem;
+}
+
+.loading-spinner-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-top: 1px solid #b249f8;
+}
+
+.loading-spinner {
+  text-align: center;
+}
+
+.loading-spinner .spinner-border {
+  width: 3rem;
+  height: 3rem;
+  border-width: 0.5rem;
+  border-color: white transparent white transparent;
+}
+
+.loading-spinner p {
+  color: white;
+  margin-top: 0.5rem;
+}
+
+.gradient-text {
+  background: -webkit-linear-gradient(45deg, #ff6ec4, #7873f5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: clamp(1.5rem, 2.5vw, 2.5rem);
+}
+
+.form-control {
+  background: transparent;
+  color: white;
+  border: 1px solid #b249f8;
+  border-radius: 1rem;
+}
+
+.form-control:focus {
+  border-color: #7873f5;
+  box-shadow: none;
+}
+
+.button-gradient {
+  background: linear-gradient(45deg, #ff6ec4, #7873f5);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 1rem;
+  transition: background 0.3s ease-in-out;
+}
+
+.button-gradient:hover {
+  background: linear-gradient(45deg, #ff6ec4, #b249f8);
+}
+
+.card-img-top {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}

@@ -51,7 +51,7 @@ function TrainerChat() {
 
   useEffect(() => {
     dispatch(fetchAlreadyChattedCustomer(trainerData.alreadychattedUsers));
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     socket.on("receiveMessage", (messageDetails) => {
@@ -70,7 +70,7 @@ function TrainerChat() {
         text: newMessage,
       };
 
-      const firstTimeChat = chatHistory.length === 0 ? true : false;
+      const firstTimeChat = directChatId !== "";
       socket.emit("sendMessage", { message, firstTimeChat });
       setNewMessage("");
     }
