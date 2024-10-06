@@ -26,7 +26,8 @@ const TutorialsPage = () => {
         )}
       </div>
 
-      <style jsx>{`
+      <style>
+        {`
         @media (max-width: 768px) {
           .background-gradient-main {
             padding-top: 1rem;
@@ -54,7 +55,8 @@ const TutorialsPage = () => {
             height: 80vh;
           }
         }
-      `}</style>
+      `}
+      </style>
     </>
   );
 };

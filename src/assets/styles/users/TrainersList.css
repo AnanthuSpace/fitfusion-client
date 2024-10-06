@@ -62,7 +62,6 @@ div {
 
 .gradient-text {
   background: -webkit-linear-gradient(45deg, #ff6ec4, #7873f5);
-  -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-size: clamp(1.5rem, 2.5vw, 2.5rem);
 }

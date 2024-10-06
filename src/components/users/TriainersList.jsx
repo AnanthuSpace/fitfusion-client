@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { localhostURL } from "../../utils/url";
 import { fetchDeitPlans } from "../../redux/users/userThunk";
 import StarRating from "./StarRating";
-import "../../assets/styles/users/TrainersList.css"
+import "../../assets/styles/users/TrainersList.css";
 import axios from "axios";
 
 function TrainersList() {
@@ -15,7 +15,7 @@ function TrainersList() {
   const [trainers, setTrainers] = useState([]);
   const [page, setPage] = useState(1);
   const [fetching, setFetching] = useState(false);
-  const [hasMore, setHasMore] = useState(true); 
+  const [hasMore, setHasMore] = useState(true);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const observer = useRef();
@@ -55,7 +55,7 @@ function TrainersList() {
           setTimeout(() => {
             setPage((prevPage) => prevPage + 1);
             setFetching(false);
-          }, 1000); 
+          }, 1000);
         }
       });
       if (node) observer.current.observe(node);
@@ -69,7 +69,7 @@ function TrainersList() {
 
   const handleCardClick = (trainerId) => {
     dispatch(fetchDeitPlans({ trainerId })).then((res) => {
-      if (res.meta.requestStatus === "fulfilled") {        
+      if (res.meta.requestStatus === "fulfilled") {
         navigate(`/trainer-view`, { state: { trainerId } });
       }
     });
@@ -142,17 +142,21 @@ function TrainersList() {
                       </Card.Title>
                       <Card.Text className="text-white">
                         {trainer.achivements || "No specialization"}
-                        <div className="star-rating-wrapper">
-                          <StarRating rating={trainer.rating} />
-                        </div>
                       </Card.Text>
+                      <div className="star-rating-wrapper">
+                        <StarRating rating={trainer.rating} />
+                      </div>
                     </Card.Body>
                   </Card>
                 </Col>
               );
             } else {
               return (
-                <Col xs={12} sm={6} md={4} lg={3} className="mb-4" key={trainer.trainerId}>
+                <Col
+                  xs={12} sm={6} md={4} lg={3}
+                  className="mb-4"
+                  key={trainer.trainerId}
+                >
                   <Card
                     className="h-100 text-center glass-card"
                     onClick={() => handleCardClick(trainer.trainerId)}
@@ -176,10 +180,10 @@ function TrainersList() {
                       </Card.Title>
                       <Card.Text className="text-white">
                         {trainer.achivements || "No specialization"}
-                        <div className="star-rating-wrapper">
-                          <StarRating rating={trainer.rating} />
-                        </div>
                       </Card.Text>
+                      <div className="star-rating-wrapper">
+                        <StarRating rating={trainer.rating} />
+                      </div>
                     </Card.Body>
                   </Card>
                 </Col>

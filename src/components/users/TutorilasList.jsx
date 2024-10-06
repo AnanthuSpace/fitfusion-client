@@ -27,7 +27,7 @@ const TutorilasList = () => {
         });
     }
   }, [dispatch, subscriptionList]);
-
+  
   const handleThumbnailClick = (videoUrl) => {
     setSelectedVideo(videoUrl);
   };
@@ -50,7 +50,7 @@ const TutorilasList = () => {
           videos.map((video, index) => (
             <div
               className="col-md-4 mb-4"
-              key={index}
+              key={video.videoId || index} // Use index as fallback if videoId is not unique
               onClick={() => handleThumbnailClick(video.videoUrl)}
               style={{ cursor: "pointer" }}
             >
@@ -70,12 +70,6 @@ const TutorilasList = () => {
                       video.description || "No description available.",
                       60
                     )}
-                  </p>
-                  <p className="card-text">
-                    <small className="text-muted">
-                      {video.views || "Unknown views"} •{" "}
-                      {video.duration || "Unknown duration"}
-                    </small>
                   </p>
                 </div>
               </div>

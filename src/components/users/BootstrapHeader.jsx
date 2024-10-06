@@ -32,7 +32,7 @@ function BootstrapHeader() {
                 Home
               </Link>
             </li>
-            <li className={`nav-item ${location.pathname === "/class" ? "active" : ""}`}>
+            <li className={`nav-item ${location.pathname === "/tutorials" ? "active" : ""}`}>
               <Link className="nav-link text-white text-md text-sm" to="/tutorials">
                 Tutorials
               </Link>
@@ -64,7 +64,8 @@ function BootstrapHeader() {
       <Sidebar isOpen={sidebarOpen} onClose={toggleSidebar} />
 
       {/* Custom CSS for responsive text */}
-      <style jsx>{`
+      <style>
+        {`
         @media (max-width: 768px) {
           .nav-bar {
             padding: 0.5rem;
@@ -87,7 +88,8 @@ function BootstrapHeader() {
             font-size: 1.5rem;
           }
         }
-      `}</style>
+      `}
+      </style>
     </>
   );
 }
