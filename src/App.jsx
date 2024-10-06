@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/users/LoginPage";
 import SignupPage from "./pages/users/SignupPage";
-import SignUpVerification from "./components/users/SingUpVerification";
+import SignUpVerification from "./components/users/SingUpVerification"
 import LoginVerification from "./components/users/LoginVerification";
 import UserProtecter from "./components/protucters/UserProtector";
 import HomePage from "./pages/users/HomePage";
@@ -17,7 +17,6 @@ import TrainerSignup from "./components/trainers/TrainerSignup";
 import TrainerProtector from "./components/protucters/TrainerProtector";
 import TrainerLoginProtector from "./components/protucters/TrainerLoginProtector";
 import AdminLoginProtector from "./components/protucters/AdminLoginProtector";
-import TrainerDashboardPage from "./pages/trainers/TrainerDashboardPage";
 import TrainerProfilePage from "./pages/trainers/TrainerProfilePage";
 import TrainerChatPage from "./pages/trainers/TrainerChatPage";
 import TrainerListPage from "./pages/users/TrainerListPage";
@@ -32,9 +31,10 @@ import TutorialVideoPage from "./pages/trainers/TutorialVideoPage";
 import TutorialsPage from "./pages/users/TutorialsPage";
 import TransactionHistoryPage from "./pages/users/TransactionHistoryPage";
 import TrainerHistoryPage from "./pages/trainers/TrainerHistoryPage";
+import TrainerIsVerified from "./components/protucters/TrainerIsVerified";
+import ErrorBoundary from "./components/common/ErrorBoundary";
 import { Toaster } from "sonner";
 import "./assets/styles/App.css";
-import TrainerIsVerified from "./components/protucters/TrainerIsVerified";
 
 
 
@@ -43,6 +43,7 @@ function App() {
     <>
       <Router>
       <Toaster richColors />
+      <ErrorBoundary>
         <Routes>
 
           {/* User Routes */}
@@ -66,7 +67,6 @@ function App() {
           <Route path="/trainer" element={<TrainerLoginProtector><TrainerLogin /></TrainerLoginProtector>} />
           <Route path="/trainer-signup" element={<TrainerLoginProtector><TrainerSignup /></TrainerLoginProtector>} />
           <Route path="/trainer-otp" element={<TrainerLoginProtector><TrainerOtpVerification /></TrainerLoginProtector>} />
-          {/* <Route path="/trainer-console" element={<TrainerProtector><TrainerDashboardPage /></TrainerProtector>} /> */}
           <Route path="/trainer-profile" element={<TrainerProtector><TrainerProfilePage /></TrainerProtector>} />
           <Route path="/customers" element={<TrainerProtector><TrainerIsVerified><TrainerCustomersPage /></TrainerIsVerified></TrainerProtector>} />
           <Route path="/trainer-chat" element={<TrainerProtector><TrainerIsVerified><TrainerChatPage /></TrainerIsVerified></TrainerProtector>} />
@@ -82,6 +82,7 @@ function App() {
           <Route path="/admin-user" element={<AdminProtector><AdminUserPage /></AdminProtector>} />
           
         </Routes>
+        </ErrorBoundary>
       </Router>
     </>
   );

@@ -1,20 +1,16 @@
 import React, { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
+import Rating from "react-rating";
 import Form from "react-bootstrap/Form";
-import StarRatingComponent from "react-star-rating-component";
 import { useDispatch, useSelector } from "react-redux";
 import { addReview, fetchUserAndTrainer } from "../../redux/users/userThunk";
 
 const ReviewModal = ({ show, handleClose, trainerDetails, allReview }) => {
   const [review, setReview] = useState("");
-  const [rating, setRating] = useState();
+  const [rating, setRating] = useState(0);
   const userName = useSelector((state) => state.user.userData.name);
   const dispatch = useDispatch();
-
-  const onStarClick = (nextValue) => {
-    setRating(nextValue);
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -23,12 +19,12 @@ const ReviewModal = ({ show, handleClose, trainerDetails, allReview }) => {
       userName: userName,
       rating: rating,
       feedback: review,
-    };    
-    dispatch(addReview({ trainerId:trainerDetails.trainerId ,reviewDetails, curruntRating: trainerDetails.rating, reviewCount:allReview.length }))
-    .then((res) => {
-        setRating(res.payload)
-        dispatch(fetchUserAndTrainer())
-    })
+    };
+    dispatch(addReview({ trainerId: trainerDetails.trainerId, reviewDetails, curruntRating: trainerDetails.rating, reviewCount: allReview.length }))
+      .then((res) => {
+        setRating(res.payload);
+        dispatch(fetchUserAndTrainer());
+      });
     handleClose();
   };
 
@@ -56,13 +52,12 @@ const ReviewModal = ({ show, handleClose, trainerDetails, allReview }) => {
             className="mt-3 d-flex flex-column align-items-center"
           >
             <Form.Label>Rating</Form.Label>
-            <StarRatingComponent
-              name="rating"
-              starCount={5}
-              value={rating}
-              onStarClick={onStarClick}
-              starColor="#FFD700"
-              emptyStarColor="#ddd"
+            <Rating
+              initialRating={rating}
+              emptySymbol={<span className="star">&#9734;</span>}  
+              fullSymbol={<span className="star" style={{ color: '#FFD700' }}>&#9733;</span>} 
+              onChange={(value) => setRating(value)} 
+              style={{ fontSize: "30px" }}
             />
           </Form.Group>
           <Button type="submit" className="mt-3 gradient-button-global">

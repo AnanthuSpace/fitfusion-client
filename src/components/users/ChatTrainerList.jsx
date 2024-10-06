@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import userAxiosInstance from "../../config/axiosConfig";
 import { useSelector } from "react-redux";
 import { localhostURL } from "../../utils/url";
@@ -13,6 +13,7 @@ function ChatTrainerList({
   directChatName,
 }) {
   const userId = useSelector((state) => state.user.userData.userId);
+  const [filteredTrainer, setFilteredTrainers] = useState([]);
 
   const handleTrainerClick = async (trainerId, trainerName) => {
     try {
@@ -35,9 +36,17 @@ function ChatTrainerList({
     }
   };
 
-  const filteredTrainer = alreadyChattedTrainer.filter((trainer) =>
-    trainer.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  useEffect(() => {
+    const filteredTrainer = alreadyChattedTrainer.filter(
+      (trainer) =>
+        trainer.trainerId !== directChatId &&
+        trainer.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredTrainers(filteredTrainer);
+  }, [searchTerm, alreadyChattedTrainer, directChatId]);
+
+  const noTrainersFound = !directChatId && alreadyChattedTrainer.length === 0;
+
   return (
     <div className="col-3 p-3">
       <input
@@ -73,7 +82,7 @@ function ChatTrainerList({
           ))}
         </ul>
       ) : (
-        <h5 className="mt-5 gradient-text ">No recent trainers found</h5>
+        noTrainersFound && <h5 className="mt-5 gradient-text">No recent trainers found</h5>
       )}
     </div>
   );

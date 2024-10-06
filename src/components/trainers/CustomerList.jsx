@@ -37,15 +37,16 @@ const CustomerList = ({
     }
   };
 
-useEffect(() => {
-  const filtered = alreadyChattedCustomer
-    .filter(
+  useEffect(() => {
+    const filtered = alreadyChattedCustomer.filter(
       (customer) =>
         customer.userId !== directChatId &&
         customer.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
-  setFilteredCustomers(filtered);
-}, [searchTerm, alreadyChattedCustomer, directChatId]);
+    setFilteredCustomers(filtered);
+  }, [searchTerm, alreadyChattedCustomer, directChatId]);
+
+  const noCustomersFound = !directChatId && alreadyChattedCustomer.length === 0;
 
   return (
     <div
@@ -82,9 +83,11 @@ useEffect(() => {
           ))}
         </ul>
       ) : (
-        <h5 className="mt-5 short-gradient-text-blue">
-          No recent customers found
-        </h5>
+        noCustomersFound && (
+          <h5 className="mt-5 short-gradient-text-blue">
+            No recent customers found
+          </h5>
+        )
       )}
     </div>
   );

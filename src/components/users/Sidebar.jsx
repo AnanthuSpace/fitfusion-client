@@ -2,14 +2,15 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { userLogout } from "../../redux/users/userSlice";
-import { IoIosNotifications, IoMdSettings } from "react-icons/io";
+import { FaChalkboardTeacher } from "react-icons/fa";
+import { IoMdHome } from "react-icons/io";
+import { BiSolidVideos } from "react-icons/bi";
 import { FaCircleDollarToSlot } from "react-icons/fa6";
 import { LuSendHorizonal } from "react-icons/lu";
 import { inactive } from "../../redux/users/userThunk";
 import "../../assets/styles/users/Sidebar.css";
 import {
   MdManageAccounts,
-  MdSupportAgent,
   MdOutlineLogout,
 } from "react-icons/md";
 
@@ -48,16 +49,28 @@ function Sidebar({ isOpen, onClose }) {
                 <span>Account</span>
               </p>
             </div>
+            <div className="sidebar-list" onClick={() => navigate("/")}>
+              <p>
+                <IoMdHome />
+                <span>Home</span>
+              </p>
+            </div>
+            <div className="sidebar-list" onClick={() => navigate("/tutorials")}>
+              <p>
+                <BiSolidVideos />
+                <span>Tutorials</span>
+              </p>
+            </div>
+            <div className="sidebar-list" onClick={() => navigate("/trainer-list")}>
+              <p>
+                <FaChalkboardTeacher />
+                <span>Trainers</span>
+              </p>
+            </div>
             <div className="sidebar-list" onClick={() => navigate("/user-chat")}>
               <p>
                 <LuSendHorizonal />
                 <span>Message</span>
-              </p>
-            </div>
-            <div className="sidebar-list">
-              <p>
-                <IoIosNotifications />
-                <span>Notification</span>
               </p>
             </div>
             <div className="sidebar-list" onClick={()=>navigate("/history")}>
@@ -66,12 +79,6 @@ function Sidebar({ isOpen, onClose }) {
                 <span>Subscription History</span>
               </p>
             </div>
-            {/* <div className="sidebar-list">
-              <p>
-                <MdSupportAgent />
-                <span>Support</span>
-              </p>
-            </div> */}
             <div className="sidebar-list" onClick={handleLogout}>
               <p>
                 <MdOutlineLogout />
