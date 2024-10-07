@@ -2,9 +2,11 @@ import { useEffect } from "react";
 import "../../assets/styles/users/TrainerContainer.css";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTrainersData, fetchDeitPlans } from "../../redux/users/userThunk";
+import { useNavigate } from "react-router-dom"; 
 
 function TrainerContainer() {
   const dispatch = useDispatch();
+  const navigate = useNavigate(); 
   const { trainersData = [], loading } = useSelector((state) => state.user);
 
   useEffect(() => {
@@ -18,6 +20,8 @@ function TrainerContainer() {
       }
     });
   };
+
+  const validTrainersData = Array.isArray(trainersData) ? trainersData : [];
 
   return (
     <div className="trainer-container">
@@ -33,8 +37,8 @@ function TrainerContainer() {
         <div>Loading...</div>
       ) : (
         <div className="trainer-div">
-          {trainersData.slice(0, 3).map((trainer, index) => (
-            <div className="trainer-img" key={index} onClick={handleCardClick}>
+          {validTrainersData.slice(0, 3).map((trainer, index) => (
+            <div className="trainer-img" key={index} onClick={() => handleCardClick(trainer._id)}>
               <img
                 src={`${trainer.profileIMG}`}
                 alt={trainer.name}
@@ -47,6 +51,5 @@ function TrainerContainer() {
     </div>
   );
 }
-
 
 export default TrainerContainer;
