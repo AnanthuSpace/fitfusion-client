@@ -40,7 +40,7 @@ function Home() {
               </p>
             </div>
             <div className="big-img">
-              <img src="/home-page-big.jpg" alt="img" />
+              <img src="/home-page-big.png" alt="img" />
             </div>
           </div>
         </div>

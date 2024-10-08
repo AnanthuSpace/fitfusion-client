@@ -11,9 +11,11 @@ const TutorilasList = () => {
   );
   const [videos, setVideos] = useState([]);
   const [selectedVideo, setSelectedVideo] = useState(null);
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
     if (subscriptionList && subscriptionList.length > 0) {
+      setLoading(true); 
       dispatch(fetchAllVideos(subscriptionList))
         .then((res) => {
           if (res.payload && res.payload.data) {
@@ -24,10 +26,15 @@ const TutorilasList = () => {
         })
         .catch((error) => {
           setVideos([]);
+        })
+        .finally(() => {
+          setLoading(false); 
         });
+    } else {
+      setLoading(false); 
     }
   }, [dispatch, subscriptionList]);
-  
+
   const handleThumbnailClick = (videoUrl) => {
     setSelectedVideo(videoUrl);
   };
@@ -46,11 +53,23 @@ const TutorilasList = () => {
   return (
     <div className="container mt-4">
       <div className="row">
-        {videos && videos.length > 0 ? (
+        {loading ? ( 
+          Array.from({ length: 6 }).map((_, index) => ( 
+            <div className="col-md-4 mb-4" key={index}>
+              <div className="card glass-effect text-white">
+                <div className="skeleton-loader" style={{ height: "200px", backgroundColor: "#ccc" }}></div>
+                <div className="card-body">
+                  <div className="skeleton-loader" style={{ height: "1.5rem", backgroundColor: "#ccc", marginBottom: "10px" }}></div>
+                  <div className="skeleton-loader" style={{ height: "1rem", backgroundColor: "#ccc" }}></div>
+                </div>
+              </div>
+            </div>
+          ))
+        ) : videos && videos.length > 0 ? (
           videos.map((video, index) => (
             <div
               className="col-md-4 mb-4"
-              key={video.videoId || index} // Use index as fallback if videoId is not unique
+              key={video.videoId || index} 
               onClick={() => handleThumbnailClick(video.videoUrl)}
               style={{ cursor: "pointer" }}
             >

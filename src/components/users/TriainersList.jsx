@@ -16,6 +16,7 @@ function TrainersList() {
   const [page, setPage] = useState(1);
   const [fetching, setFetching] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+  const [imageLoaded, setImageLoaded] = useState({});
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const observer = useRef();
@@ -75,6 +76,10 @@ function TrainersList() {
     });
   };
 
+  const handleImageLoad = (trainerId) => {
+    setImageLoaded((prev) => ({ ...prev, [trainerId]: true }));
+  };
+
   const filteredTrainers = trainers.filter((trainer) =>
     trainer.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -111,43 +116,52 @@ function TrainersList() {
       >
         <Row>
           {filteredTrainers.map((trainer, index) => {
+            const isImageLoaded = imageLoaded[trainer.trainerId];
+            const trainerCard = (
+              <Card
+                className="h-100 text-center glass-card"
+                onClick={() => handleCardClick(trainer.trainerId)}
+              >
+                {!isImageLoaded && <div className="skeleton-loader"></div>}
+                <Card.Img
+                  variant="top"
+                  src={`${trainer.profileIMG}`}
+                  alt={trainer.name}
+                  style={{
+                    width: "100%",
+                    height: "200px",
+                    objectFit: "cover",
+                    display: isImageLoaded ? "block" : "none", 
+                  }}
+                  onLoad={() => handleImageLoad(trainer.trainerId)}
+                  onError={(e) => {
+                    e.target.src = "/Trainer-profile.jpg";
+                    handleImageLoad(trainer.trainerId); 
+                  }}
+                />
+                <Card.Body>
+                  <Card.Title className="text-white">
+                    {trainer.name}
+                  </Card.Title>
+                  <Card.Text className="text-white">
+                    {trainer.achivements || "No specialization"}
+                  </Card.Text>
+                  <div className="star-rating-wrapper">
+                    <StarRating rating={trainer.rating} />
+                  </div>
+                </Card.Body>
+              </Card>
+            );
+
             if (filteredTrainers.length === index + 1) {
               return (
                 <Col
                   ref={lastTrainerElementRef}
-                  xs={12} sm={6} md={4} lg={3} // Responsive classes
+                  xs={12} sm={6} md={4} lg={3}
                   className="mb-4"
                   key={trainer.trainerId}
                 >
-                  <Card
-                    className="h-100 text-center glass-card"
-                    onClick={() => handleCardClick(trainer.trainerId)}
-                  >
-                    <Card.Img
-                      variant="top"
-                      src={`${trainer.profileIMG}`}
-                      alt={trainer.name}
-                      style={{
-                        width: "100%",
-                        height: "200px",
-                        objectFit: "cover",
-                      }}
-                      onError={(e) => {
-                        e.target.src = "/Trainer-profile.jpg";
-                      }}
-                    />
-                    <Card.Body>
-                      <Card.Title className="text-white">
-                        {trainer.name}
-                      </Card.Title>
-                      <Card.Text className="text-white">
-                        {trainer.achivements || "No specialization"}
-                      </Card.Text>
-                      <div className="star-rating-wrapper">
-                        <StarRating rating={trainer.rating} />
-                      </div>
-                    </Card.Body>
-                  </Card>
+                  {trainerCard}
                 </Col>
               );
             } else {
@@ -157,35 +171,7 @@ function TrainersList() {
                   className="mb-4"
                   key={trainer.trainerId}
                 >
-                  <Card
-                    className="h-100 text-center glass-card"
-                    onClick={() => handleCardClick(trainer.trainerId)}
-                  >
-                    <Card.Img
-                      variant="top"
-                      src={`${trainer.profileIMG}`}
-                      alt={trainer.name}
-                      style={{
-                        width: "100%",
-                        height: "200px",
-                        objectFit: "cover",
-                      }}
-                      onError={(e) => {
-                        e.target.src = "/Trainer-profile.jpg";
-                      }}
-                    />
-                    <Card.Body>
-                      <Card.Title className="text-white">
-                        {trainer.name}
-                      </Card.Title>
-                      <Card.Text className="text-white">
-                        {trainer.achivements || "No specialization"}
-                      </Card.Text>
-                      <div className="star-rating-wrapper">
-                        <StarRating rating={trainer.rating} />
-                      </div>
-                    </Card.Body>
-                  </Card>
+                  {trainerCard}
                 </Col>
               );
             }
