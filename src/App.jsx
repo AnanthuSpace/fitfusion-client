@@ -32,7 +32,7 @@ import TutorialsPage from "./pages/users/TutorialsPage";
 import TransactionHistoryPage from "./pages/users/TransactionHistoryPage";
 import TrainerHistoryPage from "./pages/trainers/TrainerHistoryPage";
 import TrainerIsVerified from "./components/protucters/TrainerIsVerified";
-import ErrorBoundary from "./components/common/ErrorBoundary";
+// import ErrorBoundary from "./components/common/ErrorBoundary";
 import { Toaster } from "sonner";
 import "./assets/styles/App.css";
 
@@ -43,7 +43,7 @@ function App() {
     <>
       <Router>
       <Toaster richColors />
-      <ErrorBoundary>
+      {/* <ErrorBoundary> */}
         <Routes>
 
           {/* User Routes */}
@@ -82,7 +82,7 @@ function App() {
           <Route path="/admin-user" element={<AdminProtector><AdminUserPage /></AdminProtector>} />
           
         </Routes>
-        </ErrorBoundary>
+        {/* </ErrorBoundary> */}
       </Router>
     </>
   );
