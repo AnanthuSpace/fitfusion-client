@@ -41,7 +41,7 @@ function Sidebar({ isOpen, onClose }) {
                 src="/profile-icon.jpg"
                 alt="profile"
               />
-              <h3>{userData.name}</h3>
+              <h3>{userData?.name}</h3>
             </div>
             <div className="sidebar-list" onClick={() => navigate("/profile")}>
               <p>

@@ -32,7 +32,7 @@ const ReviewModal = ({ show, handleClose, trainerDetails, allReview }) => {
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
         <Modal.Title className="text-white">
-          Review {trainerDetails.name}
+          Review {trainerDetails?.name}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>

@@ -116,38 +116,38 @@ function TrainersList() {
       >
         <Row>
           {filteredTrainers.map((trainer, index) => {
-            const isImageLoaded = imageLoaded[trainer.trainerId];
+            const isImageLoaded = imageLoaded[trainer?.trainerId];
             const trainerCard = (
               <Card
                 className="h-100 text-center glass-card"
-                onClick={() => handleCardClick(trainer.trainerId)}
+                onClick={() => handleCardClick(trainer?.trainerId)}
               >
                 {!isImageLoaded && <div className="skeleton-loader"></div>}
                 <Card.Img
                   variant="top"
-                  src={`${trainer.profileIMG}`}
-                  alt={trainer.name}
+                  src={`${trainer?.profileIMG}`}
+                  alt={trainer?.name}
                   style={{
                     width: "100%",
                     height: "200px",
                     objectFit: "cover",
                     display: isImageLoaded ? "block" : "none", 
                   }}
-                  onLoad={() => handleImageLoad(trainer.trainerId)}
+                  onLoad={() => handleImageLoad(trainer?.trainerId)}
                   onError={(e) => {
                     e.target.src = "/Trainer-profile.jpg";
-                    handleImageLoad(trainer.trainerId); 
+                    handleImageLoad(trainer?.trainerId); 
                   }}
                 />
                 <Card.Body>
                   <Card.Title className="text-white">
-                    {trainer.name}
+                    {trainer?.name}
                   </Card.Title>
                   <Card.Text className="text-white">
-                    {trainer.achivements || "No specialization"}
+                    {trainer?.achivements || "No specialization"}
                   </Card.Text>
                   <div className="star-rating-wrapper">
-                    <StarRating rating={trainer.rating} />
+                    <StarRating rating={trainer?.rating} />
                   </div>
                 </Card.Body>
               </Card>
@@ -159,7 +159,7 @@ function TrainersList() {
                   ref={lastTrainerElementRef}
                   xs={12} sm={6} md={4} lg={3}
                   className="mb-4"
-                  key={trainer.trainerId}
+                  key={trainer?.trainerId}
                 >
                   {trainerCard}
                 </Col>
@@ -169,7 +169,7 @@ function TrainersList() {
                 <Col
                   xs={12} sm={6} md={4} lg={3}
                   className="mb-4"
-                  key={trainer.trainerId}
+                  key={trainer?.trainerId}
                 >
                   {trainerCard}
                 </Col>

@@ -57,12 +57,10 @@ function TrainerProfileView() {
           className="background-image"
         />
         <img
-          src={`${trainerDetails.profileIMG}`}
-          alt={trainerDetails.name}
+          src={`${trainerDetails?.profileIMG}`}
+          alt={trainerDetails?.name}
           className="profile-image"
         />
-        {console.log()
-        }
         <Col className="icons-container">
           <button className="glass-button" onClick={handleChat}>
             Message
@@ -77,14 +75,14 @@ function TrainerProfileView() {
         <div className="row">
           <div className="col-md-4 details-section">
             <h3>Trainer Details</h3>
-            <p>Name: {trainerDetails.name}</p>
-            <p>Achievements: {trainerDetails.achivements}</p>
-            <p>Qualification: {trainerDetails.qualification}</p>
-            <p>Experience: {trainerDetails.experience} year</p>
-            <p>Gender: {trainerDetails.gender}</p>
+            <p>Name: {trainerDetails?.name}</p>
+            <p>Achievements: {trainerDetails?.achivements}</p>
+            <p>Qualification: {trainerDetails?.qualification}</p>
+            <p>Experience: {trainerDetails?.experience} year</p>
+            <p>Gender: {trainerDetails?.gender}</p>
             <div>
               <span>Rating:</span>
-              <StarRating rating={trainerDetails.rating} />
+              <StarRating rating={trainerDetails?.rating} />
             </div>
           </div>
 
@@ -92,8 +90,8 @@ function TrainerProfileView() {
             <div className="subscribe-button-container">
               <SubscribeButton
                 trainerId={trainerId}
-                trainerName={trainerDetails.name}
-                amount={trainerDetails.feePerMonth}
+                trainerName={trainerDetails?.name}
+                amount={trainerDetails?.feePerMonth}
               />
             </div>
           </div>

@@ -30,9 +30,9 @@ const PaymentHistory = () => {
             {history.length > 0 ? (
               history.map((transaction, index) => (
                 <tr key={index}>
-                  <td>{new Date(transaction.createdAt).toLocaleDateString()}</td>
-                  <td>{transaction.trainerName}</td>
-                  <td>${transaction.amount.toFixed(2)}</td>
+                  <td>{new Date(transaction?.createdAt).toLocaleDateString()}</td>
+                  <td>{transaction?.trainerName}</td>
+                  <td>${transaction?.amount.toFixed(2)}</td>
                   <td className="text-success">Completed</td> 
                 </tr>
               ))

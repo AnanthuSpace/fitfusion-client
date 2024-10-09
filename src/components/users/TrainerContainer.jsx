@@ -41,9 +41,9 @@ function TrainerContainer() {
             <div className="trainer-img" key={index} onClick={() => handleCardClick(trainer._id)}>
               <img
                 src={`${trainer.profileIMG}`}
-                alt={trainer.name}
+                alt={trainer?.name}
               />
-              <div className="trainer-name">{trainer.name}</div>
+              <div className="trainer-name">{trainer?.name}</div>
             </div>
           ))}
         </div>

@@ -19,7 +19,7 @@ const TrainerDeits = () => {
             style={{ border: "1px solid white", borderRadius: "8px", background: "transparent" }}
           >
             <Card.Body>
-              <Card.Title>{plan.dietName}</Card.Title>
+              <Card.Title>{plan?.dietName}</Card.Title>
               <Button
                 className="gradient-button-global"
                 onClick={() => handleShow(plan)}

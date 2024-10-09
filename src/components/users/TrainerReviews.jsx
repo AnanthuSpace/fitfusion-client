@@ -27,13 +27,13 @@ function TrainerReviews({ trainerId }) {
             <Card.Body>
               <div className="d-flex">
                 <div className="flex-shrink-0">
-                  <Card.Title>{review.userName}</Card.Title>
+                  <Card.Title>{review?.userName}</Card.Title>
                   <div>
-                    <span>Rating:</span> <StarRating rating={review.rating} />
+                    <span>Rating:</span> <StarRating rating={review?.rating} />
                   </div>
                 </div>
                 <div className="ms-4 flex-grow-1 text-start">
-                  <Card.Text>{review.feedback}</Card.Text>
+                  <Card.Text>{review?.feedback}</Card.Text>
                 </div>
               </div>
             </Card.Body>

@@ -57,12 +57,6 @@ function SubscribeButton({ trainerId, trainerName, amount }) {
                     }
                     onClick={() => handleThumbnailClick(video.videoUrl)}
                   />
-                    {/* <p>
-                      {typeof video.videoUrl === "string" &&
-                      video.videoUrl.includes("-")
-                        ? video.videoUrl.split("-")[1]
-                        : "Unnamed Video"}
-                    </p> */}
                 </div>
               ))}
             </div>
