@@ -8,10 +8,15 @@ import UserChangePassword from "./UserChangePassword";
 import PasswordModal from "./PasswordModal";
 
 function UserProfile() {
+  // Access userData from Redux store
   const userData = useSelector((state) => state.user.userData);
   
+  // Add null/undefined check to prevent accessing fields before userData is available
+  if (!userData) {
+    return <div>Loading...</div>; // Or you can return a loading spinner
+  }
 
-  const [name, setName] = useState(userData.name);
+  const [name, setName] = useState(userData.name || "");
   const [phone, setPhone] = useState(userData.phone || "");
   const [address, setAddress] = useState(userData.address || "");
   const [gender, setGender] = useState(userData.gender || "");
@@ -289,38 +294,44 @@ function UserProfile() {
                   className="user-input-text"
                   value={medicalDetails}
                   onChange={(e) => setMedicalDetails(e.target.value)}
-                  placeholder="Enter medical details"
+                  placeholder="Enter medical history"
                 />
               ) : (
                 <div className="ptag">
-                  <p>
-                    {medicalDetails ? medicalDetails : "Enter medical details"}
-                  </p>
+                  <p>{medicalDetails}</p>
                 </div>
               )}
             </div>
-
-            <div className="edit-button-div">
-              {isEditing ? (
-                <button className="edit-profile-btn" onClick={handleSave}>
-                  Save
-                </button>
-              ) : (
-                <button className="edit-profile-btn" onClick={handleEdit}>
-                  Edit Profile
-                </button>
-              )}
-            </div>
           </div>
+
+          {isEditing ? (
+            <div className="edit-save">
+              <button className="btn-save" onClick={handleSave}>
+                Save
+              </button>
+              <button
+                className="btn-cancel"
+                onClick={() => setIsEditing(false)}
+              >
+                Cancel
+              </button>
+            </div>
+          ) : (
+            <button className="btn-edit" onClick={handleEdit}>
+              Edit Profile
+            </button>
+          )}
+
+          {isRePass && <UserChangePassword />}
         </div>
-        {isRePass && <UserChangePassword onClose={() => setIsRePass(false)} />}
-        {isPasswordModalOpen && (
-          <PasswordModal
-            onClose={() => setIsPasswordModalOpen(false)}
-            onSubmit={handlePasswordSubmit}
-          />
-        )}
       </div>
+
+      {isPasswordModalOpen && (
+        <PasswordModal
+          onClose={() => setIsPasswordModalOpen(false)}
+          onSubmit={handlePasswordSubmit}
+        />
+      )}
     </>
   );
 }
