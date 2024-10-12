@@ -14,15 +14,15 @@ const VideoCallScreen = ({ onClose, receiverId, senderId }) => {
   const roomId = [senderId, receiverId].sort().join("_");
 
   const servers = {
-    iceServers: [{ urls: "stun:stun.l.google.com:19302" }], 
+    iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
   };
 
   useEffect(() => {
-    socket.emit("joinVideoRoom", { senderId: senderId, receiverId: receiverId });
+    socket.emit("joinVideoRoom", { senderId, receiverId });
 
     socket.on("offer", async (offer) => {
       console.log("Received offer", offer);
-      await handleOffer(offer); 
+      await handleOffer(offer);
     });
 
     socket.on("answer", async (answer) => {
@@ -30,6 +30,7 @@ const VideoCallScreen = ({ onClose, receiverId, senderId }) => {
       await peerConnection.current.setRemoteDescription(
         new RTCSessionDescription(answer)
       );
+      displayRemoteVideo();
     });
 
     socket.on("ice-candidate", (candidate) => {
@@ -44,7 +45,7 @@ const VideoCallScreen = ({ onClose, receiverId, senderId }) => {
       socket.off("answer");
       socket.off("ice-candidate");
     };
-  }, [senderId, receiverId]);
+  }, [senderId, receiverId, roomId]);
 
   const startCall = async () => {
     try {
@@ -64,6 +65,7 @@ const VideoCallScreen = ({ onClose, receiverId, senderId }) => {
       peerConnection.current.ontrack = (event) => {
         setRemoteStream(event.streams[0]);
         remoteVideoRef.current.srcObject = event.streams[0];
+        displayRemoteVideo();  // Ensure remote video is displayed when received
       };
 
       peerConnection.current.onicecandidate = (event) => {
@@ -83,7 +85,6 @@ const VideoCallScreen = ({ onClose, receiverId, senderId }) => {
   };
 
   const handleOffer = async (offer) => {
-
     peerConnection.current = new RTCPeerConnection(servers);
 
     await peerConnection.current.setRemoteDescription(
@@ -104,6 +105,7 @@ const VideoCallScreen = ({ onClose, receiverId, senderId }) => {
     peerConnection.current.ontrack = (event) => {
       setRemoteStream(event.streams[0]);
       remoteVideoRef.current.srcObject = event.streams[0];
+      displayRemoteVideo(); // Automatically show remote video when answer is received
     };
 
     const answer = await peerConnection.current.createAnswer();
@@ -112,13 +114,23 @@ const VideoCallScreen = ({ onClose, receiverId, senderId }) => {
     socket.emit("answer", { answer, roomId });
   };
 
+  const displayRemoteVideo = () => {
+    // Ensure the remote video occupies the big screen when the connection is set.
+    if (remoteVideoRef.current) {
+      remoteVideoRef.current.style.display = "block";
+    }
+  };
+
   const endCall = () => {
     if (localStream) {
       localStream.getTracks().forEach((track) => track.stop());
     }
+
     if (peerConnection.current) {
       peerConnection.current.close();
+      peerConnection.current = null;
     }
+
     setLocalStream(null);
     setRemoteStream(null);
     onClose();
@@ -128,12 +140,16 @@ const VideoCallScreen = ({ onClose, receiverId, senderId }) => {
     <div className="video-call-modal">
       <div className="video-call-content">
         <div className="video-wrapper">
+          {/* Remote video (big screen) */}
           <video
             className="remote-video"
             ref={remoteVideoRef}
             autoPlay
             playsInline
+            style={{ display: remoteStream ? "block" : "none" }}
           />
+
+          {/* Local video (small screen in corner) */}
           <video
             className="local-video"
             ref={localVideoRef}
