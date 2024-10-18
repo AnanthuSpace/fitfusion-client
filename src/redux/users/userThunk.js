@@ -14,8 +14,14 @@ export const registration = createAsyncThunk(
         password = password.trim();
         confirmPass = confirmPass.trim();
 
-
         const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+
+        const passwordStrengthCriteria = {
+            minLength: 8,
+            hasUpperCase: /[A-Z]/,
+            hasLowerCase: /[a-z]/,
+            hasNumber: /[0-9]/
+        };
 
         if (name === "" || email === "" || password === "" || confirmPass === "") {
             return rejectWithValue("All the fields are required!");
@@ -23,11 +29,19 @@ export const registration = createAsyncThunk(
             return rejectWithValue("Name must be between 3 to 20 characters and contain only letters!");
         } else if (!emailRegex.test(email)) {
             return rejectWithValue("Invalid email address!");
-        } else if (password.length < 6) {
-            return rejectWithValue("Password must be at least 6 characters long!");
+        }
+        else if (password.length < passwordStrengthCriteria.minLength) {
+            return rejectWithValue(`Password must be at least ${passwordStrengthCriteria.minLength} characters long!`);
+        } else if (!passwordStrengthCriteria.hasUpperCase.test(password)) {
+            return rejectWithValue("Password must contain at least one uppercase letter!");
+        } else if (!passwordStrengthCriteria.hasLowerCase.test(password)) {
+            return rejectWithValue("Password must contain at least one lowercase letter!");
+        } else if (!passwordStrengthCriteria.hasNumber.test(password)) {
+            return rejectWithValue("Password must contain at least one number!");
         } else if (password !== confirmPass) {
             return rejectWithValue("Password and confirm password do not match!");
-        } else {
+        }
+        else {
             try {
                 const response = await axios.post(`${localhostURL}/signup`, { name, email, password });
                 if (response.data.message === "User already exists") {
@@ -42,27 +56,47 @@ export const registration = createAsyncThunk(
     }
 );
 
+
 export const googleSignUpUser = createAsyncThunk(
     "user/googleSignUpUser",
     async ({ token, password, confirmPass }, { rejectWithValue }) => {
+
+        const passwordStrengthCriteria = {
+            minLength: 8,
+            hasUpperCase: /[A-Z]/,
+            hasLowerCase: /[a-z]/,
+            hasNumber: /[0-9]/
+        };
+
         try {
             if (password !== confirmPass) {
                 return rejectWithValue("Passwords do not match");
-            } else if (password.length < 6) {
-                return rejectWithValue("Password must be at least 6 characters long!");
+            } else if (password.length < passwordStrengthCriteria.minLength) {
+                return rejectWithValue(`Password must be at least ${passwordStrengthCriteria.minLength} characters long!`);
+            } else if (!passwordStrengthCriteria.hasUpperCase.test(password)) {
+                return rejectWithValue("Password must contain at least one uppercase letter!");
+            } else if (!passwordStrengthCriteria.hasLowerCase.test(password)) {
+                return rejectWithValue("Password must contain at least one lowercase letter!");
+            } else if (!passwordStrengthCriteria.hasNumber.test(password)) {
+                return rejectWithValue("Password must contain at least one number!");
             } else {
-                const response = await axios.post(`${localhostURL}/google-signup`, { token, password })
-                const { accessToken, refreshToken } = response.data.data
+                const response = await axios.post(`${localhostURL}/google-signup`, { token, password });
+                const { accessToken, refreshToken } = response.data.data;
+
                 sessionStorage.setItem("userAccessToken", accessToken);
                 localStorage.setItem("userRefreshToken", refreshToken);
-                return response.data.data
+
+                return response.data.data;
             }
         } catch (error) {
-            if (error.response.data.message === "Internal server error") return rejectWithValue("Verification failed, try again");
+            if (error.response.data.message === "Internal server error") {
+                return rejectWithValue("Verification failed, try again");
+            }
             return rejectWithValue(error.response.data.message);
         }
     }
-)
+);
+
 
 // Signup Verification Thunk
 export const signupVerification = createAsyncThunk(
@@ -228,24 +262,37 @@ export const editUserData = createAsyncThunk(
 export const changeUserPassword = createAsyncThunk(
     "userSlice/changeUserPassword",
     async ({ oldPass, newPass }, { rejectWithValue }) => {
-        const oldPassword = oldPass.trim()
-        const newPassword = newPass.trim()
+        const oldPassword = oldPass.trim();
+        const newPassword = newPass.trim();
+
+        const passwordStrengthCriteria = {
+            minLength: 8,
+            hasUpperCase: /[A-Z]/,
+            hasLowerCase: /[a-z]/,
+            hasNumber: /[0-9]/
+        };
 
         if (oldPassword === "" || newPassword === "") {
-            return rejectWithValue("All the fields are required!");
-        } else if (oldPassword === newPassword) {
+            return rejectWithValue("All fields are required!");
+        }
+        else if (oldPassword === newPassword) {
             return rejectWithValue("Old password and new password cannot be the same!");
-        } else if (oldPassword.length < 6) {
-            return rejectWithValue("Enter the correct old password")
-        } else if (newPassword.length < 6) {
-            return rejectWithValue("New password must be at least 6 characters long!");
-        } else {
+        } else if (newPassword.length < passwordStrengthCriteria.minLength) {
+            return rejectWithValue(`New password must be at least ${passwordStrengthCriteria.minLength} characters long!`);
+        } else if (!passwordStrengthCriteria.hasUpperCase.test(newPassword)) {
+            return rejectWithValue("New password must contain at least one uppercase letter!");
+        } else if (!passwordStrengthCriteria.hasLowerCase.test(newPassword)) {
+            return rejectWithValue("New password must contain at least one lowercase letter!");
+        } else if (!passwordStrengthCriteria.hasNumber.test(newPassword)) {
+            return rejectWithValue("New password must contain at least one number!");
+        }
+        else {
             try {
-                const responds = await userAxiosInstance.patch("/change-userpass", { oldPassword, newPassword })
+                const responds = await userAxiosInstance.patch("/change-userpass", { oldPassword, newPassword });
                 return responds;
             } catch (error) {
                 if (error.response && error.response.status === 401) {
-                    sessionStorage.removeItem("userAccessToken")
+                    sessionStorage.removeItem("userAccessToken");
                     return rejectWithValue("Unauthorized: Invalid or expired token");
                 }
                 return rejectWithValue("Update failed, try again");
@@ -253,6 +300,7 @@ export const changeUserPassword = createAsyncThunk(
         }
     }
 );
+
 
 
 export const addUserDetails = createAsyncThunk(

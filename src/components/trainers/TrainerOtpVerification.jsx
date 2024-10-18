@@ -42,10 +42,10 @@ function TrainerOtpVerification() {
 
   return (
     <>
-      <div className="trainer-otp-container">
-        <div className="trainer-otp-div">
-          <h1>Verify OTP</h1>
-          <div className="verify">
+      <div className="trainer-otp-container trainer-gradient-bg">
+        <div className="trainer-otp-div glass-effect">
+          <h1 className="text-white">Verify OTP</h1>
+          <div className="verify mt-5">
             {otp.map((digit, index) => (
               <input
                 key={index}
@@ -61,13 +61,17 @@ function TrainerOtpVerification() {
               />
             ))}
           </div>
-        </div>
-        <div className="trainer-verify-btn">
-          {!isLoading ? (
-            <button onClick={handleSubmit}>Verify</button>
-          ) : (
-            <button disabled>Loading...</button>
-          )}
+          <div className="trainer-verify-btn">
+            {!isLoading ? (
+              <button onClick={handleSubmit} className=" gradient-blue-white">
+                Verify
+              </button>
+            ) : (
+              <button disabled className=" gradient-blue-white">
+                Loading...
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </>

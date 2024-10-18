@@ -8,8 +8,8 @@
 }
 
 .trainer-otp-div {
-    width: 50rem;
-    height: 30rem;
+    width: 40rem;
+    height: 22rem;
     border-radius: 1rem;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
     display: flex;
@@ -22,7 +22,8 @@
 }
 
 .trainer-verify-btn {
-    margin-top: -7rem;
+    margin-top: 4rem;
+    background: transparent;
 }
 
 .trainer-verify-btn button {
@@ -30,6 +31,5 @@
     height: 2.5rem;
     border: none;
     border-radius: .5rem;
-    background-color: #222222;
     color: white;
 }
