@@ -1,21 +1,21 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-const UserProtector = ({ children }) => {
+const UserLoginProtector = ({ children }) => {
   const navigate = useNavigate();
   const userToken = sessionStorage.getItem("userAccessToken");
 
   useEffect(() => {
-    if (!userToken) {
-      navigate("/login"); 
+    if (userToken) {
+      navigate("/"); 
     }
   }, [navigate, userToken]);
 
-  if (userToken) {
+  if (!userToken) {
     return children; 
   }
 
   return null; 
 };
 
-export default UserProtector;
+export default UserLoginProtector;

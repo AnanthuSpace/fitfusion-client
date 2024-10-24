@@ -9,13 +9,15 @@ import ReviewModal from "./ReviewModal";
 import StarRating from "./StarRating";
 import TrainerReviews from "./TrainerReviews";
 import { fetchSingleTrainer } from "../../redux/users/userThunk";
+import { toast } from "sonner";
 
 function TrainerProfileView() {
   const [trainerId, setTrainerId] = useState("");
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [trainerDetails, setTrainerDetails] = useState("");
-  const [reviewAdded, setReviewAdded] = useState(false); 
+  const [reviewAdded, setReviewAdded] = useState(false);
   const [allReview, setAllReview] = useState([]);
+  const [isSubscribed, setIsSubscribed] = useState(false); 
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -37,7 +39,11 @@ function TrainerProfileView() {
   };
 
   const handleReviewClick = () => {
-    setShowReviewModal(true);
+    if (isSubscribed) {
+      setShowReviewModal(true);
+    } else {
+      toast.warning("You need to subscribe to this trainer before leaving a review.");
+    }
   };
 
   const handleCloseReviewModal = () => {
@@ -45,7 +51,7 @@ function TrainerProfileView() {
   };
 
   const onReviewAdded = () => {
-    setReviewAdded(!reviewAdded); 
+    setReviewAdded(!reviewAdded);
   };
 
   if (!trainerDetails) {
@@ -97,6 +103,7 @@ function TrainerProfileView() {
                 trainerId={trainerId}
                 trainerName={trainerDetails?.name}
                 amount={trainerDetails?.feePerMonth}
+                setIsSubscribed={setIsSubscribed} 
               />
             </div>
           </div>
@@ -105,7 +112,7 @@ function TrainerProfileView() {
         <div className="row mt-4">
           <div className="col-4 diet-plans-section">
             <h3>Diet Plans</h3>
-            <TrainerDeits />
+            <TrainerDeits trainerId={trainerId}/>
           </div>
 
           <div className="col-md-8 media-section text-center">
@@ -120,7 +127,7 @@ function TrainerProfileView() {
         show={showReviewModal}
         handleClose={handleCloseReviewModal}
         trainerDetails={trainerDetails}
-        onReviewAdded={onReviewAdded} 
+        onReviewAdded={onReviewAdded}
         allReview={allReview}
       />
     </div>

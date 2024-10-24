@@ -96,7 +96,7 @@ const TrainerVideoCreen = ({ onClose, receiverId, currentCustomerId }) => {
       audio: true,
     });
     setLocalStream(stream);
-    localVideoRef.current.srcObject = stream; // Local video assignment
+    localVideoRef.current.srcObject = stream; 
   
     stream.getTracks().forEach((track) =>
       peerConnection.current.addTrack(track, stream)
@@ -105,7 +105,7 @@ const TrainerVideoCreen = ({ onClose, receiverId, currentCustomerId }) => {
     peerConnection.current.ontrack = (event) => {
       console.log("Remote stream received", event.streams[0]);
       setRemoteStream(event.streams[0]);
-      remoteVideoRef.current.srcObject = event.streams[0]; // Remote video assignment
+      remoteVideoRef.current.srcObject = event.streams[0];
     };
   
     const answer = await peerConnection.current.createAnswer();

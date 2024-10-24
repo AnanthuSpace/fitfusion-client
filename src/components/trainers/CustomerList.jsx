@@ -32,6 +32,11 @@ const CustomerList = ({
       );
       setChatHistory(sortedChatHistory);
       onSelectCustomer(userId, userName);
+
+      setFilteredCustomers((prev) => {
+        const updatedList = prev.filter(customer => customer.userId !== userId);
+        return [{ userId, name: userName }, ...updatedList];
+      });
     } catch (error) {
       console.error("Error fetching chat history:", error);
     }

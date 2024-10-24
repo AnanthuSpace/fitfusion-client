@@ -38,6 +38,8 @@ import { Toaster } from "sonner";
 import "./assets/styles/App.css";
 import TrainerDashboardPage from "./pages/trainers/TrainerDashboardPage";
 import TrainerReviewPage from "./pages/trainers/TrainerReviewPage";
+import UserProtector from "./components/protucters/UserProtector";
+import UserLoginProtector from "./components/protucters/UserLoginProtector";
 
 
 
@@ -51,11 +53,11 @@ function App() {
 
           {/* User Routes */}
           <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="/verify-otp" element={<SignUpVerification />} />
-          <Route path="/login-verify" element={<LoginVerification />} />
           <Route path="/trainer-list" element={<TrainerListPage />} />
+          <Route path="/login" element={<UserLoginProtector><LoginPage /></UserLoginProtector>} />
+          <Route path="/signup" element={<UserLoginProtector><SignupPage /></UserLoginProtector>} />
+          <Route path="/verify-otp" element={<UserLoginProtector><SignUpVerification /></UserLoginProtector>} />
+          <Route path="/login-verify" element={<UserLoginProtector><LoginVerification /></UserLoginProtector>} />
           <Route path="/profile" element={<UserProtecter><ProfilePage /></UserProtecter>} />
           <Route path="/user-data" element={<UserProtecter><UserDetailsForm /></UserProtecter>} />
           <Route path="/trainer-view" element={<UserProtecter><TrainerViewPage /></UserProtecter>} />

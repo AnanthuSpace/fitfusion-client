@@ -31,6 +31,11 @@ function ChatTrainerList({
       );
       setChatHistory(sortedChatHistory);
       onSelectTrainer(trainerId, trainerName);
+
+      setFilteredTrainers((prev) => {
+        const updatedList = prev.filter(trainer => trainer.trainerId !== trainerId);
+        return [{ trainerId, name: trainerName }, ...updatedList];
+      });
     } catch (error) {
       console.error("Error fetching chat history:", error);
     }
@@ -70,7 +75,7 @@ function ChatTrainerList({
         <ul className="list-group">
           {filteredTrainer.map((trainer, index) => (
             <li
-              key={index}
+              key={trainer.trainerId} 
               className="list-group-item user-item"
               onClick={() =>
                 handleTrainerClick(trainer.trainerId, trainer.name)

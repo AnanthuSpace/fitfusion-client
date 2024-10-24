@@ -1,10 +1,17 @@
 import { useEffect, useState } from "react";
 import { Card, Button, Modal, ListGroup } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchDeitPlans } from "../../redux/users/userThunk";
 
-const TrainerDeits = () => {
+const TrainerDeits = ({ trainerId }) => {
   const [selectedPlan, setSelectedPlan] = useState(null);
-  const deit = useSelector((state) => state.user.trainerDiet);
+  const [deit, setDiet] = useState([])
+  // const deit = useSelector((state) => state.user.trainerDiet);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    console.log(trainerId);
+    dispatch(fetchDeitPlans({ trainerId })).then((res)=>setDiet(res.payload))
+  }, [trainerId]);
   const handleClose = () => setSelectedPlan(null);
   const handleShow = (plan) => setSelectedPlan(plan);
 
@@ -14,21 +21,24 @@ const TrainerDeits = () => {
         {deit && deit.length > 0 ? (
           deit.map((plan, index) => (
             <Card
-            key={index}
-            className="mb-3 text-white"
-            style={{ border: "1px solid white", borderRadius: "8px", background: "transparent" }}
-          >
-            <Card.Body>
-              <Card.Title>{plan?.dietName}</Card.Title>
-              <Button
-                className="gradient-button-global"
-                onClick={() => handleShow(plan)}
-              >
-                View Details
-              </Button>
-            </Card.Body>
-          </Card>
-          
+              key={index}
+              className="mb-3 text-white"
+              style={{
+                border: "1px solid white",
+                borderRadius: "8px",
+                background: "transparent",
+              }}
+            >
+              <Card.Body>
+                <Card.Title>{plan?.dietName}</Card.Title>
+                <Button
+                  className="gradient-button-global"
+                  onClick={() => handleShow(plan)}
+                >
+                  View Details
+                </Button>
+              </Card.Body>
+            </Card>
           ))
         ) : (
           <h5 className="text-center text-white mt-5">
