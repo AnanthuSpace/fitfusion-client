@@ -19,24 +19,54 @@ function TrainerSignup() {
   const [confirmPass, setConfirmPass] = useState("");
   const [googleToken, setGoogleToken] = useState(null);
   const [showModal, setShowModal] = useState(false);
+
+  const [errors, setErrors] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPass: "",
+  });
+
   const { isLoading } = useSelector((state) => state.trainer);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(
+    const result = await dispatch(
       trainerRegistration({
         name,
         email,
         password,
         confirmPass,
       })
-    ).then((result) => {
-      if (result.meta.requestStatus === "fulfilled") {
-        navigate("/trainer-otp");
-      }
+    );
+
+    if (result.meta.requestStatus === "fulfilled") {
+      navigate("/trainer-otp");
+    } else {
+      const errorMessage = result.payload;
+      handleErrors(errorMessage);
+    }
+  };
+
+  const handleErrors = (errorMessage) => {
+    setErrors({
+      name: "",
+      email: "",
+      password: "",
+      confirmPass: "",
     });
+
+    if (errorMessage.includes("Name")) {
+      setErrors((prevErrors) => ({ ...prevErrors, name: errorMessage }));
+    } else if (errorMessage.includes("email")) {
+      setErrors((prevErrors) => ({ ...prevErrors, email: errorMessage }));
+    } else if (errorMessage.includes("Password")) {
+      setErrors((prevErrors) => ({ ...prevErrors, password: errorMessage }));
+    } else if (errorMessage.includes("confirm password")) {
+      setErrors((prevErrors) => ({ ...prevErrors, confirmPass: errorMessage }));
+    }
   };
 
   const handleGoogleResponse = (response) => {
@@ -81,59 +111,83 @@ function TrainerSignup() {
         >
           <div className="card p-4 glass-effect admin-login-card">
             <h3 className="card-title text-center mb-4">Sign Up</h3>
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className="form-group mb-3">
                 <label htmlFor="fullName">Full Name</label>
                 <input
                   type="text"
-                  className="form-control form-control-glass"
+                  className={`form-control form-control-glass ${
+                    errors.name ? "is-invalid" : ""
+                  }`}
                   id="fullName"
                   placeholder="Enter full name"
+                  value={name}
                   onChange={(e) => setFullName(e.target.value)}
                   disabled={isLoading}
                 />
+                {errors.name && (
+                  <small className="text-danger">{errors.name}</small>
+                )}
               </div>
+
               <div className="form-group mb-3">
                 <label htmlFor="email">Email address</label>
                 <input
                   type="email"
-                  className="form-control form-control-glass"
+                  className={`form-control form-control-glass ${
+                    errors.email ? "is-invalid" : ""
+                  }`}
                   id="email"
                   placeholder="Enter email"
+                  value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   disabled={isLoading}
                 />
+                {errors.email && (
+                  <small className="text-danger">{errors.email}</small>
+                )}
               </div>
+
               <div className="form-group mb-3">
                 <label htmlFor="password">Password</label>
                 <input
                   type="password"
-                  className="form-control form-control-glass"
+                  className={`form-control form-control-glass ${
+                    errors.password ? "is-invalid" : ""
+                  }`}
                   id="password"
                   placeholder="Password"
+                  value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   disabled={isLoading}
                 />
+                {errors.password && (
+                  <small className="text-danger">{errors.password}</small>
+                )}
               </div>
+
               <div className="form-group mb-3">
                 <label htmlFor="confirmPass">Confirm Password</label>
                 <input
                   type="password"
-                  className="form-control form-control-glass"
+                  className={`form-control form-control-glass ${
+                    errors.confirmPass ? "is-invalid" : ""
+                  }`}
                   id="confirmPass"
                   placeholder="Confirm password"
+                  value={confirmPass}
                   onChange={(e) => setConfirmPass(e.target.value)}
                   disabled={isLoading}
                 />
+                {errors.confirmPass && (
+                  <small className="text-danger">{errors.confirmPass}</small>
+                )}
               </div>
+
               <button
                 type="submit"
                 className="btn gradient-blue-white w-50 mx-auto d-block"
-                style={{
-                  border: "none",
-                  color: "white",
-                }}
-                onClick={handleSubmit}
+                style={{ border: "none", color: "white" }}
                 disabled={isLoading}
               >
                 {isLoading ? (

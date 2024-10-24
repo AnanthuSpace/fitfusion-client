@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "sonner";
-import { trainerRegistration, trainerVerification, trainerLogin, toggleVideoListing, EditVideos, googleLogin, TrainerransactionHistory, googleSignUp, getPersonalVideos, editTrainer, changeTrainerPassword, updateProfilePicture, fetchTrainerProfile, uploadVideo, fetchAlreadyChattedCustomer, AddDietPlan, fetchDeitPlans } from "./trainerThunk";
+import { trainerRegistration, trainerVerification, trainerLogin, trainerDashBoardData, fetchAllReview, trainerDataCount, toggleVideoListing, EditVideos, googleLogin, TrainerransactionHistory, googleSignUp, getPersonalVideos, editTrainer, changeTrainerPassword, updateProfilePicture, fetchTrainerProfile, uploadVideo, fetchAlreadyChattedCustomer, AddDietPlan, fetchDeitPlans } from "./trainerThunk";
 
 
 const trainerData = localStorage.getItem("trainerData") ? JSON.parse(localStorage.getItem("trainerData")) : null;
@@ -40,7 +40,9 @@ const trainerSlice = createSlice({
             })
             .addCase(trainerRegistration.rejected, (state, action) => {
                 state.error = action.payload;
-                toast.error(action.payload || "Registration failed", { hideProgressBar: true, autoClose: 3000 });
+                if (action.payload == "All the fields are required!" || action.payload == "User already exists" || action.payload == "Registration failed, try again") {
+                    toast.error(action.payload || "Registration failed", { hideProgressBar: true, autoClose: 3000 });
+                }
                 state.isLoading = false;
             })
 
@@ -54,7 +56,6 @@ const trainerSlice = createSlice({
                 toast.error(action.payload || "Registration failed", { hideProgressBar: true, autoClose: 3000 });
                 state.isLoading = false;
             })
-
 
             // Signup verification
             .addCase(trainerVerification.pending, (state) => {
@@ -99,11 +100,11 @@ const trainerSlice = createSlice({
                 state.isLoading = false;
             })
 
+            .addCase(editTrainer.fulfilled, (state, action) => {
+                toast.success(action.payload.message, { hideProgressBar: true, autoClose: 3000 });
+            })
             .addCase(editTrainer.rejected, (state, action) => {
                 toast.error(action.payload || "Update error", { hideProgressBar: true, autoClose: 3000 });
-            })
-            .addCase(editTrainer.fulfilled, (action) => {
-                toast.success(action.payload.message, { hideProgressBar: true, autoClose: 3000 });
             })
 
 
@@ -114,7 +115,6 @@ const trainerSlice = createSlice({
                 state.error = action.payload;
                 toast.error(action.payload || "Reset error", { hideProgressBar: true, autoClose: 3000 });
             })
-
 
             .addCase(updateProfilePicture.pending, (state) => {
                 state.isLoading = true;
@@ -229,6 +229,30 @@ const trainerSlice = createSlice({
             .addCase(toggleVideoListing.rejected, (state, action) => {
                 state.isLoading = false;
                 toast.error(action.payload || "Failed to update the video", { hideProgressBar: true, autoClose: 3000 });
+            })
+
+            .addCase(trainerDashBoardData.fulfilled, (state) => {
+                state.isLoading = false;
+            })
+            .addCase(trainerDashBoardData.rejected, (state, action) => {
+                state.isLoading = false;
+                toast.error(action.payload || "Failed to fetch dashoboard datas", { hideProgressBar: true, autoClose: 3000 });
+            })
+
+            .addCase(trainerDataCount.fulfilled, (state) => {
+                state.isLoading = false;
+            })
+            .addCase(trainerDataCount.rejected, (state, action) => {
+                state.isLoading = false;
+                toast.error(action.payload || "Failed to fetch dashoboard datas", { hideProgressBar: true, autoClose: 3000 });
+            })
+
+            .addCase(fetchAllReview.fulfilled, (state) => {
+                state.isLoading = false;
+            })
+            .addCase(fetchAllReview.rejected, (state, action) => {
+                state.isLoading = false;
+                toast.error(action.payload || "Failed to fetch dashoboard datas", { hideProgressBar: true, autoClose: 3000 });
             })
     }
 })

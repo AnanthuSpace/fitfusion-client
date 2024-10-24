@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../../assets/styles/trainers/TrainerSideBar.css";
 import { IoIosSend } from "react-icons/io";
 import { FaHome, FaUsers, FaDumbbell, FaUserCircle } from "react-icons/fa";
-import { MdOutlineFastfood, MdOutlineVideoLibrary } from "react-icons/md";
+import { MdOutlineFastfood, MdOutlineVideoLibrary, MdRateReview } from "react-icons/md";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FaCircleDollarToSlot } from "react-icons/fa6";
 
@@ -25,14 +25,14 @@ function TrainerSideBar() {
         />
       </div>
       <ul className="nav flex-column text-center">
-        {/* <li className="nav-item my-3">
+        <li className="nav-item my-3">
           <FaHome
             className={`fs-4 ${
               isActive("/trainer-console") ? "text-white" : "text-secondary"
             }`}
             onClick={() => navigate("/trainer-console")}
           />
-        </li> */}
+        </li>
         <li className="nav-item my-3">
           <FaUserCircle
             className={`fs-4 ${
@@ -79,6 +79,14 @@ function TrainerSideBar() {
               isActive("/transaction-history") ? "text-white" : "text-secondary"
             }`}
             onClick={() => navigate("/transaction-history")}
+          />
+        </li>
+        <li className="nav-item my-3">
+          <MdRateReview
+            className={`fs-4 ${
+              isActive("/trainer-review") ? "text-white" : "text-secondary"
+            }`}
+            onClick={() => navigate("/trainer-review")}
           />
         </li>
       </ul>

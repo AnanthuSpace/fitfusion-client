@@ -12,9 +12,10 @@ import { fetchSingleTrainer } from "../../redux/users/userThunk";
 
 function TrainerProfileView() {
   const [trainerId, setTrainerId] = useState("");
-  const [allReview, setAllReview] = useState([]);
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [trainerDetails, setTrainerDetails] = useState("");
+  const [reviewAdded, setReviewAdded] = useState(false); 
+  const [allReview, setAllReview] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -24,10 +25,10 @@ function TrainerProfileView() {
   }, [location.state]);
 
   useEffect(() => {
-    dispatch(fetchSingleTrainer({ trainerId:location.state.trainerId })).then((res) =>
+    dispatch(fetchSingleTrainer({ trainerId: location.state.trainerId })).then((res) =>
       setTrainerDetails(res.payload.data)
     );
-  }, [trainerId]);
+  }, [trainerId, dispatch]);
 
   const handleChat = () => {
     navigate("/user-chat", {
@@ -41,6 +42,10 @@ function TrainerProfileView() {
 
   const handleCloseReviewModal = () => {
     setShowReviewModal(false);
+  };
+
+  const onReviewAdded = () => {
+    setReviewAdded(!reviewAdded); 
   };
 
   if (!trainerDetails) {
@@ -105,7 +110,7 @@ function TrainerProfileView() {
 
           <div className="col-md-8 media-section text-center">
             <div className="subscribe-button-container">
-              <TrainerReviews trainerId={trainerId} />
+              <TrainerReviews trainerId={trainerId} reviewAdded={reviewAdded} />
             </div>
           </div>
         </div>
@@ -115,6 +120,7 @@ function TrainerProfileView() {
         show={showReviewModal}
         handleClose={handleCloseReviewModal}
         trainerDetails={trainerDetails}
+        onReviewAdded={onReviewAdded} 
         allReview={allReview}
       />
     </div>

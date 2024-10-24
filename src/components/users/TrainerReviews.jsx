@@ -4,16 +4,22 @@ import { Card } from "react-bootstrap";
 import { fetchReviewFeedback } from "../../redux/users/userThunk";
 import StarRating from "./StarRating";
 
-function TrainerReviews({ trainerId }) {
+function TrainerReviews({ trainerId, reviewAdded }) {  
   const [reviews, setReviews] = useState([]);
-
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchReviewFeedback({ trainerId })).then((res) => {
-      setReviews(res.payload.review || []);
+      setReviews(res.payload || []);
     });
-  }, [dispatch, trainerId]);
+  }, [dispatch, trainerId, reviewAdded]);  
+
+  const truncateText = (text, maxLength) => {
+    if (text.length > maxLength) {
+      return text.substring(0, maxLength) + "...";
+    }
+    return text;
+  };
 
   return (
     <div className="reviews-container" style={{ width: "100%" }}>
@@ -33,7 +39,9 @@ function TrainerReviews({ trainerId }) {
                   </div>
                 </div>
                 <div className="ms-4 flex-grow-1 text-start">
-                  <Card.Text>{review?.feedback}</Card.Text>
+                  <Card.Text>
+                    {truncateText(review?.feedback || "", 100)}
+                  </Card.Text>
                 </div>
               </div>
             </Card.Body>

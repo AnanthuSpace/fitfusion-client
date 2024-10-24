@@ -33,8 +33,11 @@ import TransactionHistoryPage from "./pages/users/TransactionHistoryPage";
 import TrainerHistoryPage from "./pages/trainers/TrainerHistoryPage";
 import TrainerIsVerified from "./components/protucters/TrainerIsVerified";
 import ErrorBoundary from "./components/common/ErrorBoundary";
+import Error404 from "./components/common/Error404";
 import { Toaster } from "sonner";
 import "./assets/styles/App.css";
+import TrainerDashboardPage from "./pages/trainers/TrainerDashboardPage";
+import TrainerReviewPage from "./pages/trainers/TrainerReviewPage";
 
 
 
@@ -68,11 +71,13 @@ function App() {
           <Route path="/trainer-signup" element={<TrainerLoginProtector><TrainerSignup /></TrainerLoginProtector>} />
           <Route path="/trainer-otp" element={<TrainerLoginProtector><TrainerOtpVerification /></TrainerLoginProtector>} />
           <Route path="/trainer-profile" element={<TrainerProtector><TrainerProfilePage /></TrainerProtector>} />
+          <Route path="/trainer-console" element={<TrainerProtector><TrainerDashboardPage /></TrainerProtector>} />
           <Route path="/customers" element={<TrainerProtector><TrainerIsVerified><TrainerCustomersPage /></TrainerIsVerified></TrainerProtector>} />
           <Route path="/trainer-chat" element={<TrainerProtector><TrainerIsVerified><TrainerChatPage /></TrainerIsVerified></TrainerProtector>} />
           <Route path="/diet" element={<TrainerProtector><TrainerIsVerified><TrainerDietPage /></TrainerIsVerified></TrainerProtector>} />
           <Route path="/videos" element={<TrainerProtector><TrainerIsVerified><TutorialVideoPage/></TrainerIsVerified></TrainerProtector>} />
           <Route path="/transaction-history" element={<TrainerProtector><TrainerIsVerified><TrainerHistoryPage/></TrainerIsVerified></TrainerProtector>} />
+          <Route path="//trainer-review" element={<TrainerProtector><TrainerIsVerified><TrainerReviewPage/></TrainerIsVerified></TrainerProtector>} />
 
 
           {/* Admin Routes */}
@@ -81,6 +86,7 @@ function App() {
           <Route path="/admin-trainer" element={<AdminProtector><AdminTrainerPage /></AdminProtector>} />
           <Route path="/admin-user" element={<AdminProtector><AdminUserPage /></AdminProtector>} />
           
+          <Route path="*" element={<Error404 />} />
         </Routes>
         </ErrorBoundary>
       </Router>

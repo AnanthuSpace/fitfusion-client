@@ -203,3 +203,8 @@
     cursor: pointer;
 }
 
+.error-text {
+    color: red !important;
+    font-size: 15px;
+  }
+  

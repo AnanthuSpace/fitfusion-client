@@ -1,8 +1,6 @@
 import React from "react";
-import { Modal, Button, Form } from "react-bootstrap";
+import { Modal, Button, Form, Spinner } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import Lottie from "react-lottie";
-import animationData from "/Animation - 1726276908049 (1).json?url";
 
 function VideoUploadModal({
   show,
@@ -12,15 +10,6 @@ function VideoUploadModal({
   handleVideoUpload,
 }) {
   const { isLoading } = useSelector((state) => state.trainer);
-
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: animationData,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
 
   return (
     <Modal
@@ -36,13 +25,10 @@ function VideoUploadModal({
             className="d-flex justify-content-center align-items-center"
             style={{ height: "100%", width: "100%" }}
           >
-            {animationData ? (
-              <div style={{ width: "100%", height: "100%" }}>
-                <Lottie options={defaultOptions} />
-              </div>
-            ) : (
-              <p className="text-white">Loading animation...</p>
-            )}
+            <Spinner animation="border" role="status" variant="light">
+              <span className="visually-hidden">Loading...</span>
+            </Spinner>
+            <p className="text-white ms-3">Uploading your video...</p>
           </div>
         </Modal.Body>
       ) : (

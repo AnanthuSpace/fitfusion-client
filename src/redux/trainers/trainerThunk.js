@@ -98,7 +98,6 @@ export const trainerVerification = createAsyncThunk(
             return rejectWithValue("All the fields are required!");
         } else {
             try {
-                console.log(temperoryEmail)
                 const response = await axios.post(`${localhostURL}/trainer/verify`, { completeOtp, temperoryEmail });
                 if (response.data.message === "OTP verified") {
                     return response.data.trainerData;
@@ -180,7 +179,6 @@ export const editTrainer = createAsyncThunk(
             return rejectWithValue("Invalid phone number. It should be a 10-digit number.");
         } else {
             try {
-                console.log("wrking");
                 const response = await trainerAxiosInstance.put(`${localhostURL}/trainer/edit-trainer`, {
                     name,
                     phone,
@@ -199,6 +197,7 @@ export const editTrainer = createAsyncThunk(
                 localStorage.setItem(`trainerData.achivements: `, achivements)
                 localStorage.setItem(`trainerData.feePerMonth: `, feePerMonth)
                 localStorage.setItem(`trainerData.experience: `, experience)
+                console.log(response.data)
                 return response.data
             } catch (error) {
                 if (error.response && error.response.status === 401) {
@@ -422,3 +421,39 @@ export const toggleVideoListing = createAsyncThunk(
         }
     }
 );
+
+export const trainerDashBoardData = createAsyncThunk(
+    "trainer/trainerDashBoardData",
+    async ({ startDate, endDate }, { rejectWithValue }) => {
+        try {
+            const response = await trainerAxiosInstance.get(`${localhostURL}/trainer/dashboard-data`, { params: { startDate: startDate, endDate: endDate } })
+            return response.data.response
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+)
+
+export const trainerDataCount = createAsyncThunk(
+    "trainer/trainerDataCount",
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await trainerAxiosInstance.get(`${localhostURL}/trainer/totalcounts`)
+            return response.data.response
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+)
+
+export const fetchAllReview = createAsyncThunk(
+    "trainer/fetchAllReview",
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await trainerAxiosInstance.get(`${localhostURL}/trainer/fetch-review`)
+            return response.data.response
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+)

@@ -20,7 +20,6 @@ export const adminLogin = createAsyncThunk(
 
         const { accessToken, refreshToken, trainersData, usersData } = response.data;
 
-
         sessionStorage.setItem("adminAccessToken", accessToken);
         localStorage.setItem("adminRefreshToken", refreshToken);
         localStorage.setItem("usersData", JSON.stringify(usersData));

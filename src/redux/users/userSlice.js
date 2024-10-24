@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registration, signupVerification, userLogin, googleSignUpUser, loginVerification, googleLoginUser, transactionnHistory, editUserData,fetchVideos, fetchDeitPlans,fetchAllVideos, fetchSingleTrainer, fetchReviewFeedback, inactive, addReview, changeUserPassword, fetchAlreadyChattedTrainer, addUserDetails, fetchTrainersData, createCheckoutSession, fetchUserAndTrainer, fetchChatMessages } from "./userThunk";
+import { registration, signupVerification, userLogin, googleSignUpUser, loginVerification, googleLoginUser, transactionnHistory, editUserData, fetchVideos, fetchDeitPlans, fetchAllVideos, fetchSingleTrainer, fetchReviewFeedback, inactive, addReview, changeUserPassword, fetchAlreadyChattedTrainer, addUserDetails, fetchTrainersData, createCheckoutSession, fetchUserAndTrainer, fetchChatMessages } from "./userThunk";
 import { toast } from "sonner";
 
 const userData = localStorage.getItem("userData") ? JSON.parse(localStorage.getItem("userData")) : null;
@@ -33,7 +33,6 @@ const userSlice = createSlice({
   extraReducers: (builder) => {
     builder
 
-
       // Registration
       .addCase(registration.pending, (state) => {
         state.isLoading = true;
@@ -45,10 +44,11 @@ const userSlice = createSlice({
       })
       .addCase(registration.rejected, (state, action) => {
         state.error = action.payload;
-        toast.error(action.payload || "Registration failed", { hideProgressBar: true, autoClose: 3000 });
+        if (action.payload == "User already exists" || action.payload == "User already exists" || action.payload == "Registration failed, try again" || action.payload == "All the fields are required!") {
+          toast.error(action.payload || "Registration failed", { hideProgressBar: true, autoClose: 3000 });
+        }
         state.isLoading = false;
       })
-
 
       // Signup verification
       .addCase(signupVerification.pending, (state) => {
@@ -72,7 +72,7 @@ const userSlice = createSlice({
         localStorage.setItem('userData', JSON.stringify(state.userData));
         toast.success("Registration completed successfully", { hideProgressBar: true, autoClose: 3000 });
       })
-      .addCase(googleSignUpUser.rejected, (state, action) => {        
+      .addCase(googleSignUpUser.rejected, (state, action) => {
         state.error = action.payload;
         toast.error(action.payload || "Verification failed", { hideProgressBar: true, autoClose: 3000 });
         state.isLoading = false;
@@ -91,7 +91,7 @@ const userSlice = createSlice({
       .addCase(userLogin.rejected, (state, action) => {
         state.error = action.payload;
         state.isLoading = false;
-        toast.error( state.error, { hideProgressBar: true, autoClose: 3000 });
+        toast.error(state.error, { hideProgressBar: true, autoClose: 3000 });
       })
 
       .addCase(loginVerification.pending, (state) => {
@@ -118,7 +118,7 @@ const userSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(googleLoginUser.rejected, (state, action) => {
-        state.error = action.payload;        
+        state.error = action.payload;
         toast.error(action.payload || "Login failed", { hideProgressBar: true, autoClose: 3000 });
         state.isLoading = false;
       })

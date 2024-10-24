@@ -47,7 +47,7 @@ function UserDetailsForm() {
     <div className="container mt-5 background-gradient-main">
       <div className="row justify-content-center">
         <div className="col-md-8 col-lg-6">
-          <h2 className="text-center mb-4">Personal Details</h2>
+          <h2 className="text-center mb-4 text-white">Personal Details</h2>
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
