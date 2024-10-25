@@ -81,7 +81,7 @@ function TrainerProfile() {
           <div className="card text-center glass-effect text-white">
             <div className="position-relative">
               <img
-                src={`${trainer.profileIMG}`}
+                src={`${trainer?.profileIMG}`}
                 className="card-img-top mx-auto mt-4"
                 alt="profileIMG"
                 style={{ width: "130px", height: "130px", borderRadius: "50%" }}

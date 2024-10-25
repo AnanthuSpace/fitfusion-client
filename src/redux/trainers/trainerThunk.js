@@ -397,15 +397,34 @@ export const TrainerransactionHistory = createAsyncThunk(
 
 export const EditVideos = createAsyncThunk(
     "trainer/EditVideos",
-    async (videoData, { rejectWithValue }) => {
+    async ({ videoId, title, description, formData }, { rejectWithValue }) => {
         try {
-            const response = await trainerAxiosInstance.put(`${localhostURL}/trainer/edit-video`, videoData)
-            return response.data
+            formData.append("videoId", videoId);
+            formData.append("title", title);
+            formData.append("description", description);
+
+            console.log([...formData]);
+
+
+            const response = await trainerAxiosInstance.put(
+                `${localhostURL}/trainer/edit-video`,
+                formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            );
+            console.log(response.data)
+            return response.data;
         } catch (error) {
-            return rejectWithValue(error.response.data);
+
+            return rejectWithValue(error.response?.data || "An error occurred");
         }
     }
-)
+);
+
+
 
 export const toggleVideoListing = createAsyncThunk(
     "trainer/toggleVideoListing",

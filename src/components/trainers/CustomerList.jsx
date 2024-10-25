@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import trainerAxiosInstance from "../../config/axiosTrainerConfig";
 import { localhostURL } from "../../utils/url";
 import { useSelector } from "react-redux";
@@ -11,13 +11,15 @@ const CustomerList = ({
   alreadyChattedCustomer,
   directChatId,
   directChatName,
+  setSelectedId,
 }) => {
   const trainerId = useSelector((state) => state.trainer.trainerData.trainerId);
 
-  const [filteredCustomers, setFilteredCustomers] = useState([]);
+  // const [filteredCustomers, setFilteredCustomers] = useState([]);
 
   const handleCreateRoom = async (userId, userName) => {
     try {
+      setSelectedId(userId);
       const response = await trainerAxiosInstance.get(
         `${localhostURL}/chat/fetchChat`,
         {
@@ -27,29 +29,18 @@ const CustomerList = ({
           },
         }
       );
-      const sortedChatHistory = response.data.sort(
-        (a, b) => new Date(b.time).getTime() - new Date(a.time).getTime()
-      );
-      setChatHistory(sortedChatHistory);
+      setChatHistory(response.data);
       onSelectCustomer(userId, userName);
-
-      setFilteredCustomers((prev) => {
-        const updatedList = prev.filter(customer => customer.userId !== userId);
-        return [{ userId, name: userName }, ...updatedList];
-      });
     } catch (error) {
       console.error("Error fetching chat history:", error);
     }
   };
 
   useEffect(() => {
-    const filtered = alreadyChattedCustomer.filter(
-      (customer) =>
-        customer.userId !== directChatId &&
-        customer.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setFilteredCustomers(filtered);
-  }, [searchTerm, alreadyChattedCustomer, directChatId]);
+    if (directChatId) {
+      handleCreateRoom(directChatId, directChatName);
+    }
+  }, [directChatId]);
 
   const noCustomersFound = !directChatId && alreadyChattedCustomer.length === 0;
 
@@ -75,17 +66,22 @@ const CustomerList = ({
           </li>
         </ul>
       )}
-      {filteredCustomers.length > 0 ? (
+      {alreadyChattedCustomer.length > 0 ? (
         <ul className="list-group">
-          {filteredCustomers.map((customer) => (
-            <li
-              key={customer.userId}
-              className="glass-effect p-3 mb-2"
-              onClick={() => handleCreateRoom(customer.userId, customer.name)}
-            >
-              {customer.name}
-            </li>
-          ))}
+          {alreadyChattedCustomer.map(
+            (customer) =>
+              directChatId !== customer.userId && (
+                <li
+                  key={customer.userId}
+                  className="glass-effect p-3 mb-2"
+                  onClick={() =>
+                    handleCreateRoom(customer.userId, customer.name)
+                  }
+                >
+                  {customer.name}
+                </li>
+              )
+          )}
         </ul>
       ) : (
         noCustomersFound && (

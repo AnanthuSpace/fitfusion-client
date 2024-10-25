@@ -219,7 +219,8 @@ const trainerSlice = createSlice({
             })
             .addCase(EditVideos.rejected, (state, action) => {
                 state.isLoading = false;
-                toast.error(action.payload || "Failed to update the video", { hideProgressBar: true, autoClose: 3000 });
+                console.log(action.payload)
+                toast.error(action.payload.message || "Failed to update the video", { hideProgressBar: true, autoClose: 3000 });
             })
 
             .addCase(toggleVideoListing.fulfilled, (state, action) => {

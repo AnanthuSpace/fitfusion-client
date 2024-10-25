@@ -45,7 +45,7 @@ const ChatScreen = () => {
     if (userData.alreadychattedTrainers) {
       dispatch(fetchAlreadyChattedTrainer(userData.alreadychattedTrainers));
     }
-  }, [dispatch, userData.alreadychattedTrainers]);
+  }, []);
 
   useEffect(() => {
     socket.on("receiveMessage", (messageDetails) => {
@@ -97,8 +97,9 @@ const ChatScreen = () => {
 
       console.log(directChatId);
 
-      const firstTimeChat = directChatId !== "";
-      socket.emit("sendMessage", { message, firstTimeChat });
+      const firstTimeChat = chatHistory.length === 0 ? true : false;
+      const isUser = true
+      socket.emit("sendMessage", { message, firstTimeChat, isUser });
       setMessageInput("");
     }
   };

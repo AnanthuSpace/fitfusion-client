@@ -13,7 +13,6 @@ function ChatTrainerList({
   directChatName,
 }) {
   const userId = useSelector((state) => state.user.userData.userId);
-  const [filteredTrainer, setFilteredTrainers] = useState([]);
 
   const handleTrainerClick = async (trainerId, trainerName) => {
     try {
@@ -26,29 +25,18 @@ function ChatTrainerList({
           },
         }
       );
-      const sortedChatHistory = response.data.sort(
-        (a, b) => new Date(b.time).getTime() - new Date(a.time).getTime()
-      );
-      setChatHistory(sortedChatHistory);
+      setChatHistory(response.data);
       onSelectTrainer(trainerId, trainerName);
-
-      setFilteredTrainers((prev) => {
-        const updatedList = prev.filter(trainer => trainer.trainerId !== trainerId);
-        return [{ trainerId, name: trainerName }, ...updatedList];
-      });
     } catch (error) {
       console.error("Error fetching chat history:", error);
     }
   };
 
   useEffect(() => {
-    const filteredTrainer = alreadyChattedTrainer.filter(
-      (trainer) =>
-        trainer.trainerId !== directChatId &&
-        trainer.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setFilteredTrainers(filteredTrainer);
-  }, [searchTerm, alreadyChattedTrainer, directChatId]);
+    if (directChatId) {
+      handleTrainerClick(directChatId, directChatName);
+    }
+  }, [directChatId]);
 
   const noTrainersFound = !directChatId && alreadyChattedTrainer.length === 0;
 
@@ -71,23 +59,28 @@ function ChatTrainerList({
           </li>
         </ul>
       )}
-      {filteredTrainer.length > 0 ? (
+      {alreadyChattedTrainer.length > 0 ? (
         <ul className="list-group">
-          {filteredTrainer.map((trainer, index) => (
-            <li
-              key={trainer.trainerId} 
-              className="list-group-item user-item"
-              onClick={() =>
-                handleTrainerClick(trainer.trainerId, trainer.name)
-              }
-              style={{ cursor: "pointer" }}
-            >
-              {trainer.name}
-            </li>
-          ))}
+          {alreadyChattedTrainer.map(
+            (trainer) =>
+              directChatId !== trainer.trainerId && (
+                <li
+                  key={trainer.trainerId}
+                  className="list-group-item user-item"
+                  onClick={() =>
+                    handleTrainerClick(trainer.trainerId, trainer.name)
+                  }
+                  style={{ cursor: "pointer" }}
+                >
+                  {trainer.name}
+                </li>
+              )
+          )}
         </ul>
       ) : (
-        noTrainersFound && <h5 className="mt-5 gradient-text">No recent trainers found</h5>
+        noTrainersFound && (
+          <h5 className="mt-5 gradient-text">No recent trainers found</h5>
+        )
       )}
     </div>
   );

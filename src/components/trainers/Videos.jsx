@@ -125,8 +125,8 @@ const Videos = () => {
                     backgroundColor: "transparent",
                     border: "none",
                     paddingRight: "15px",
-                    verticalAlign: "middle", // Center vertically
-                    textAlign: "center", // Center horizontally
+                    verticalAlign: "middle", 
+                    textAlign: "center", 
                   }}
                 >
                   <Card.Img
@@ -151,8 +151,8 @@ const Videos = () => {
                     whiteSpace: "nowrap",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
-                    verticalAlign: "middle", // Center vertically
-                    textAlign: "center", // Center horizontally
+                    verticalAlign: "middle", 
+                    textAlign: "center", 
                   }}
                 >
                   {truncateText(video.title || "No Title", 50)}
@@ -166,8 +166,8 @@ const Videos = () => {
                     whiteSpace: "nowrap",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
-                    verticalAlign: "middle", // Center vertically
-                    textAlign: "center", // Center horizontally
+                    verticalAlign: "middle",
+                    textAlign: "center", 
                   }}
                 >
                   {truncateText(
@@ -184,8 +184,8 @@ const Videos = () => {
                     whiteSpace: "nowrap",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
-                    verticalAlign: "middle", // Center vertically
-                    textAlign: "center", // Center horizontally
+                    verticalAlign: "middle", 
+                    textAlign: "center", 
                   }}
                 >
                   {video.uploadDate
@@ -203,8 +203,8 @@ const Videos = () => {
                     width: "150px",
                     backgroundColor: "transparent",
                     border: "none",
-                    verticalAlign: "middle", // Center vertically
-                    textAlign: "center", // Center horizontally
+                    verticalAlign: "middle",
+                    textAlign: "center", 
                   }}
                 >
                   <button

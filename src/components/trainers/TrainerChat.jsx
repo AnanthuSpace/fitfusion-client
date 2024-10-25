@@ -28,6 +28,7 @@ function TrainerChat() {
   const alreadyChattedCustomer = useSelector(
     (state) => state.trainer.alreadyChattedCustomer
   );
+  
 
   useEffect(() => {
     setCurrentCustomerId(location.state?.customerId);
@@ -69,8 +70,8 @@ function TrainerChat() {
         recieverId: selectedId,
         text: newMessage,
       };
-
-      const firstTimeChat = directChatId !== "";
+      console.log(message)
+      const firstTimeChat = chatHistory.length ===0 ? true : false;
       socket.emit("sendMessage", { message, firstTimeChat });
       setNewMessage("");
     }
@@ -93,6 +94,7 @@ function TrainerChat() {
         alreadyChattedCustomer={alreadyChattedCustomer}
         directChatId={directChatId}
         directChatName={directChatName}
+        setSelectedId={setSelectedId}
       />
 
       <TrainerChatScreen

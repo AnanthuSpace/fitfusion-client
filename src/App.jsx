@@ -54,6 +54,8 @@ function App() {
           {/* User Routes */}
           <Route path="/" element={<HomePage />} />
           <Route path="/trainer-list" element={<TrainerListPage />} />
+          <Route path="/payment-success" element={<PaymentSuccess />}/>
+          <Route path="/payment-failed" element={<PaymentFailed />} />
           <Route path="/login" element={<UserLoginProtector><LoginPage /></UserLoginProtector>} />
           <Route path="/signup" element={<UserLoginProtector><SignupPage /></UserLoginProtector>} />
           <Route path="/verify-otp" element={<UserLoginProtector><SignUpVerification /></UserLoginProtector>} />
@@ -61,8 +63,6 @@ function App() {
           <Route path="/profile" element={<UserProtecter><ProfilePage /></UserProtecter>} />
           <Route path="/user-data" element={<UserProtecter><UserDetailsForm /></UserProtecter>} />
           <Route path="/trainer-view" element={<UserProtecter><TrainerViewPage /></UserProtecter>} />
-          <Route path="/payment-success" element={<UserProtecter><PaymentSuccess /></UserProtecter>} />
-          <Route path="/payment-failed" element={<UserProtecter><PaymentFailed /></UserProtecter>} />
           <Route path="/user-chat" element={<UserProtecter><ChatPage /></UserProtecter>} />
           <Route path="/tutorials" element={<UserProtecter><TutorialsPage /></UserProtecter>} />
           <Route path="/history" element={<UserProtecter><TransactionHistoryPage /></UserProtecter>} />

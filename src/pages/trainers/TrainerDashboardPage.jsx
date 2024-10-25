@@ -9,12 +9,18 @@ import { useDispatch } from "react-redux";
 import TrainerPieChart from "../../components/trainers/TrainerPieChart";
 
 function TrainerDashboardPage() {
-  const [countData, setCountData] = useState({});
+  const [countData, setCountData] = useState({
+    videosCount: 0,
+    totalReview: 0,
+    totalRevenue: 0,
+    newReviews: [],
+  });
+  
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(trainerDataCount()).then((res) => {
-      setCountData(res.payload);
+      setCountData(res.payload || countData);
     });
   }, [dispatch]);
 
@@ -38,7 +44,6 @@ function TrainerDashboardPage() {
           <div className="flex-grow-1 overflow-auto">
             <div className="container-fluid h-100">
               <div className="row h-100">
-                {/* Left Column (3/4 width on large screens, full width on smaller) */}
                 <div className="col-lg-9 col-md-8 col-12 d-flex flex-column p-4">
                   <div
                     className="flex-grow-1"
@@ -48,12 +53,11 @@ function TrainerDashboardPage() {
                   </div>
                 </div>
 
-                {/* Right Column (1/4 width on large screens, full width on smaller) */}
                 <div className="col-lg-3 col-md-4 col-12 d-flex flex-column p-4">
-                  {/* Count details aligned to the graph's height */}
+            
                   <div className="d-flex flex-column h-50">
                     <div className="row g-3">
-                      {/* Total Videos */}
+                
                       <div className="col-12">
                         <div
                           className="card text-white"
