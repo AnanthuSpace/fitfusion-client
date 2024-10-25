@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllVideos } from "../../redux/users/userThunk";
 import VideoPlayerModal from "../common/VideoPlayer";
+import Reveal from "../common/animationConfig";
 
 const TutorilasList = () => {
   const dispatch = useDispatch();
@@ -52,6 +53,7 @@ const TutorilasList = () => {
 
   return (
     <div className="container mt-4">
+      <Reveal>
       <div className="row">
         {loading ? ( 
           Array.from({ length: 6 }).map((_, index) => ( 
@@ -106,6 +108,7 @@ const TutorilasList = () => {
           onClose={handleCloseVideoPlayer}
         />
       )}
+      </Reveal>
     </div>
   );
 };

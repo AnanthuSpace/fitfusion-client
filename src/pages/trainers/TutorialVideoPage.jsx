@@ -2,6 +2,7 @@ import React from "react";
 import TrainerSideBar from "../../components/trainers/TrainerSideBar";
 import TrainerNavbar from "../../components/trainers/TrainerNavbar";
 import Videos from "../../components/trainers/Videos";
+import Reveal from "../../components/common/animationConfig";
 
 const TutorialVideoPage = () => {
   return (
@@ -11,7 +12,9 @@ const TutorialVideoPage = () => {
         <div className="flex-grow-1 d-flex flex-column">
           <TrainerNavbar />
           <div className="d-flex justify-content-center align-items-center flex-grow-1 m-3">
-            <Videos />
+            <Reveal>
+              <Videos />
+            </Reveal>
           </div>
         </div>
       </div>

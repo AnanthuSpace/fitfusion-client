@@ -2,6 +2,7 @@ import React from "react";
 import TrainerSideBar from "../../components/trainers/TrainerSideBar";
 import TrainerNavbar from "../../components/trainers/TrainerNavbar";
 import TrainerTransactionHistroy from "../../components/trainers/TrainerTransactionHistroy";
+import Reveal from "../../components/common/animationConfig";
 
 const TrainerHistoryPage = () => {
   return (
@@ -10,7 +11,9 @@ const TrainerHistoryPage = () => {
         <TrainerSideBar />
         <div className="flex-grow-1 d-flex flex-column">
           <TrainerNavbar />
-          <TrainerTransactionHistroy />
+          <Reveal>
+            <TrainerTransactionHistroy />
+          </Reveal>
         </div>
       </div>
     </>

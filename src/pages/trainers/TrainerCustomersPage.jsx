@@ -4,6 +4,7 @@ import TrainerSideBar from "../../components/trainers/TrainerSideBar";
 import Customers from "../../components/trainers/Customers";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../assets/styles/trainers/TrainerConsole.css";
+import Reveal from "../../components/common/animationConfig";
 
 function TrainerCustomersPage() {
   return (
@@ -12,7 +13,9 @@ function TrainerCustomersPage() {
         <TrainerSideBar />
         <div className="flex-grow-1 d-flex flex-column ">
           <TrainerNavbar />
-          <Customers />
+          <Reveal>
+            <Customers />
+          </Reveal>
         </div>
       </div>
     </>
