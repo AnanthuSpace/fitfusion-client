@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createCheckoutSession, fetchVideos } from "../../redux/users/userThunk";
+import {
+  createCheckoutSession,
+  fetchVideos,
+} from "../../redux/users/userThunk";
 import { Spinner } from "react-bootstrap";
 import VideoPlayer from "../common/VideoPlayer";
 import "../../assets/styles/users/SubscribeButton.css";
@@ -13,7 +16,14 @@ function SubscribeButton({ trainerId, trainerName, amount }) {
   const [selectedVideo, setSelectedVideo] = useState(null);
 
   const handleSubscribeClick = () => {
-    dispatch(createCheckoutSession({ trainerId, trainerName, amount, userName: user.name }));
+    dispatch(
+      createCheckoutSession({
+        trainerId,
+        trainerName,
+        amount,
+        userName: user.name,
+      })
+    );
   };
 
   useEffect(() => {
@@ -21,7 +31,7 @@ function SubscribeButton({ trainerId, trainerName, amount }) {
       if (res.payload && res.payload.data && res.payload.data.videos) {
         setVideos(res.payload.data.videos);
       } else {
-        setVideos([]); 
+        setVideos([]);
       }
     });
   }, [dispatch, trainerId]);
@@ -39,7 +49,10 @@ function SubscribeButton({ trainerId, trainerName, amount }) {
   return (
     <div className="video-main">
       {selectedVideo && (
-        <VideoPlayer videoUrl={selectedVideo} onClose={handleCloseVideoPlayer} />
+        <VideoPlayer
+          videoUrl={selectedVideo}
+          onClose={handleCloseVideoPlayer}
+        />
       )}
       {isSubscribed ? (
         videos.length >= 0 ? (
@@ -63,34 +76,40 @@ function SubscribeButton({ trainerId, trainerName, amount }) {
             <button className="view-more-button">View More</button>
           </div>
         ) : (
-          <p className="text-white text-center">No videos available at the moment.</p>
+          <p className="text-white text-center">
+            No videos available at the moment.
+          </p>
         )
+      ) : isSubscribed ? (
+        <p className="text-white text-center">You are already subscribed!</p>
       ) : (
-      isSubscribed ? (
-          <p className="text-white text-center">You are already subscribed!</p>
-      ) : (
-          <button
-              className="glass-button"
-              onClick={handleSubscribeClick}
-              disabled={loading}
-          >
-              {loading ? (
-                  <>
-                      <Spinner
-                          as="span"
-                          animation="border"
-                          size="sm"
-                          role="status"
-                          aria-hidden="true"
-                      />{" "}
-                      Processing...
-                  </>
-              ) : (
-                  `Subscribe $ ${amount}`
-              )}
-          </button>
-      ))}
-      
+        <button
+          className="glass-button"
+          onClick={
+            amount
+              ? handleSubscribeClick
+              : () => toast.warning("Service is not started")
+          }
+          disabled={loading || !amount}
+        >
+          {loading ? (
+            <>
+              <Spinner
+                as="span"
+                animation="border"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+              />{" "}
+              Processing...
+            </>
+          ) : amount ? (
+            `Subscribe $ ${amount}`
+          ) : (
+            "Not provided"
+          )}
+        </button>
+      )}
     </div>
   );
 }

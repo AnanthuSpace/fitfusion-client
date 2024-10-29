@@ -347,7 +347,7 @@ export const createCheckoutSession = createAsyncThunk(
                 console.error(result.error.message);
                 return rejectWithValue(result.error.message);
             }
-
+            console.log("Hellowwwww")
             return result;
         } catch (error) {
             console.error('Error creating checkout session:', error);

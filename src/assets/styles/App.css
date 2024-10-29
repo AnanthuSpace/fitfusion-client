@@ -323,3 +323,14 @@ video {
 .admin-console .overflow-auto::-webkit-scrollbar-thumb:hover {
   background: #ff6347; 
 }
+
+.transparent-select {
+  background-color: transparent !important;
+  color: white; 
+  border: 1px solid #ccc;
+}
+
+.transparent-select option {
+  background-color: #333;
+  color: white;
+}

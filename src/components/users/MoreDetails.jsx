@@ -24,10 +24,16 @@ function UserDetailsForm() {
   };
 
   const validationSchema = Yup.object({
-    age: Yup.number().required("Age is required"),
+    age: Yup.number()
+      .min(10, "Age must be at least 10")
+      .required("Age is required"),
     gender: Yup.string().required("Gender is required"),
-    weight: Yup.number().required("Weight is required"),
-    height: Yup.number().required("Height is required"),
+    weight: Yup.number()
+      .min(10, "Weight must be at least 10 kg")
+      .required("Weight is required"),
+    height: Yup.number()
+      .min(10, "Height must be at least 10 cm")
+      .required("Height is required"),
     activityLevel: Yup.string().required("Activity level is required"),
     dietary: Yup.string().required("Dietary preference is required"),
     goals: Yup.string().required("Please select a goal"),
@@ -62,7 +68,11 @@ function UserDetailsForm() {
                     name="age"
                     className="form-control input-transparent"
                   />
-                  <ErrorMessage name="age" component="div" className="text-danger" />
+                  <ErrorMessage
+                    name="age"
+                    component="div"
+                    className="text-danger"
+                  />
                 </div>
 
                 <div className="form-group mb-3">
@@ -70,14 +80,19 @@ function UserDetailsForm() {
                   <Field
                     as="select"
                     name="gender"
-                    className="form-select"
+                    className="form-select transparent-select"
                   >
                     <option value="">Select gender</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                     <option value="Other">Other</option>
                   </Field>
-                  <ErrorMessage name="gender" component="div" className="text-danger" />
+
+                  <ErrorMessage
+                    name="gender"
+                    component="div"
+                    className="text-danger"
+                  />
                 </div>
 
                 <div className="form-group mb-3">
@@ -87,7 +102,11 @@ function UserDetailsForm() {
                     name="weight"
                     className="form-control input-transparent "
                   />
-                  <ErrorMessage name="weight" component="div" className="text-danger" />
+                  <ErrorMessage
+                    name="weight"
+                    component="div"
+                    className="text-danger"
+                  />
                 </div>
 
                 <div className="form-group mb-3">
@@ -97,7 +116,11 @@ function UserDetailsForm() {
                     name="height"
                     className="form-control input-transparent"
                   />
-                  <ErrorMessage name="height" component="div" className="text-danger" />
+                  <ErrorMessage
+                    name="height"
+                    component="div"
+                    className="text-danger"
+                  />
                 </div>
 
                 <div className="form-group mb-3">
@@ -105,14 +128,18 @@ function UserDetailsForm() {
                   <Field
                     as="select"
                     name="activityLevel"
-                    className="form-select"
+                    className="form-select transparent-select"
                   >
                     <option value="">Select activity level</option>
                     <option value="sedentary">Sedentary</option>
                     <option value="moderately active">Moderately Active</option>
                     <option value="very active">Very Active</option>
                   </Field>
-                  <ErrorMessage name="activityLevel" component="div" className="text-danger" />
+                  <ErrorMessage
+                    name="activityLevel"
+                    component="div"
+                    className="text-danger"
+                  />
                 </div>
 
                 <div className="form-group mb-3">
@@ -126,7 +153,11 @@ function UserDetailsForm() {
                     />
                     <label className="form-check-label">Yes</label>
                   </div>
-                  <ErrorMessage name="medicalHistory" component="div" className="text-danger" />
+                  <ErrorMessage
+                    name="medicalHistory"
+                    component="div"
+                    className="text-danger"
+                  />
                   {medicalHistory && (
                     <div className="form-group mt-2">
                       <label>Please provide details</label>
@@ -135,7 +166,11 @@ function UserDetailsForm() {
                         name="medicalDetails"
                         className="form-control input-transparent"
                       />
-                      <ErrorMessage name="medicalDetails" component="div" className="text-danger" />
+                      <ErrorMessage
+                        name="medicalDetails"
+                        component="div"
+                        className="text-danger"
+                      />
                     </div>
                   )}
                 </div>
@@ -145,14 +180,18 @@ function UserDetailsForm() {
                   <Field
                     as="select"
                     name="dietary"
-                    className="form-select"
+                    className="form-select transparent-select"
                   >
                     <option value="">Select dietary preference</option>
                     <option value="veg">Veg</option>
                     <option value="nonveg">Non-Veg</option>
                     <option value="both">Both</option>
                   </Field>
-                  <ErrorMessage name="dietary" component="div" className="text-danger" />
+                  <ErrorMessage
+                    name="dietary"
+                    component="div"
+                    className="text-danger"
+                  />
                 </div>
 
                 <div className="form-group mb-4">
@@ -202,10 +241,17 @@ function UserDetailsForm() {
                     />
                     <label className="form-check-label">Toning</label>
                   </div>
-                  <ErrorMessage name="goals" component="div" className="text-danger" />
+                  <ErrorMessage
+                    name="goals"
+                    component="div"
+                    className="text-danger"
+                  />
                 </div>
 
-                <button type="submit" className="btn gradient-blue-white text-white w-100">
+                <button
+                  type="submit"
+                  className="btn gradient-blue-white text-white w-100"
+                >
                   Submit
                 </button>
               </Form>

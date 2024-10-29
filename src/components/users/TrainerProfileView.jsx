@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Image, Col } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../../assets/styles/users/TrainerProfileView.css";
@@ -18,6 +18,7 @@ function TrainerProfileView() {
   const [reviewAdded, setReviewAdded] = useState(false);
   const [allReview, setAllReview] = useState([]);
   const [isSubscribed, setIsSubscribed] = useState(false); 
+  const userData = useSelector((state)=>state.user.userData)
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -39,7 +40,10 @@ function TrainerProfileView() {
   };
 
   const handleReviewClick = () => {
-    if (isSubscribed) {
+    console.log(trainerId);
+    console.log(userData.subscribeList);
+  
+    if (userData.subscribeList.includes(trainerId)) {
       setShowReviewModal(true);
     } else {
       toast.warning("You need to subscribe to this trainer before leaving a review.");
@@ -60,7 +64,6 @@ function TrainerProfileView() {
 
   return (
     <div className="container-div">
-      {console.log(trainerDetails)}
       <div className="background-container">
         <Image
           src="/purple.jpg"

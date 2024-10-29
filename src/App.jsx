@@ -38,9 +38,7 @@ import { Toaster } from "sonner";
 import "./assets/styles/App.css";
 import TrainerDashboardPage from "./pages/trainers/TrainerDashboardPage";
 import TrainerReviewPage from "./pages/trainers/TrainerReviewPage";
-import UserProtector from "./components/protucters/UserProtector";
 import UserLoginProtector from "./components/protucters/UserLoginProtector";
-
 
 
 function App() {
