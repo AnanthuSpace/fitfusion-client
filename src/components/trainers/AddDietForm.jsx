@@ -4,62 +4,92 @@ import * as Yup from "yup";
 import { Button } from "react-bootstrap";
 import { FaMinus, FaPlus } from "react-icons/fa";
 import { useDispatch } from "react-redux";
-import { AddDietPlan } from "../../redux/trainers/trainerThunk"; 
+import { AddDietPlan } from "../../redux/trainers/trainerThunk";
 
-const AddDietForm = ({ trainerId }) => {
+const AddDietForm = ({ setNewPlan }) => {
   const dispatch = useDispatch();
+
+  const initialValues = {
+    dietName: "",
+    description: "",
+    meals: [{ mealTime: "", items: [""] }],
+  };
+
+  const validationSchema = Yup.object({
+    dietName: Yup.string().required("Diet Name is required"),
+    description: Yup.string().required("Description is required"),
+    meals: Yup.array().of(
+      Yup.object().shape({
+        mealTime: Yup.string().required("Meal Time is required"),
+        items: Yup.array().of(Yup.string().required("Item is required")),
+      })
+    ),
+  });
+
+  const handleSubmit = (values, { resetForm }) => {
+    dispatch(AddDietPlan({ dietPlan: values })).then((res) => {
+      if (res.payload.success === true) {
+        setNewPlan(true);
+      }
+    });
+    resetForm();
+  };
 
   return (
     <Formik
-      initialValues={{
-        dietName: "",
-        description: "",
-        meals: [{ mealTime: "", items: [""] }],
-      }}
-      validationSchema={Yup.object({
-        dietName: Yup.string().required("Diet Name is required"),
-        description: Yup.string().required("Description is required"),
-        meals: Yup.array().of(
-          Yup.object().shape({
-            mealTime: Yup.string().required("Meal Time is required"),
-            items: Yup.array().of(Yup.string().required("Item is required")),
-          })
-        ),
-      })}
-      onSubmit={(values, { resetForm }) => {
-        dispatch(AddDietPlan({ dietPlan: values }));
-        resetForm();
-      }}
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={handleSubmit}
     >
       {({ values }) => (
         <Form className="glass-effect">
+          {/* Diet Name Field */}
           <div className="form-group mb-3">
-            <label htmlFor="dietName" className="text-white">Diet Name</label>
+            <label htmlFor="dietName" className="text-white">
+              Diet Name
+            </label>
             <Field
               name="dietName"
               type="text"
               className="form-control glass-input"
             />
-            <ErrorMessage name="dietName" component="div" className="text-danger" />
+            <ErrorMessage
+              name="dietName"
+              component="div"
+              className="text-danger"
+            />
           </div>
 
+          {/* Description Field */}
           <div className="form-group mb-3">
-            <label htmlFor="description" className="text-white">Description</label>
+            <label htmlFor="description" className="text-white">
+              Description
+            </label>
             <Field
               name="description"
               as="textarea"
               className="form-control glass-input"
             />
-            <ErrorMessage name="description" component="div" className="text-danger" />
+            <ErrorMessage
+              name="description"
+              component="div"
+              className="text-danger"
+            />
           </div>
 
+          {/* Meals Field Array */}
           <FieldArray name="meals">
             {({ remove, push }) => (
               <div>
                 {values.meals.map((meal, index) => (
                   <div key={index} className="meal-section">
                     <div className="form-group mb-3">
-                      <label htmlFor={`meals.${index}.mealTime`} className="text-white">Meal Time</label>
+                      <label
+                        htmlFor={`meals.${index}.mealTime`}
+                        className="text-white"
+                      >
+                        Meal Time
+                      </label>
                       <Field
                         as="select"
                         name={`meals.${index}.mealTime`}
@@ -83,7 +113,10 @@ const AddDietForm = ({ trainerId }) => {
                       {({ remove, push }) => (
                         <div>
                           {meal.items.map((item, itemIndex) => (
-                            <div key={itemIndex} className="form-group mb-3 d-flex align-items-center">
+                            <div
+                              key={itemIndex}
+                              className="form-group mb-3 d-flex align-items-center"
+                            >
                               <Field
                                 name={`meals.${index}.items.${itemIndex}`}
                                 type="text"
@@ -138,6 +171,7 @@ const AddDietForm = ({ trainerId }) => {
               </div>
             )}
           </FieldArray>
+
           <div className="d-flex justify-content-center">
             <Button
               type="submit"

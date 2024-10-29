@@ -101,7 +101,7 @@ const trainerSlice = createSlice({
             })
 
             .addCase(editTrainer.fulfilled, (state, action) => {
-                toast.success(action.payload.message, { hideProgressBar: true, autoClose: 3000 });
+                toast.success(action.payload, { hideProgressBar: true, autoClose: 3000 });
             })
             .addCase(editTrainer.rejected, (state, action) => {
                 toast.error(action.payload || "Update error", { hideProgressBar: true, autoClose: 3000 });

@@ -31,8 +31,50 @@ function TrainerSignup() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const validateFields = () => {
+    let valid = true;
+    const newErrors = {
+      name: "",
+      email: "",
+      password: "",
+      confirmPass: "",
+    };
+
+    if (!name) {
+      newErrors.name = "Full name is required.";
+      valid = false;
+    }
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email) {
+      newErrors.email = "Email is required.";
+      valid = false;
+    } else if (!emailPattern.test(email)) {
+      newErrors.email = "Invalid email format.";
+      valid = false;
+    }
+
+    if (!password) {
+      newErrors.password = "Password is required.";
+      valid = false;
+    } else if (password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters long.";
+      valid = false;
+    }
+
+    if (password !== confirmPass) {
+      newErrors.confirmPass = "Passwords do not match.";
+      valid = false;
+    }
+
+    setErrors(newErrors);
+    return valid;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateFields()) return; // Validate fields before proceeding
+
     const result = await dispatch(
       trainerRegistration({
         name,
@@ -113,7 +155,7 @@ function TrainerSignup() {
             <h3 className="card-title text-center mb-4">Sign Up</h3>
             <form onSubmit={handleSubmit}>
               <div className="form-group mb-3">
-                <label htmlFor="fullName">Full Name</label>
+                {/* <label htmlFor="fullName">Full Name</label> */}
                 <input
                   type="text"
                   className={`form-control form-control-glass ${
@@ -131,7 +173,7 @@ function TrainerSignup() {
               </div>
 
               <div className="form-group mb-3">
-                <label htmlFor="email">Email address</label>
+                {/* <label htmlFor="email">Email address</label> */}
                 <input
                   type="email"
                   className={`form-control form-control-glass ${
@@ -149,7 +191,7 @@ function TrainerSignup() {
               </div>
 
               <div className="form-group mb-3">
-                <label htmlFor="password">Password</label>
+                {/* <label htmlFor="password">Password</label> */}
                 <input
                   type="password"
                   className={`form-control form-control-glass ${
@@ -167,7 +209,7 @@ function TrainerSignup() {
               </div>
 
               <div className="form-group mb-3">
-                <label htmlFor="confirmPass">Confirm Password</label>
+                {/* <label htmlFor="confirmPass">Confirm Password</label> */}
                 <input
                   type="password"
                   className={`form-control form-control-glass ${
@@ -259,8 +301,9 @@ function TrainerSignup() {
             Cancel
           </Button>
           <Button
-            className="gradient-blue-white"
+            variant="primary"
             onClick={handlePasswordSubmit}
+            disabled={isLoading}
           >
             Submit
           </Button>

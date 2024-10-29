@@ -29,7 +29,6 @@
     padding: 0;
     margin: 0;
     list-style: none;
-
 }
 
 .signup-nav-list li {
@@ -110,22 +109,16 @@
     width: 26%;
     height: 35rem;
     background: rgba(255, 255, 255, 0.1);
-    /* Semi-transparent white background for glass effect */
     border-radius: 1rem;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    /* Soft shadow for depth */
     backdrop-filter: blur(10px);
-    /* Frosted glass effect */
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     padding: 2rem;
-    /* Added padding for better spacing */
     border: 1px solid rgba(255, 255, 255, 0.2);
-    /* Light border to enhance glass effect */
 }
-
 
 .signup-signupform h2 {
     color: #b249f8 !important;
@@ -141,35 +134,28 @@
     border-right: none;
     background-color: transparent;
     padding-top: 1rem;
-    width: 65%;
+    width: 85%;
     outline: none;
     color: white;
 }
 
 .signup-join {
-    width: 69%;
+    width: 65%;
     height: 2rem;
     margin-top: 1rem;
     border-radius: 1rem;
     color: white;
     background: rgba(178, 73, 248, 0.1);
-    /* Semi-transparent purple background for glass effect */
     border: 1px solid rgba(255, 255, 255, 0.2);
-    /* Light border to enhance the glass effect */
     backdrop-filter: blur(10px);
-    /* Frosted glass effect */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    /* Soft shadow for depth */
     cursor: pointer;
     transition: background 0.3s ease;
-    /* Smooth transition on hover */
 }
 
 .signup-join:hover {
     background: rgba(178, 73, 248, 0.2);
-    /* Slightly more opaque background on hover */
 }
-
 
 .signup-google {
     width: 69%;
@@ -179,32 +165,32 @@
     border-radius: 1rem;
     cursor: pointer;
     background: rgba(255, 255, 255, 0.1);
-    /* Semi-transparent background for glass effect */
     border: 1px solid rgba(255, 255, 255, 0.2);
-    /* Light border to enhance the glass effect */
     backdrop-filter: blur(10px);
-    /* Frosted glass effect */
     color: white;
-    /* Ensure text is visible */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    /* Soft shadow for depth */
     transition: background 0.3s ease;
-    /* Smooth transition on hover */
 }
 
 .signup-google:hover {
     background: rgba(255, 255, 255, 0.2);
-    /* Slightly more opaque background on hover */
 }
-
 
 .signup-allready {
     color: #ecedee;
     cursor: pointer;
 }
 
-.error-text {
+.error {
     color: red !important;
     font-size: 15px;
-  }
-  
+}
+
+
+.form-style {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}

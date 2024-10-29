@@ -198,7 +198,10 @@ export const editTrainer = createAsyncThunk(
                 localStorage.setItem(`trainerData.feePerMonth: `, feePerMonth)
                 localStorage.setItem(`trainerData.experience: `, experience)
                 console.log(response.data)
-                return response.data
+                if(response.data.success){
+                    localStorage.setItem("trainerData", JSON.stringify(response.data.data))
+                }
+                return response.data.message
             } catch (error) {
                 if (error.response && error.response.status === 401) {
                     sessionStorage.removeItem("trainerAccessToken");

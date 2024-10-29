@@ -334,3 +334,7 @@ video {
   background-color: #333;
   color: white;
 }
+
+.error-text {
+  color: red;
+}
