@@ -13,7 +13,7 @@ const TrainerChatScreen = ({
   receiverId,
   currentCustomerId,
   socket,
-  directChatId
+  directChatId,
 }) => {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const trainerId = useSelector((state) => state.trainer.trainerData.trainerId);

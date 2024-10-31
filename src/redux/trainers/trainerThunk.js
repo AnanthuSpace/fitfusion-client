@@ -354,7 +354,6 @@ export const uploadVideo = createAsyncThunk(
                     "Content-Type": "multipart/form-data",
                 },
             });
-            console.log(response.data);
             return response.data;
         } catch (error) {
             return rejectWithValue(error.response.data);
@@ -406,9 +405,6 @@ export const EditVideos = createAsyncThunk(
             formData.append("title", title);
             formData.append("description", description);
 
-            console.log([...formData]);
-
-
             const response = await trainerAxiosInstance.put(
                 `${localhostURL}/trainer/edit-video`,
                 formData,
@@ -418,7 +414,6 @@ export const EditVideos = createAsyncThunk(
                     },
                 }
             );
-            console.log(response.data)
             return response.data;
         } catch (error) {
 

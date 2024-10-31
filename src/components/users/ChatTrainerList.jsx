@@ -14,6 +14,13 @@ function ChatTrainerList({
 }) {
   const userId = useSelector((state) => state.user.userData.userId);
 
+  const [sortedAlreadyChattedTrainer, setSortedAlreadyChattedTrainer] =
+    useState(
+      [...alreadyChattedTrainer].sort(
+        (a, b) => new Date(b.time) - new Date(a.time)
+      )
+    );
+
   const handleTrainerClick = async (trainerId, trainerName) => {
     try {
       const response = await userAxiosInstance.get(
@@ -25,7 +32,12 @@ function ChatTrainerList({
           },
         }
       );
-      setChatHistory(response.data);
+
+      const sortedChatHistory = response.data.sort(
+        (a, b) => new Date(b.time) - new Date(a.time)
+      );
+
+      setChatHistory(sortedChatHistory);
       onSelectTrainer(trainerId, trainerName);
     } catch (error) {
       console.error("Error fetching chat history:", error);
@@ -38,7 +50,16 @@ function ChatTrainerList({
     }
   }, [directChatId]);
 
-  const noTrainersFound = !directChatId && alreadyChattedTrainer.length === 0;
+  useEffect(() => {
+    setSortedAlreadyChattedTrainer(
+      [...alreadyChattedTrainer].sort(
+        (a, b) => new Date(b.time) - new Date(a.time)
+      )
+    );
+  }, [ alreadyChattedTrainer]);
+
+  const noTrainersFound =
+    !directChatId && sortedAlreadyChattedTrainer.length === 0;
 
   return (
     <div className="col-3 p-3">
@@ -59,9 +80,9 @@ function ChatTrainerList({
           </li>
         </ul>
       )}
-      {alreadyChattedTrainer.length > 0 ? (
+      {sortedAlreadyChattedTrainer.length > 0 ? (
         <ul className="list-group">
-          {alreadyChattedTrainer.map(
+          {sortedAlreadyChattedTrainer.map(
             (trainer) =>
               directChatId !== trainer.trainerId && (
                 <li
@@ -73,6 +94,13 @@ function ChatTrainerList({
                   style={{ cursor: "pointer" }}
                 >
                   {trainer.name}
+                  <p style={{ color: "gray" }}>
+                    {trainer.message
+                      ? trainer.message.length > 15
+                        ? `${trainer.message.slice(0, 15)}...`
+                        : trainer.message
+                      : "No messages yet"}
+                  </p>
                 </li>
               )
           )}

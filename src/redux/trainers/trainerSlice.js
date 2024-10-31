@@ -16,6 +16,7 @@ const trainerSlice = createSlice({
         temperoryEmail: " ",
         diet: dietPlans,
         alreadyChattedCustomer: alreadyChattedCustomer,
+        videoFetch: false,
     },
     reducers: {
         trainerLogout: (state) => {
@@ -172,14 +173,17 @@ const trainerSlice = createSlice({
 
             .addCase(uploadVideo.pending, (state) => {
                 state.isLoading = true;
+                state.videoFetch = false;
                 state.error = null;
             })
             .addCase(uploadVideo.fulfilled, (state) => {
                 state.isLoading = false;
+                state.videoFetch = true;
                 toast.success("Video upload successfully", { hideProgressBar: true, autoClose: 3000 });
             })
             .addCase(uploadVideo.rejected, (state, action) => {
                 state.isLoading = false;
+                state.videoFetch = false;
                 state.error = action.payload;
             })
 
@@ -215,11 +219,12 @@ const trainerSlice = createSlice({
 
             .addCase(EditVideos.fulfilled, (state, action) => {
                 state.isLoading = false;
+                state.videoFetch = true
                 toast.success(action.payload.message)
             })
             .addCase(EditVideos.rejected, (state, action) => {
                 state.isLoading = false;
-                console.log(action.payload)
+                state.videoFetch = false;
                 toast.error(action.payload.message || "Failed to update the video", { hideProgressBar: true, autoClose: 3000 });
             })
 

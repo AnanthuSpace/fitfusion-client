@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import trainerAxiosInstance from "../../config/axiosTrainerConfig";
 import { localhostURL } from "../../utils/url";
 import { useSelector } from "react-redux";
@@ -12,10 +12,16 @@ const CustomerList = ({
   directChatId,
   directChatName,
   setSelectedId,
+  rerender
 }) => {
   const trainerId = useSelector((state) => state.trainer.trainerData.trainerId);
 
-  // const [filteredCustomers, setFilteredCustomers] = useState([]);
+  const [sortedAlreadyChattedCustomer, setSortedAlreadyChattedCustomer] =
+    useState(
+      [...alreadyChattedCustomer].sort(
+        (a, b) => new Date(b.time) - new Date(a.time)
+      )
+    );
 
   const handleCreateRoom = async (userId, userName) => {
     try {
@@ -29,7 +35,12 @@ const CustomerList = ({
           },
         }
       );
-      setChatHistory(response.data);
+
+      const sortedChatHistory = response.data.sort(
+        (a, b) => new Date(b.time) - new Date(a.time)
+      );
+
+      setChatHistory(sortedChatHistory);
       onSelectCustomer(userId, userName);
     } catch (error) {
       console.error("Error fetching chat history:", error);
@@ -41,6 +52,14 @@ const CustomerList = ({
       handleCreateRoom(directChatId, directChatName);
     }
   }, [directChatId]);
+
+  useEffect(() => {
+    setSortedAlreadyChattedCustomer(
+      [...alreadyChattedCustomer].sort(
+        (a, b) => new Date(b.time) - new Date(a.time)
+      )
+    );
+  }, [alreadyChattedCustomer, rerender]);
 
   const noCustomersFound = !directChatId && alreadyChattedCustomer.length === 0;
 
@@ -66,9 +85,9 @@ const CustomerList = ({
           </li>
         </ul>
       )}
-      {alreadyChattedCustomer.length > 0 ? (
+      {sortedAlreadyChattedCustomer.length > 0 ? (
         <ul className="list-group">
-          {alreadyChattedCustomer.map(
+          {sortedAlreadyChattedCustomer.map(
             (customer) =>
               directChatId !== customer.userId && (
                 <li
@@ -79,6 +98,13 @@ const CustomerList = ({
                   }
                 >
                   {customer.name}
+                  <p style={{ color: "gray" }}>
+                    {customer.message
+                      ? customer.message.length > 15
+                        ? `${customer.message.slice(0, 15)}...`
+                        : customer.message
+                      : "No messages yet"}
+                  </p>
                 </li>
               )
           )}

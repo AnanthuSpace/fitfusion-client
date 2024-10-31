@@ -12,7 +12,6 @@ const socket = io(localhostURL);
 
 function TrainerChat() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [messages, setMessages] = useState([]);
   const [directChatId, setDirectChatId] = useState("");
   const [directChatName, setDirectChatName] = useState("");
   const [newMessage, setNewMessage] = useState("");
@@ -21,6 +20,7 @@ function TrainerChat() {
   const [selectedId, setSelectedId] = useState("");
   const [selectedName, setSelectedName] = useState("");
   const [chatHistory, setChatHistory] = useState([]);
+  const [ rerender, setRerender] = useState(false)
   const location = useLocation();
   const dispatch = useDispatch();
 
@@ -51,8 +51,14 @@ function TrainerChat() {
   }, [selectedId]);
 
   useEffect(() => {
-    dispatch(fetchAlreadyChattedCustomer(trainerData.alreadychattedUsers));
-  }, [dispatch]);
+    if(trainerData.alreadychattedUsers){
+      dispatch(fetchAlreadyChattedCustomer(trainerData.alreadychattedUsers)).then((res)=>{
+        if(res.meta.requestStatus == "fulfilled"){
+          setRerender(true)
+        } 
+      })
+    }
+  }, [trainerData, chatHistory ]);
 
   useEffect(() => {
     socket.on("receiveMessage", (messageDetails) => {
@@ -95,10 +101,10 @@ function TrainerChat() {
         directChatId={directChatId}
         directChatName={directChatName}
         setSelectedId={setSelectedId}
+        rerender= {rerender}
       />
 
       <TrainerChatScreen
-        messages={messages}
         newMessage={newMessage}
         setNewMessage={setNewMessage}
         handleSendMessage={handleSendMessage}

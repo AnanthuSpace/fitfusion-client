@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
 import { Table, Card } from "react-bootstrap";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   getPersonalVideos,
   toggleVideoListing,
 } from "../../redux/trainers/trainerThunk";
 import VideoPlayerModal from "../common/VideoPlayer";
 import EditVideoModal from "./EditVideoModal";
+import "../../assets/styles/trainers/Videos.css";
 
 const Videos = () => {
   const dispatch = useDispatch();
+  const reloadvideo = useSelector((state) => state.trainer.videoFetch);
 
   const [videos, setVideos] = useState([]);
   const [selectedVideo, setSelectedVideo] = useState(null);
@@ -26,7 +28,7 @@ const Videos = () => {
 
   useEffect(() => {
     loadVideos(1);
-  }, []);
+  }, [reloadvideo]);
 
   const loadVideos = async (page) => {
     dispatch(getPersonalVideos({ newPage: page })).then((res) =>
@@ -73,7 +75,7 @@ const Videos = () => {
   };
 
   return (
-    <div className="text-white h-100 w-100 glass-effect">
+    <div className="text-white glass-effect  fixed-height">
       {selectedVideo && (
         <VideoPlayerModal
           videoUrl={selectedVideo}
@@ -125,8 +127,8 @@ const Videos = () => {
                     backgroundColor: "transparent",
                     border: "none",
                     paddingRight: "15px",
-                    verticalAlign: "middle", 
-                    textAlign: "center", 
+                    verticalAlign: "middle",
+                    textAlign: "center",
                   }}
                 >
                   <Card.Img
@@ -151,8 +153,8 @@ const Videos = () => {
                     whiteSpace: "nowrap",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
-                    verticalAlign: "middle", 
-                    textAlign: "center", 
+                    verticalAlign: "middle",
+                    textAlign: "center",
                   }}
                 >
                   {truncateText(video.title || "No Title", 50)}
@@ -167,7 +169,7 @@ const Videos = () => {
                     overflow: "hidden",
                     textOverflow: "ellipsis",
                     verticalAlign: "middle",
-                    textAlign: "center", 
+                    textAlign: "center",
                   }}
                 >
                   {truncateText(
@@ -184,8 +186,8 @@ const Videos = () => {
                     whiteSpace: "nowrap",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
-                    verticalAlign: "middle", 
-                    textAlign: "center", 
+                    verticalAlign: "middle",
+                    textAlign: "center",
                   }}
                 >
                   {video.uploadDate
@@ -204,7 +206,7 @@ const Videos = () => {
                     backgroundColor: "transparent",
                     border: "none",
                     verticalAlign: "middle",
-                    textAlign: "center", 
+                    textAlign: "center",
                   }}
                 >
                   <button
@@ -243,8 +245,8 @@ const Videos = () => {
                   width: "150px",
                   backgroundColor: "transparent",
                   border: "none",
-                  verticalAlign: "middle", 
-                  textAlign: "center", 
+                  verticalAlign: "middle",
+                  textAlign: "center",
                 }}
               >
                 <div className="d-flex flex-column align-items-center">

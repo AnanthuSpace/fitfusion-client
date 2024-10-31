@@ -5,6 +5,7 @@ import {
   handleBlockUser,
   fetchUser,
 } from "../../redux/admin/adminThunk";
+import { Modal, Button } from "react-bootstrap";
 
 function UserManagement() {
   const dispatch = useDispatch();
@@ -12,20 +13,30 @@ function UserManagement() {
   const [userData, setUserData] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
-    loadTrainers(1);
+    loadUsers(1);
   }, []);
 
   const handleToggleBlock = (user) => {
-    if (user.isBlocked) {
-      dispatch(handleUnblockUser({ userId: user.userId }));
-    } else {
-      dispatch(handleBlockUser({ userId: user.userId }));
-    }
+    setSelectedUser(user);
+    setShowModal(true);
   };
 
-  const loadTrainers = async (page) => {
+  const confirmToggleBlock = () => {
+    const action = selectedUser.isBlocked ? handleUnblockUser : handleBlockUser;
+
+    dispatch(action({ userId: selectedUser.userId })).then((res) => {
+      if (res.payload.data.success) {
+        loadUsers(1);
+      }
+    });
+    setShowModal(false);
+  };
+
+  const loadUsers = async (page) => {
     dispatch(fetchUser(page)).then((res) => {
       setUserData(res.payload);
       setCurrentPage(page);
@@ -33,7 +44,7 @@ function UserManagement() {
   };
 
   const handlePageChange = (newPage) => {
-    loadTrainers(newPage);
+    loadUsers(newPage);
   };
 
   return (
@@ -124,6 +135,44 @@ function UserManagement() {
           </button>
         )}
       </div>
+      <Modal show={showModal} centered contentClassName="p-0">
+        <Modal.Header
+          style={{ backgroundColor: "black", borderBottom: "none" }}
+        >
+          <Modal.Title className="w-100 text-center text-white">
+            Confirm Action
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ backgroundColor: "black", color: "white" }}>
+          {selectedUser && selectedUser.isBlocked
+            ? "Are you sure you want to unblock this user?"
+            : "Are you sure you want to block this user?"}
+        </Modal.Body>
+        <Modal.Footer
+          style={{
+            backgroundColor: "black",
+            borderTop: "none",
+            justifyContent: "space-between",
+          }}
+        >
+          <Button
+            variant="secondary"
+            onClick={() => setShowModal(false)}
+            style={{ width: "30%", border: "none" }}
+            className="gradient-blue-white ms-1"
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="danger"
+            className="gradient-red-white me-1"
+            onClick={confirmToggleBlock}
+            style={{ width: "30%" }}
+          >
+            Confirm
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }

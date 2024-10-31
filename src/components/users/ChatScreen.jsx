@@ -43,7 +43,7 @@ const ChatScreen = () => {
 
   useEffect(() => {
     if (userData.alreadychattedTrainers) {
-      dispatch(fetchAlreadyChattedTrainer(userData.alreadychattedTrainers));
+      dispatch(fetchAlreadyChattedTrainer(userData.alreadychattedTrainers)).then((res)=>console.log(res.payload))
     }
   }, []);
 

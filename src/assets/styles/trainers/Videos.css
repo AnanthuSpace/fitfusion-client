@@ -26,3 +26,7 @@
     padding-right: 15px;
   }
   
+  .fixed-height {
+    height: 85vh !important;
+    overflow-y: auto;
+  }
