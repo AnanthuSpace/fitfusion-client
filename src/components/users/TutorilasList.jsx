@@ -5,6 +5,7 @@ import { fetchAllVideos } from "../../redux/users/userThunk";
 import VideoPlayerModal from "../common/VideoPlayer";
 import Reveal from "../common/animationConfig";
 
+
 const TutorilasList = () => {
   const dispatch = useDispatch();
   const subscriptionList = useSelector(
@@ -37,6 +38,7 @@ const TutorilasList = () => {
   }, [dispatch, subscriptionList]);
 
   const handleThumbnailClick = (videoUrl) => {
+
     setSelectedVideo(videoUrl);
   };
 

@@ -1,25 +1,23 @@
 import React, { useRef, useState, useEffect } from "react";
 import { MdOutlineVideocamOff, MdCallEnd } from "react-icons/md";
-import { io } from "socket.io-client";
-import { localhostURL } from "../../utils/url";
-
-const socket = io(localhostURL);
-
+import { useSocket } from "../../context/SocketContext";
+import { useSelector } from "react-redux";
 const VideoCallScreen = ({ onClose, receiverId, senderId }) => {
+  const socket = useSocket()
   const localVideoRef = useRef(null);
   const remoteVideoRef = useRef(null);
   const [localStream, setLocalStream] = useState(null);
   const [remoteStream, setRemoteStream] = useState(null);
   const peerConnection = useRef(null);
   const roomId = [senderId, receiverId].sort().join("_");
+  const userName = useSelector((state)=> state.user.userData.name)
 
   const servers = {
     iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
   };
 
   useEffect(() => {
-    socket.emit("joinVideoRoom", { senderId, receiverId });
-
+  
     socket.on("offer", async (offer) => {
       console.log("Received offer", offer);
       await handleOffer(offer);
@@ -47,8 +45,11 @@ const VideoCallScreen = ({ onClose, receiverId, senderId }) => {
     };
   }, [senderId, receiverId, roomId]);
 
+
   const startCall = async () => {
     try {
+      socket.emit("startCall", { receivedId: receiverId, receiverName: userName });
+
       const stream = await navigator.mediaDevices.getUserMedia({
         video: true,
         audio: true,
@@ -58,14 +59,14 @@ const VideoCallScreen = ({ onClose, receiverId, senderId }) => {
 
       peerConnection.current = new RTCPeerConnection(servers);
 
-      stream.getTracks().forEach((track) =>
-        peerConnection.current.addTrack(track, stream)
-      );
+      stream
+        .getTracks()
+        .forEach((track) => peerConnection.current.addTrack(track, stream));
 
       peerConnection.current.ontrack = (event) => {
         setRemoteStream(event.streams[0]);
         remoteVideoRef.current.srcObject = event.streams[0];
-        displayRemoteVideo();  // Ensure remote video is displayed when received
+        displayRemoteVideo(); 
       };
 
       peerConnection.current.onicecandidate = (event) => {
@@ -98,9 +99,9 @@ const VideoCallScreen = ({ onClose, receiverId, senderId }) => {
     setLocalStream(stream);
     localVideoRef.current.srcObject = stream;
 
-    stream.getTracks().forEach((track) =>
-      peerConnection.current.addTrack(track, stream)
-    );
+    stream
+      .getTracks()
+      .forEach((track) => peerConnection.current.addTrack(track, stream));
 
     peerConnection.current.ontrack = (event) => {
       setRemoteStream(event.streams[0]);

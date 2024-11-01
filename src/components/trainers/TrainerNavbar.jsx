@@ -1,18 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { trainerLogout } from "../../redux/trainers/trainerSlice";
 import { IoMdLogOut } from "react-icons/io";
 import { MdVideoCall } from "react-icons/md";
 import VideoUploadModal from "./VideoUploadModal";
 import { Modal, Button } from "react-bootstrap";
+import { toast } from "sonner";
 import { uploadVideo } from "../../redux/trainers/trainerThunk";
+import { useSocket } from "../../context/SocketContext";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../assets/styles/trainers/TrainerNavbar.css";
 
 function TrainerNavbar() {
+  const socket = useSocket();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const trainerId = useSelector((state) => state.trainer.trainerData.trainerId);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [videoData, setVideoData] = useState({
@@ -20,6 +24,33 @@ function TrainerNavbar() {
     description: "",
     file: null,
   });
+
+  useEffect(() => {
+    if (socket) {
+      socket.on("incomingCall", (data) => {
+        const { callerName, callerId } = data;
+
+        if (callerId === trainerId) {
+          toast.info(`Incoming call from ${callerName}`, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      });
+    }
+
+    // Clean up the listener on unmount
+    return () => {
+      if (socket) {
+        socket.off("incomingCall");
+      }
+    };
+  }, [socket]);
 
   const handleLogout = () => {
     dispatch(trainerLogout());
@@ -33,22 +64,20 @@ function TrainerNavbar() {
 
   const handleVideoUpload = (e) => {
     e.preventDefault();
-    console.log(videoData); 
+    console.log(videoData);
     dispatch(uploadVideo(videoData)).then((res) => {
       console.log(res.payload);
       handleVideoUploadClose();
     });
   };
-  
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     setVideoData({
       ...videoData,
-      [name]: files ? files[0] : value,  
+      [name]: files ? files[0] : value,
     });
   };
-  
 
   return (
     <>

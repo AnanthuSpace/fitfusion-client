@@ -1,5 +1,5 @@
 import axios from "axios";
-import { localhostURL } from "../utils/url";
+const localhostURL = import.meta.env.VITE_BASE_URL
 
 const trainerAxiosInstance = axios.create({
     baseURL: localhostURL 

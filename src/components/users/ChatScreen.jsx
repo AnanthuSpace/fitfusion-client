@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ChatTrainerList from "./ChatTrainerList";
-import { localhostURL } from "../../utils/url";
-import io from "socket.io-client";
 import { MdOutlineVideocam } from "react-icons/md";
 import { fetchAlreadyChattedTrainer } from "../../redux/users/userThunk";
 import EmojiPicker from "emoji-picker-react";
 import VideoCallScreen from "../common/VideoCallScreen";
 import { useLocation } from "react-router-dom";
-
-const socket = io(localhostURL);
+import { useSocket } from "../../context/SocketContext";
 
 const ChatScreen = () => {
   const dispatch = useDispatch();
+  const socket = useSocket();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedId, setSelectedId] = useState("");
   const [selectedName, setSelectedName] = useState("");
@@ -136,7 +134,6 @@ const ChatScreen = () => {
         setChatHistory={setChatHistory}
         alreadyChattedTrainer={alreadyChattedTrainer}
         directChatId={directChatId}
-        directChatName={directChatName}
       />
       <div className="col-9 p-3 d-flex flex-column">
         {showVideoCall && (
@@ -144,6 +141,7 @@ const ChatScreen = () => {
             onClose={handleCloseVideoCall}
             receiverId={selectedId}
             senderId={userData.userId}
+            receiverName={selectedName}
           />
         )}
         {selectedName ? (

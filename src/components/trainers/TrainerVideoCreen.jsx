@@ -1,25 +1,27 @@
 import React, { useRef, useState, useEffect } from "react";
 import { MdOutlineVideocamOff, MdCallEnd } from "react-icons/md";
-import { io } from "socket.io-client";
-import { localhostURL } from "../../utils/url";
+import { useSocket } from "../../context/SocketContext";
+import { useSelector } from "react-redux";
 
-const socket = io(localhostURL);
-
-const TrainerVideoCreen = ({ onClose, receiverId, currentCustomerId }) => {
+const TrainerVideoCreen = ({ onClose, receiverId, currentCustomerId, receiverName }) => {
   const localVideoRef = useRef(null);
   const remoteVideoRef = useRef(null);
+  const socket = useSocket()
   const [localStream, setLocalStream] = useState(null);
   const [remoteStream, setRemoteStream] = useState(null);
   const peerConnection = useRef(null);
   const roomId = [currentCustomerId, receiverId].sort().join("_");
+  const trainerName = useSelector((state)=> state.trainer.trainerData.name)
 
   const servers = {
     iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
   };
 
   useEffect(() => {
-    console.log("Joining video room:", roomId);
-    socket.emit("joinVideoRoom", { senderId: currentCustomerId, receiverId });
+    // console.log("Joining video room:", roomId);
+    // socket.emit("joinVideoRoom", { senderId: currentCustomerId, receiverId });
+    console.log(receiverId)
+    console.log( currentCustomerId)
 
     socket.on("offer", async (offer) => {
       console.log("Received offer", offer);
@@ -49,12 +51,14 @@ const TrainerVideoCreen = ({ onClose, receiverId, currentCustomerId }) => {
 
   const startCall = async () => {
     try {
+      socket.emit("startCall", { receivedId: currentCustomerId, receiverName: trainerName });
+
       const stream = await navigator.mediaDevices.getUserMedia({
         video: true,
         audio: true,
       });
       setLocalStream(stream);
-      localVideoRef.current.srcObject = stream; // Local video assignment
+      localVideoRef.current.srcObject = stream; 
   
       peerConnection.current = new RTCPeerConnection(servers);
   

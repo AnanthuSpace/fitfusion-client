@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import trainerAxiosInstance from "../../config/axiosTrainerConfig";
-import { localhostURL } from "../../utils/url";
+const localhostURL = import.meta.env.VITE_BASE_URL
 import { useSelector } from "react-redux";
 
 const CustomerList = ({

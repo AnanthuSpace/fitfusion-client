@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
-import io from "socket.io-client";
 import "../../assets/styles/trainers/TrainerChat.css";
-import { localhostURL } from "../../utils/url";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import CustomerList from "./CustomerList";
 import TrainerChatScreen from "./TrainerChatScreen";
 import { fetchAlreadyChattedCustomer } from "../../redux/trainers/trainerThunk";
+import { useSocket } from "../../context/SocketContext";
 
-const socket = io(localhostURL);
 
 function TrainerChat() {
+  const socket = useSocket()
   const [searchTerm, setSearchTerm] = useState("");
   const [directChatId, setDirectChatId] = useState("");
   const [directChatName, setDirectChatName] = useState("");

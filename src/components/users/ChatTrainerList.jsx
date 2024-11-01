@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import userAxiosInstance from "../../config/axiosConfig";
 import { useSelector } from "react-redux";
-import { localhostURL } from "../../utils/url";
+const localhostURL = import.meta.env.VITE_BASE_URL
 
 function ChatTrainerList({
   searchTerm,

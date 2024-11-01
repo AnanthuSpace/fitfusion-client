@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef, useCallback } from "react";
 import { Card, Row, Col, Form, InputGroup } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { localhostURL } from "../../utils/url";
+const localhostURL = import.meta.env.VITE_BASE_URL
 import { fetchDeitPlans } from "../../redux/users/userThunk";
 import StarRating from "./StarRating";
 import "../../assets/styles/users/TrainersList.css";

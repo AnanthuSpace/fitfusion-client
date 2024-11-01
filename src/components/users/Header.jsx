@@ -1,13 +1,43 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../assets/styles/users/Header.css";
 import { useLocation, Link, useNavigate } from "react-router-dom";
+import { useSocket } from "../../context/SocketContext";
 import Sidebar from "./Sidebar";
+import { useSelector } from "react-redux";
 
 function Header() {
+  const socket = useSocket();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const token = sessionStorage.getItem("userAccessToken");
+  const userId = useSelector((state)=> state.user.userData.userId)
+
+  useEffect(() => {
+    socket?.on("onCall", ({ receivedId, receiverName }) => {
+      if (receivedId) {
+        toast.info(
+          <div>
+            <p>Incoming call from {receiverName}</p>
+            <button
+              className="btn btn-primary"
+              onClick={() => navigate("/user-chat")}
+            >
+              Go to Call
+            </button>
+          </div>,
+          {
+            autoClose: false, 
+            position: "top-right",
+          }
+        );
+      }
+    });
+
+    return () => {
+      socket?.off("onCall");
+    };
+  }, [socket, userId, navigate]);
 
   const handleSignIn = () => {
     navigate("/login");

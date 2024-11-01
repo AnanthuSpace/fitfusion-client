@@ -64,6 +64,7 @@ const TrainerChatScreen = ({
           onClose={handleCloseVideoCall}
           receiverId={receiverId}
           currentCustomerId={currentCustomerId}
+          receiverName={currentCustomerName}
         />
       )}
       {currentCustomerName ? (
