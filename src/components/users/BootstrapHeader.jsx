@@ -2,35 +2,53 @@ import React, { useEffect, useState } from "react";
 import { useSocket } from "../../context/SocketContext";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
-import { useSelector } from "react-redux";
-import { toast } from "sonner"; 
+import { useDispatch, useSelector } from "react-redux";
+import { inactive } from "../../redux/users/userThunk";
+import { userLogout } from "../../redux/users/userSlice";
+import { toast } from "sonner";
 import "react-toastify/dist/ReactToastify.css";
 
 function BootstrapHeader() {
   const socket = useSocket();
+  const dispatch = useDispatch();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const userId = useSelector((state) => state.user.userData.userId);
+  const userId = useSelector((state) => state.user?.userData?.userId);
   const token = sessionStorage.getItem("userAccessToken");
 
-  useEffect(() => {
+  const deActive = () => {
+    if (!userId) {
+      console.error("userId is undefined");
+      dispatch(userLogout());
+      navigate("/login");
+      return;
+    }
+    dispatch(inactive({ userId })).then((res) => {
+      console.log();
+      if (res.payload.message === "User is inactive") {
+        dispatch(userLogout());
+        navigate("/login");
+      }
+    });
+  };
 
+  useEffect(() => {
     if (socket) {
       socket.on("incomingCall", (data) => {
         const { callerName, callerId } = data;
 
         if (callerId === userId) {
-        toast.info(`Incoming call from ${callerName}`, {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-      }
+          toast.info(`Incoming call from ${callerName}`, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
       });
     }
 
@@ -39,7 +57,17 @@ function BootstrapHeader() {
         socket.off("incomingCall");
       }
     };
-  }, [socket]);
+  }, [socket, navigate]);
+
+  useEffect(() => {
+    socket.on("isUserBlocked", (data) => {
+      const { blockedId } = data;
+      if (blockedId === userId) {
+        toast.error(`You are blocked by admin`);
+        deActive();
+      }
+    });
+  }, []);
 
   const handleSignIn = () => {
     navigate("/login");
@@ -61,7 +89,9 @@ function BootstrapHeader() {
             style={{ height: "100%", alignItems: "center" }}
           >
             <li
-              className={`nav-item ${location.pathname === "/" ? "active" : ""}`}
+              className={`nav-item ${
+                location.pathname === "/" ? "active" : ""
+              }`}
             >
               <Link className="nav-link text-white text-md text-sm" to="/">
                 Home
@@ -72,7 +102,10 @@ function BootstrapHeader() {
                 location.pathname === "/tutorials" ? "active" : ""
               }`}
             >
-              <Link className="nav-link text-white text-md text-sm" to="/tutorials">
+              <Link
+                className="nav-link text-white text-md text-sm"
+                to="/tutorials"
+              >
                 Tutorials
               </Link>
             </li>
@@ -81,7 +114,10 @@ function BootstrapHeader() {
                 location.pathname === "/trainer-list" ? "active" : ""
               }`}
             >
-              <Link className="nav-link text-white text-md text-sm" to="/trainer-list">
+              <Link
+                className="nav-link text-white text-md text-sm"
+                to="/trainer-list"
+              >
                 Trainers
               </Link>
             </li>

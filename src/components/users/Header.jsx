@@ -3,41 +3,71 @@ import "../../assets/styles/users/Header.css";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { useSocket } from "../../context/SocketContext";
 import Sidebar from "./Sidebar";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { inactive } from "../../redux/users/userThunk";
+import { userLogout } from "../../redux/users/userSlice";
+import { toast } from "sonner";
 
 function Header() {
   const socket = useSocket();
+  const dispatch = useDispatch()
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const token = sessionStorage.getItem("userAccessToken");
   const userId = useSelector((state)=> state.user.userData.userId)
 
-  useEffect(() => {
-    socket?.on("onCall", ({ receivedId, receiverName }) => {
-      if (receivedId) {
-        toast.info(
-          <div>
-            <p>Incoming call from {receiverName}</p>
-            <button
-              className="btn btn-primary"
-              onClick={() => navigate("/user-chat")}
-            >
-              Go to Call
-            </button>
-          </div>,
-          {
-            autoClose: false, 
-            position: "top-right",
-          }
-        );
+  const deActive = () => {
+    if (!userId) {
+      console.error("userId is undefined");
+      dispatch(userLogout());
+      navigate("/login");
+      return;
+    }
+    dispatch(inactive({ userId })).then((res) => {
+      console.log();
+      if (res.payload.message === "User is inactive") {
+        dispatch(userLogout());
+        navigate("/login");
       }
     });
+  };
+
+  useEffect(() => {
+    if (socket) {
+      socket.on("incomingCall", (data) => {
+        const { callerName, callerId } = data;
+
+        if (callerId === userId) {
+          toast.info(`Incoming call from ${callerName}`, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      });
+    }
 
     return () => {
-      socket?.off("onCall");
+      if (socket) {
+        socket.off("incomingCall");
+      }
     };
-  }, [socket, userId, navigate]);
+  }, [socket, navigate]);
+
+  useEffect(() => {
+    socket.on("isUserBlocked", (data) => {
+      const { blockedId } = data;
+      if (blockedId === userId) {
+        toast.error(`You are blocked by admin`);
+        deActive();
+      }
+    });
+  }, []);
 
   const handleSignIn = () => {
     navigate("/login");

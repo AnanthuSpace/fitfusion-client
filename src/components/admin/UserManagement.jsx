@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { useSocket } from "../../context/SocketContext";
 import {
   handleUnblockUser,
   handleBlockUser,
@@ -8,6 +9,7 @@ import {
 import { Modal, Button } from "react-bootstrap";
 
 function UserManagement() {
+  const socket = useSocket();
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [userData, setUserData] = useState([]);
@@ -30,6 +32,9 @@ function UserManagement() {
 
     dispatch(action({ userId: selectedUser.userId })).then((res) => {
       if (res.payload.data.success) {
+        if (res.payload.data.message == "User is blocked") {
+          socket.emit("blockTheUser", { userId: selectedUser.userId });
+        }
         loadUsers(1);
       }
     });

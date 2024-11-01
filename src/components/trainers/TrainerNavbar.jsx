@@ -52,6 +52,16 @@ function TrainerNavbar() {
     };
   }, [socket]);
 
+  useEffect(() => {
+    socket.on("isTrainerBlocked", (data) => {
+      const { blockedId } = data;
+      if (blockedId === trainerId) {
+        toast.error(`You are blocked by admin`);
+        handleLogout();
+      }
+    });
+  }, []);
+
   const handleLogout = () => {
     dispatch(trainerLogout());
     navigate("/trainer");

@@ -11,8 +11,10 @@ import {
 import { Modal, Button } from "react-bootstrap";
 import TrainerDetailsModal from "./TrainerDetailsModal";
 import RejectionModal from "./RejectionModal";
+import { useSocket } from "../../context/SocketContext";
 
 const TrainerManagement = () => {
+  const socket = useSocket()
   const dispatch = useDispatch();
   const [trainersData, setTrainersData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -62,6 +64,10 @@ const TrainerManagement = () => {
             : t
         );
         setTrainersData(updatedTrainers);
+      }
+      console.log(res.payload.data.message)
+      if (res.payload.data.message == "Trainer is blocked") {
+        socket.emit("blockTheTrainer", { trainerId: selectedTrainer.trainerId });
       }
       setShowModal(false);
     });
@@ -135,16 +141,12 @@ const TrainerManagement = () => {
                       <FaCheck
                         className="text-success me-3"
                         style={{ cursor: "pointer" }}
-                        onClick={() =>
-                          handleVerify(trainer.email, "verified")
-                        }
+                        onClick={() => handleVerify(trainer.email, "verified")}
                       />
                       <FaTimes
                         className="text-danger"
                         style={{ cursor: "pointer" }}
-                        onClick={() =>
-                          handleVerify(trainer.email, "rejected")
-                        }
+                        onClick={() => handleVerify(trainer.email, "rejected")}
                       />
                     </>
                   ) : trainer.verified === "verified" ? (
