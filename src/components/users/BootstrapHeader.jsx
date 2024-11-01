@@ -3,7 +3,7 @@ import { useSocket } from "../../context/SocketContext";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import { useSelector } from "react-redux";
-import { toast } from "sonner"; // Assuming this is for notifications
+import { toast } from "sonner"; 
 import "react-toastify/dist/ReactToastify.css";
 
 function BootstrapHeader() {
@@ -19,8 +19,7 @@ function BootstrapHeader() {
     if (socket) {
       socket.on("incomingCall", (data) => {
         const { callerName, callerId } = data;
-        console.log(callerName)
-        console.log(callerId)
+
         if (callerId === userId) {
         toast.info(`Incoming call from ${callerName}`, {
           position: "top-right",

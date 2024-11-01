@@ -3,21 +3,20 @@ import { MdOutlineVideocamOff, MdCallEnd } from "react-icons/md";
 import { useSocket } from "../../context/SocketContext";
 import { useSelector } from "react-redux";
 const VideoCallScreen = ({ onClose, receiverId, senderId }) => {
-  const socket = useSocket()
+  const socket = useSocket();
   const localVideoRef = useRef(null);
   const remoteVideoRef = useRef(null);
   const [localStream, setLocalStream] = useState(null);
   const [remoteStream, setRemoteStream] = useState(null);
   const peerConnection = useRef(null);
-  const roomId = [senderId, receiverId].sort().join("_");
-  const userName = useSelector((state)=> state.user.userData.name)
+  const roomId = [senderId, receiverId].sort().join("-");
+  const userName = useSelector((state) => state.user.userData.name);
 
   const servers = {
     iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
   };
 
   useEffect(() => {
-  
     socket.on("offer", async (offer) => {
       console.log("Received offer", offer);
       await handleOffer(offer);
@@ -33,8 +32,12 @@ const VideoCallScreen = ({ onClose, receiverId, senderId }) => {
 
     socket.on("ice-candidate", (candidate) => {
       console.log("Received ICE candidate", candidate);
-      if (candidate) {
-        peerConnection.current.addIceCandidate(new RTCIceCandidate(candidate));
+      if (peerConnection.current && candidate) {
+        peerConnection.current
+          .addIceCandidate(new RTCIceCandidate(candidate))
+          .catch((e) =>
+            console.error("Error adding received ICE candidate", e)
+          );
       }
     });
 
@@ -42,18 +45,29 @@ const VideoCallScreen = ({ onClose, receiverId, senderId }) => {
       socket.off("offer");
       socket.off("answer");
       socket.off("ice-candidate");
+      if (peerConnection.current) {
+        peerConnection.current.close();
+        peerConnection.current = null;
+      }
     };
   }, [senderId, receiverId, roomId]);
 
-
   const startCall = async () => {
     try {
-      socket.emit("startCall", { receivedId: receiverId, receiverName: userName });
-
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: true,
-        audio: true,
+      socket.emit("startCall", {
+        receivedId: receiverId,
+        receiverName: userName,
       });
+
+      const stream = await navigator.mediaDevices
+        .getUserMedia({
+          video: true,
+          audio: true,
+        })
+        .catch((error) => {
+          console.error("Error accessing media devices:", error);
+        });
+
       setLocalStream(stream);
       localVideoRef.current.srcObject = stream;
 
@@ -66,11 +80,12 @@ const VideoCallScreen = ({ onClose, receiverId, senderId }) => {
       peerConnection.current.ontrack = (event) => {
         setRemoteStream(event.streams[0]);
         remoteVideoRef.current.srcObject = event.streams[0];
-        displayRemoteVideo(); 
+        displayRemoteVideo(); // Call this to ensure visibility
       };
 
       peerConnection.current.onicecandidate = (event) => {
         if (event.candidate) {
+          console.log("Sending ICE candidate:", event.candidate);
           socket.emit("ice-candidate", { candidate: event.candidate, roomId });
         }
       };
@@ -104,9 +119,10 @@ const VideoCallScreen = ({ onClose, receiverId, senderId }) => {
       .forEach((track) => peerConnection.current.addTrack(track, stream));
 
     peerConnection.current.ontrack = (event) => {
+      console.log(event);
       setRemoteStream(event.streams[0]);
       remoteVideoRef.current.srcObject = event.streams[0];
-      displayRemoteVideo(); // Automatically show remote video when answer is received
+      displayRemoteVideo();
     };
 
     const answer = await peerConnection.current.createAnswer();
@@ -116,7 +132,6 @@ const VideoCallScreen = ({ onClose, receiverId, senderId }) => {
   };
 
   const displayRemoteVideo = () => {
-    // Ensure the remote video occupies the big screen when the connection is set.
     if (remoteVideoRef.current) {
       remoteVideoRef.current.style.display = "block";
     }
@@ -141,16 +156,18 @@ const VideoCallScreen = ({ onClose, receiverId, senderId }) => {
     <div className="video-call-modal">
       <div className="video-call-content">
         <div className="video-wrapper">
-          {/* Remote video (big screen) */}
           <video
             className="remote-video"
             ref={remoteVideoRef}
             autoPlay
             playsInline
-            style={{ display: remoteStream ? "block" : "none" }}
+            style={{
+              display: remoteStream ? "block" : "none",
+              width: "100%",
+              height: "100%",
+            }}
           />
 
-          {/* Local video (small screen in corner) */}
           <video
             className="local-video"
             ref={localVideoRef}
