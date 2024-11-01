@@ -8,6 +8,7 @@ import {
 import VideoPlayerModal from "../common/VideoPlayer";
 import EditVideoModal from "./EditVideoModal";
 import "../../assets/styles/trainers/Videos.css";
+import { singleTrainerVideo } from "../../redux/trainers/trainerThunk";
 
 const Videos = () => {
   const dispatch = useDispatch();
@@ -31,14 +32,16 @@ const Videos = () => {
   }, [reloadvideo]);
 
   const loadVideos = async (page) => {
-    dispatch(getPersonalVideos({ newPage: page })).then((res) =>
-      setVideos(res.payload)
-    );
+    dispatch(getPersonalVideos({ newPage: page })).then((res) => {
+      setVideos(res.payload);
+    });
     setCurrentPage(page);
   };
 
   const handleThumbnailClick = (videoUrl) => {
-    setSelectedVideo(videoUrl);
+    dispatch(singleTrainerVideo(videoUrl)).then((res) =>
+      setSelectedVideo(res.payload)
+    );
   };
 
   const handleCloseVideoPlayer = () => {

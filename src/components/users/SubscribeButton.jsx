@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { singleVideo } from "../../redux/users/userThunk";
 import {
   createCheckoutSession,
   fetchVideos,
@@ -39,7 +40,9 @@ function SubscribeButton({ trainerId, trainerName, amount }) {
   const isSubscribed = user?.subscribeList?.includes(trainerId);
 
   const handleThumbnailClick = (videoUrl) => {
-    setSelectedVideo(videoUrl);
+    dispatch(singleVideo(videoUrl)).then((res) =>
+      setSelectedVideo(res.payload.data)
+    );
   };
 
   const handleCloseVideoPlayer = () => {

@@ -198,7 +198,7 @@ export const editTrainer = createAsyncThunk(
                 localStorage.setItem(`trainerData.feePerMonth: `, feePerMonth)
                 localStorage.setItem(`trainerData.experience: `, experience)
                 console.log(response.data)
-                if(response.data.success){
+                if (response.data.success) {
                     localStorage.setItem("trainerData", JSON.stringify(response.data.data))
                 }
                 return response.data.message
@@ -469,6 +469,18 @@ export const fetchAllReview = createAsyncThunk(
         try {
             const response = await trainerAxiosInstance.get(`${localhostURL}/trainer/fetch-review`)
             return response.data.response
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+)
+
+export const singleTrainerVideo = createAsyncThunk(
+    "trainer/singleTrainerVideo",
+    async (videoUrl, { rejectWithValue }) => {
+        try {
+            const response = await trainerAxiosInstance.get(`${localhostURL}/trainer/single-video`, { params: { videoUrl: videoUrl } })
+            return response.data.data
         } catch (error) {
             return rejectWithValue(error.response.data);
         }

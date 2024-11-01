@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "sonner";
-import { trainerRegistration, trainerVerification, trainerLogin, trainerDashBoardData, fetchAllReview, trainerDataCount, toggleVideoListing, EditVideos, googleLogin, TrainerransactionHistory, googleSignUp, getPersonalVideos, editTrainer, changeTrainerPassword, updateProfilePicture, fetchTrainerProfile, uploadVideo, fetchAlreadyChattedCustomer, AddDietPlan, fetchDeitPlans } from "./trainerThunk";
+import { trainerRegistration, trainerVerification, trainerLogin, trainerDashBoardData, singleTrainerVideo, fetchAllReview, trainerDataCount, toggleVideoListing, EditVideos, googleLogin, TrainerransactionHistory, googleSignUp, getPersonalVideos, editTrainer, changeTrainerPassword, updateProfilePicture, fetchTrainerProfile, uploadVideo, fetchAlreadyChattedCustomer, AddDietPlan, fetchDeitPlans } from "./trainerThunk";
 
 
 const trainerData = localStorage.getItem("trainerData") ? JSON.parse(localStorage.getItem("trainerData")) : null;
@@ -259,6 +259,14 @@ const trainerSlice = createSlice({
             .addCase(fetchAllReview.rejected, (state, action) => {
                 state.isLoading = false;
                 toast.error(action.payload || "Failed to fetch dashoboard datas", { hideProgressBar: true, autoClose: 3000 });
+            })
+
+            .addCase(singleTrainerVideo.fulfilled, (state) => {
+                state.isLoading = false;
+            })
+            .addCase(singleTrainerVideo.rejected, (state, action) => {
+                state.isLoading = false;
+                toast.error(action.payload || "Failed to fetch video", { hideProgressBar: true, autoClose: 3000 });
             })
     }
 })

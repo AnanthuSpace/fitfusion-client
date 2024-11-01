@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registration, signupVerification, userLogin, googleSignUpUser, loginVerification, googleLoginUser, transactionnHistory, editUserData, fetchVideos, fetchDeitPlans, fetchAllVideos, fetchSingleTrainer, fetchReviewFeedback, inactive, addReview, changeUserPassword, fetchAlreadyChattedTrainer, addUserDetails, fetchTrainersData, createCheckoutSession, fetchUserAndTrainer, fetchChatMessages } from "./userThunk";
+import { registration, signupVerification, userLogin, googleSignUpUser, loginVerification, singleVideo, googleLoginUser, transactionnHistory, editUserData, fetchVideos, fetchDeitPlans, fetchAllVideos, fetchSingleTrainer, fetchReviewFeedback, inactive, addReview, changeUserPassword, fetchAlreadyChattedTrainer, addUserDetails, fetchTrainersData, createCheckoutSession, fetchUserAndTrainer, fetchChatMessages } from "./userThunk";
 import { toast } from "sonner";
 
 const userData = localStorage.getItem("userData") ? JSON.parse(localStorage.getItem("userData")) : null;
@@ -303,6 +303,16 @@ const userSlice = createSlice({
         state.isLoading = false;
         toast.error(action.payload || "Failed to fetch history", { hideProgressBar: true, autoClose: 3000 });
       })
+
+      .addCase(singleVideo.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(singleVideo.rejected, (state, action) => {
+        state.isLoading = false;
+        toast.error(action.payload || "Failed to fetch video", { hideProgressBar: true, autoClose: 3000 });
+      })
+
+
   },
 });
 

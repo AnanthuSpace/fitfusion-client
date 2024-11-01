@@ -11,7 +11,7 @@ function VideoPlayerModal({ videoUrl, onClose }) {
           &times;
         </button>
         <video controls autoPlay controlsList="nodownload">
-          <source src={video} type="video/mp4" />
+          <source src={videoUrl} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
       </div>
