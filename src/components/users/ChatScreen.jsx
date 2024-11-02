@@ -2,15 +2,19 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ChatTrainerList from "./ChatTrainerList";
 import { MdOutlineVideocam } from "react-icons/md";
-import { fetchAlreadyChattedTrainer } from "../../redux/users/userThunk";
 import EmojiPicker from "emoji-picker-react";
 import VideoCallScreen from "../common/VideoCallScreen";
 import { useLocation } from "react-router-dom";
 import { useSocket } from "../../context/SocketContext";
+import { fetchAlreadyChattedTrainer } from "../../redux/users/userThunk";
 
 const ChatScreen = () => {
-  const dispatch = useDispatch();
+  const userData = useSelector((state) => state.user.userData);
+  let alreadyChatted = useSelector(
+    (state) => state.user.alreadyChattedTrainer
+  );
   const socket = useSocket();
+  const dispatch = useDispatch()
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedId, setSelectedId] = useState("");
   const [selectedName, setSelectedName] = useState("");
@@ -22,11 +26,8 @@ const ChatScreen = () => {
   const [showVideoCall, setShowVideoCall] = useState(false);
   const [onlineStatus, setOnlineStatus] = useState(false);
   const location = useLocation();
-
-  const userData = useSelector((state) => state.user.userData);
-  const alreadyChattedTrainer = useSelector(
-    (state) => state.user.alreadyChattedTrainer
-  );
+  const [alreadyChattedTrainer, setAlreadyChattedTrainer] =
+    useState(alreadyChatted);
 
   const handleSelectTrainer = (trainerId, trainerName) => {
     setSelectedId(trainerId);
@@ -39,14 +40,25 @@ const ChatScreen = () => {
     });
   };
 
+  
   useEffect(() => {
     if (userData.alreadychattedTrainers) {
-      dispatch(fetchAlreadyChattedTrainer(userData.alreadychattedTrainers)).then((res)=>console.log(res.payload))
+      dispatch(fetchAlreadyChattedTrainer(userData.alreadychattedTrainers)).then((res)=>setAlreadyChattedTrainer(res.payload))
     }
   }, []);
 
   useEffect(() => {
     socket.on("receiveMessage", (messageDetails) => {
+      const afterResult = alreadyChattedTrainer.map((members) => {
+        return members.trainerId === messageDetails.receiverId
+          ? {
+              ...members,
+              message: messageDetails.messages,
+              time: messageDetails.time,
+            }
+          : members;
+      });
+      setAlreadyChattedTrainer(afterResult);
       setChatHistory((prevChatHistory) => [
         { ...messageDetails },
         ...prevChatHistory,
@@ -93,10 +105,8 @@ const ChatScreen = () => {
         text: messageInput,
       };
 
-      console.log(directChatId);
-
       const firstTimeChat = chatHistory.length === 0 ? true : false;
-      const isUser = true
+      const isUser = true;
       socket.emit("sendMessage", { message, firstTimeChat, isUser });
       setMessageInput("");
     }
@@ -131,9 +141,11 @@ const ChatScreen = () => {
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
         onSelectTrainer={handleSelectTrainer}
+        chatHistory={chatHistory}
         setChatHistory={setChatHistory}
         alreadyChattedTrainer={alreadyChattedTrainer}
         directChatId={directChatId}
+        directChatName={directChatName}
       />
       <div className="col-9 p-3 d-flex flex-column">
         {showVideoCall && (

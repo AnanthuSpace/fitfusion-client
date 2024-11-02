@@ -7,8 +7,11 @@ import TrainerChatScreen from "./TrainerChatScreen";
 import { fetchAlreadyChattedCustomer } from "../../redux/trainers/trainerThunk";
 import { useSocket } from "../../context/SocketContext";
 
-
 function TrainerChat() {
+  const alreadyChatted = useSelector(
+    (state) => state.trainer.alreadyChattedCustomer
+  );
+  
   const socket = useSocket()
   const [searchTerm, setSearchTerm] = useState("");
   const [directChatId, setDirectChatId] = useState("");
@@ -20,14 +23,11 @@ function TrainerChat() {
   const [selectedName, setSelectedName] = useState("");
   const [chatHistory, setChatHistory] = useState([]);
   const [ rerender, setRerender] = useState(false)
+  const [alreadyChattedCustomer, setAlreadyChattedCustomer] = useState(alreadyChatted)
   const location = useLocation();
   const dispatch = useDispatch();
 
   const trainerData = useSelector((state) => state.trainer.trainerData);
-  const alreadyChattedCustomer = useSelector(
-    (state) => state.trainer.alreadyChattedCustomer
-  );
-  
 
   useEffect(() => {
     setCurrentCustomerId(location.state?.customerId);
@@ -52,15 +52,23 @@ function TrainerChat() {
   useEffect(() => {
     if(trainerData.alreadychattedUsers){
       dispatch(fetchAlreadyChattedCustomer(trainerData.alreadychattedUsers)).then((res)=>{
-        if(res.meta.requestStatus == "fulfilled"){
-          setRerender(true)
-        } 
+      setAlreadyChattedCustomer(res.payload)
       })
     }
-  }, [trainerData, chatHistory ]);
+  }, []);
 
   useEffect(() => {
     socket.on("receiveMessage", (messageDetails) => {
+      const afterResult = alreadyChattedCustomer.map((members)=> {
+        return members.userId === messageDetails.receiverId ? {
+          ...members,
+          message: messageDetails.messages,
+          time: messageDetails.time
+        }
+        : members
+      })
+      console.log(afterResult)
+      setAlreadyChattedCustomer(afterResult)
       setChatHistory([{ ...messageDetails }, ...chatHistory]);
     });
     return () => {
@@ -75,7 +83,6 @@ function TrainerChat() {
         recieverId: selectedId,
         text: newMessage,
       };
-      console.log(message)
       const firstTimeChat = chatHistory.length ===0 ? true : false;
       socket.emit("sendMessage", { message, firstTimeChat });
       setNewMessage("");
