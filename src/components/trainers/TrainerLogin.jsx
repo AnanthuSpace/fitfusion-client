@@ -140,7 +140,7 @@ function TrainerLogin() {
               </p>
               <p
                 className="mt-4 text-center"
-                onClick={() => navigate("/trainer-signup")}
+                onClick={() => navigate("/login")}
               >
                 Login as Client
               </p>

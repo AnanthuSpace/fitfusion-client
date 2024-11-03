@@ -1,12 +1,13 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { Card, Row, Col, Form, InputGroup } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-const localhostURL = import.meta.env.VITE_BASE_URL
+import { useDispatch, useSelector } from "react-redux";
+const localhostURL = import.meta.env.VITE_BASE_URL;
 import { fetchDeitPlans } from "../../redux/users/userThunk";
 import StarRating from "./StarRating";
 import "../../assets/styles/users/TrainersList.css";
 import axios from "axios";
+import { toast } from "sonner";
 
 function TrainersList() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -21,15 +22,15 @@ function TrainersList() {
   const dispatch = useDispatch();
   const observer = useRef();
   const containerRef = useRef();
+  const userId = useSelector((state) => state.user?.userData?.userId);
 
   useEffect(() => {
     const fetchTrainers = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(
-          `${localhostURL}/fetchTrainerScroll`,
-          { params: { page } }
-        );
+        const response = await axios.get(`${localhostURL}/fetchTrainerScroll`, {
+          params: { page },
+        });
         if (response.data.length === 0) {
           setHasMore(false);
         } else {
@@ -69,6 +70,11 @@ function TrainersList() {
   };
 
   const handleCardClick = (trainerId) => {
+    if (!userId) {
+      toast.warning("Please log in to access page.");
+      navigate("/login");
+      return;
+    }
     dispatch(fetchDeitPlans({ trainerId })).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
         navigate(`/trainer-view`, { state: { trainerId } });
@@ -131,12 +137,12 @@ function TrainersList() {
                     width: "100%",
                     height: "200px",
                     objectFit: "cover",
-                    display: isImageLoaded ? "block" : "none", 
+                    display: isImageLoaded ? "block" : "none",
                   }}
                   onLoad={() => handleImageLoad(trainer?.trainerId)}
                   onError={(e) => {
                     e.target.src = "/Trainer-profile.jpg";
-                    handleImageLoad(trainer?.trainerId); 
+                    handleImageLoad(trainer?.trainerId);
                   }}
                 />
                 <Card.Body>
@@ -157,7 +163,10 @@ function TrainersList() {
               return (
                 <Col
                   ref={lastTrainerElementRef}
-                  xs={12} sm={6} md={4} lg={3}
+                  xs={12}
+                  sm={6}
+                  md={4}
+                  lg={3}
                   className="mb-4"
                   key={trainer?.trainerId}
                 >
@@ -167,7 +176,10 @@ function TrainersList() {
             } else {
               return (
                 <Col
-                  xs={12} sm={6} md={4} lg={3}
+                  xs={12}
+                  sm={6}
+                  md={4}
+                  lg={3}
                   className="mb-4"
                   key={trainer?.trainerId}
                 >

@@ -22,7 +22,15 @@ function TrainerReviews({ trainerId, reviewAdded }) {
   };
 
   return (
-    <div className="reviews-container" style={{ width: "100%" }}>
+    <div
+      className="reviews-container"
+      style={{
+        width: "100%",
+        maxHeight: "300px", 
+        overflowY: "auto",  
+        paddingRight: "10px", 
+      }}
+    >
       {reviews.length > 0 ? (
         reviews.map((review, index) => (
           <Card

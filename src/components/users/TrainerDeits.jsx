@@ -1,23 +1,26 @@
 import { useEffect, useState } from "react";
 import { Card, Button, Modal, ListGroup } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { fetchDeitPlans } from "../../redux/users/userThunk";
 
 const TrainerDeits = ({ trainerId }) => {
   const [selectedPlan, setSelectedPlan] = useState(null);
-  const [deit, setDiet] = useState([])
-  // const deit = useSelector((state) => state.user.trainerDiet);
+  const [deit, setDiet] = useState([]);
   const dispatch = useDispatch();
+
   useEffect(() => {
-    console.log(trainerId);
-    dispatch(fetchDeitPlans({ trainerId })).then((res)=>setDiet(res.payload))
-  }, [trainerId]);
+    dispatch(fetchDeitPlans({ trainerId })).then((res) => setDiet(res.payload));
+  }, [trainerId, dispatch]);
+
   const handleClose = () => setSelectedPlan(null);
   const handleShow = (plan) => setSelectedPlan(plan);
 
   return (
     <>
-      <div className="diet-plan-cards">
+      <div 
+        className="diet-plan-cards" 
+        style={{ maxHeight: "200px", overflowY: "auto" }} 
+      >
         {deit && deit.length > 0 ? (
           deit.map((plan, index) => (
             <Card
@@ -52,7 +55,14 @@ const TrainerDeits = ({ trainerId }) => {
           <Modal.Header closeButton className="text-white">
             <Modal.Title>{selectedPlan.dietName}</Modal.Title>
           </Modal.Header>
-          <Modal.Body className="text-white" style={{ color: "#fff" }}>
+          <Modal.Body
+            className="text-white"
+            style={{
+              color: "#fff",
+              maxHeight: "400px",  // Maximum height for the modal body
+              overflowY: "auto",   // Enable vertical scrolling
+            }}
+          >
             <p>{selectedPlan.description}</p>
             {selectedPlan.meals.map((meal, index) => (
               <div key={index}>

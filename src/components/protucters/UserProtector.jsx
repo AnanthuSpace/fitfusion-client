@@ -8,7 +8,7 @@ const UserProtector = ({ children }) => {
 
   useEffect(() => {
     if (!userToken) {
-      toast.warning("Please log in to access this page.");
+      toast.warning("Please log in to access page.");
       navigate("/login");
     }
   }, [navigate, userToken]);

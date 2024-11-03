@@ -16,6 +16,7 @@ function TrainerContainer() {
   const handleCardClick = (trainerId) => {
     dispatch(fetchDeitPlans({ trainerId })).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
+        console.log(res.payload)
         navigate(`/trainer-view`, { state: { trainerId } });
       }
     });
@@ -38,7 +39,7 @@ function TrainerContainer() {
       ) : (
         <div className="trainer-div">
           {validTrainersData.slice(0, 3).map((trainer, index) => (
-            <div className="trainer-img" key={index} onClick={() => handleCardClick(trainer._id)}>
+            <div className="trainer-img" key={index} onClick={() => handleCardClick(trainer.trainerId)}>
               <img
                 src={`${trainer.profileIMG}`}
                 alt={trainer?.name}

@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "sonner";
-import { trainerRegistration, trainerVerification, trainerLogin, trainerDashBoardData, singleTrainerVideo, fetchAllReview, trainerDataCount, toggleVideoListing, EditVideos, googleLogin, TrainerransactionHistory, googleSignUp, getPersonalVideos, editTrainer, changeTrainerPassword, updateProfilePicture, fetchTrainerProfile, uploadVideo, fetchAlreadyChattedCustomer, AddDietPlan, fetchDeitPlans } from "./trainerThunk";
+import { trainerRegistration, trainerVerification, trainerLogin, trainerDashBoardData, deletDiet, singleTrainerVideo, fetchAllReview, trainerDataCount, toggleVideoListing, EditVideos, googleLogin, TrainerransactionHistory, googleSignUp, getPersonalVideos, editTrainer, changeTrainerPassword, updateProfilePicture, fetchTrainerProfile, uploadVideo, fetchAlreadyChattedCustomer, AddDietPlan, fetchDeitPlans } from "./trainerThunk";
 
 
 const trainerData = localStorage.getItem("trainerData") ? JSON.parse(localStorage.getItem("trainerData")) : null;
@@ -267,6 +267,15 @@ const trainerSlice = createSlice({
             .addCase(singleTrainerVideo.rejected, (state, action) => {
                 state.isLoading = false;
                 toast.error(action.payload || "Failed to fetch video", { hideProgressBar: true, autoClose: 3000 });
+            })
+
+            .addCase(deletDiet.fulfilled, (state, action) => {
+                state.isLoading = false;
+                toast.success(action.payload.message, { hideProgressBar: true, autoClose: 3000 })
+            })
+            .addCase(deletDiet.rejected, (state, action) => {
+                state.isLoading = false;
+                toast.error(action.payload.message, { hideProgressBar: true, autoClose: 3000 });
             })
     }
 })

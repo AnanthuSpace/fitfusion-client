@@ -15,17 +15,15 @@ function Header() {
   const location = useLocation();
   const navigate = useNavigate();
   const token = sessionStorage.getItem("userAccessToken");
-  const userId = useSelector((state)=> state.user.userData.userId)
+  const userId = useSelector((state)=> state.user?.userData?.userId)
 
   const deActive = () => {
     if (!userId) {
-      console.error("userId is undefined");
       dispatch(userLogout());
       navigate("/login");
       return;
     }
     dispatch(inactive({ userId })).then((res) => {
-      console.log();
       if (res.payload.message === "User is inactive") {
         dispatch(userLogout());
         navigate("/login");

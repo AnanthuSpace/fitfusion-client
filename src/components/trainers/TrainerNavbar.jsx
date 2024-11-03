@@ -29,6 +29,8 @@ function TrainerNavbar() {
     if (socket) {
       socket.on("incomingCall", (data) => {
         const { callerName, callerId } = data;
+        console.log(callerId)
+        console.log(trainerId)
 
         if (callerId === trainerId) {
           toast.info(`Incoming call from ${callerName}`, {

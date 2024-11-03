@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Card, Button, Modal, ListGroup } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { fetchDeitPlans } from "../../redux/trainers/trainerThunk";
+import { fetchDeitPlans, deletDiet } from "../../redux/trainers/trainerThunk";
 
-const DietPlanCards = ({ newplan }) => {
+const DietPlanCards = ({ newplan, setNewPlan }) => {
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [diet, setDiet] = useState([]);
   const dispatch = useDispatch();
@@ -15,16 +15,26 @@ const DietPlanCards = ({ newplan }) => {
     dispatch(fetchDeitPlans()).then((res) => {
       let arr = res.payload.data.diet;
       setDiet(arr);
+      setNewPlan(false)
     });
   }, [dispatch, newplan]);
+
+
+  const handleDelete = (dietId) => {
+    dispatch(deletDiet(dietId)).then((res) => {
+      if (res.payload.success) {
+        setDiet((prevDiet) => prevDiet.filter((plan) => plan._id !== dietId));
+      }
+    });
+  };
 
   return (
     <>
       <div className="diet-plan-cards">
         {diet && diet.length > 0 ? (
-          diet.map((plan, index) => (
+          diet.map((plan) => (
             <Card
-              key={index}
+              key={plan._id}
               className="mb-3 glass-effect"
               style={{ color: "#fff", borderRadius: "8px" }}
             >
@@ -35,6 +45,13 @@ const DietPlanCards = ({ newplan }) => {
                   onClick={() => handleShow(plan)}
                 >
                   View Details
+                </Button>
+                <Button
+                  variant="danger"
+                  onClick={() => handleDelete(plan._id)}
+                  style={{ marginLeft: "10px" }}
+                >
+                  Delete
                 </Button>
               </Card.Body>
             </Card>

@@ -5,10 +5,10 @@ import TrainerContainer from "./TrainerContainer";
 import ReviewList from "./ReviewList";
 import Membership from "./Membership";
 import Header from "./Header";
-import CountingDiv from "./CountingDiv"; 
+import CountingDiv from "./CountingDiv";
+import Reveal from "../common/animationConfig";
 
 function Home() {
-
   return (
     <>
       <div className="home-container homepage-gradient-main ">
@@ -45,12 +45,19 @@ function Home() {
           </div>
         </div>
         <div className="background-gradient-main">
-        <CountingDiv />
-
-        <WhyChooseUs />
-        <TrainerContainer />
-        <ReviewList />
-        <Membership />
+          <Reveal>
+            <CountingDiv />
+          </Reveal>
+          <WhyChooseUs />
+          <Reveal>
+            <TrainerContainer />
+          </Reveal>
+          <Reveal>
+            <ReviewList />
+          </Reveal>
+          <Reveal>
+            <Membership />
+          </Reveal>
         </div>
         <footer className="home-footer">
           © 2024 FITFUSION. All rights reserved.

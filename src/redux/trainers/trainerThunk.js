@@ -311,6 +311,19 @@ export const fetchDeitPlans = createAsyncThunk(
     }
 )
 
+export const deletDiet = createAsyncThunk(
+    "trainer/deletDiet",
+    async (dietId, { rejectWithValue }) => {
+        try {
+            const response = await trainerAxiosInstance.delete(`${localhostURL}/trainer/delete-diet`, { data: { dietId } })
+            console.log(response)
+            return response.data
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+)
+
 export const AddDietPlan = createAsyncThunk(
     'trainer/AddDietPlan',
     async ({ dietPlan }, { rejectWithValue }) => {

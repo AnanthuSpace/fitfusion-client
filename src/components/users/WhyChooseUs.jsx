@@ -1,5 +1,6 @@
 import React from "react";
 import "../../assets/styles/users/whyChooseUs.css";
+import Reveal from "../common/animationConfig";
 
 function WhyChooseUs() {
   return (
@@ -11,6 +12,7 @@ function WhyChooseUs() {
           location , <br />
           and extra benefits to enhance your experience.
         </p>
+        <Reveal>
         <div className="service">
           <div className="service-list">
             <div className="service-div">
@@ -54,6 +56,7 @@ function WhyChooseUs() {
             <img src="/whychooseus.jpg" alt="" />
           </div>
         </div>
+        </Reveal>
       </div>
     </>
   );

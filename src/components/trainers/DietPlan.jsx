@@ -4,16 +4,16 @@ import AddDietForm from "./AddDietForm";
 import { Container, Row, Col } from "react-bootstrap";
 
 const DietPlan = () => {
-  const [newPlan, setNewPlan] = useState(false);
+  const [newPlan, setNewPlan] = useState(null);
 
   return (
-    <Container style={{ marginTop: "20px" }}>
+    <Container style={{ marginTop: "20px", maxHeight: "80vh", overflowY: "auto" }}>
       <Row>
         <Col md={8}>
-          <DietPlanCards newplan={newPlan} />
+          <DietPlanCards newplan={newPlan} setNewPlan={setNewPlan} />
         </Col>
         <Col md={4}>
-          <AddDietForm setNewPlan={setNewPlan}/>
+          <AddDietForm setNewPlan={setNewPlan} />
         </Col>
       </Row>
     </Container>
