@@ -141,7 +141,6 @@ const ChatScreen = () => {
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
         onSelectTrainer={handleSelectTrainer}
-        chatHistory={chatHistory}
         setChatHistory={setChatHistory}
         alreadyChattedTrainer={alreadyChattedTrainer}
         directChatId={directChatId}

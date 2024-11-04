@@ -48,8 +48,7 @@ function TrainerDashboard() {
 
   useEffect(() => {
     dispatch(trainerDashBoardData({ startDate, endDate })).then((res) => {
-      console.log(res.payload);
-      setData(res.payload);
+      setData(res.payload.reverse());
     });
   }, [startDate, endDate, dispatch]);
 

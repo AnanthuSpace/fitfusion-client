@@ -11,7 +11,6 @@ function ChatTrainerList({
   alreadyChattedTrainer,
   directChatId,
   directChatName,
-  chatHistory
 }) {
   const userId = useSelector((state) => state.user.userData.userId);
 
