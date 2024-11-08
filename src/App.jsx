@@ -65,7 +65,6 @@ function App() {
           <Route path="/tutorials" element={<UserProtecter><TutorialsPage /></UserProtecter>} />
           <Route path="/history" element={<UserProtecter><TransactionHistoryPage /></UserProtecter>} />
 
-
           {/* Trainer Routes */}
           <Route path="/trainer" element={<TrainerLoginProtector><TrainerLogin /></TrainerLoginProtector>} />
           <Route path="/trainer-signup" element={<TrainerLoginProtector><TrainerSignup /></TrainerLoginProtector>} />

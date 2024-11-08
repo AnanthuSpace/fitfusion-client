@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Image, Col } from "react-bootstrap";
+import { Image, Col, Tab, Tabs } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../../assets/styles/users/TrainerProfileView.css";
 import SubscribeButton from "./SubscribeButton";
@@ -16,9 +16,7 @@ function TrainerProfileView() {
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [trainerDetails, setTrainerDetails] = useState("");
   const [reviewAdded, setReviewAdded] = useState(false);
-  const [allReview, setAllReview] = useState([]);
-  const [isSubscribed, setIsSubscribed] = useState(false); 
-  const userData = useSelector((state)=>state.user.userData)
+  const userData = useSelector((state) => state.user.userData);
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -28,25 +26,30 @@ function TrainerProfileView() {
   }, [location.state]);
 
   useEffect(() => {
-    dispatch(fetchSingleTrainer({ trainerId: location.state.trainerId })).then((res) =>
+    dispatch(fetchSingleTrainer({ trainerId })).then((res) =>
       setTrainerDetails(res.payload.data)
     );
   }, [trainerId, dispatch]);
 
   const handleChat = () => {
     navigate("/user-chat", {
-      state: { trainerId: trainerId, trainerName: trainerDetails.name },
+      state: { trainerId, trainerName: trainerDetails.name },
     });
   };
 
   const handleReviewClick = () => {
-    console.log(trainerId);
-    console.log(userData.subscribeList);
-  
-    if (userData.subscribeList.includes(trainerId)) {
-      setShowReviewModal(true);
+    if (userData?.subscribeList) {
+      if (userData?.subscribeList.includes(trainerId)) {
+        setShowReviewModal(true);
+      } else {
+        toast.warning(
+          "You need to subscribe to this trainer before leaving a review."
+        );
+      }
     } else {
-      toast.warning("You need to subscribe to this trainer before leaving a review.");
+      toast.warning(
+        "You need to subscribe to this trainer before leaving a review."
+      );
     }
   };
 
@@ -85,9 +88,9 @@ function TrainerProfileView() {
         </Col>
       </div>
 
-      <div className="bottom-sections d-flex flex-column glass-effect md-2">
+      <div className="bottom-sections d-flex flex-column md-2">
         <div className="row">
-          <div className="col-md-4 details-section">
+          <div className="col-md-3 details-section">
             <h3>Trainer Details</h3>
             <p>Name: {trainerDetails?.name}</p>
             <p>Achievements: {trainerDetails?.achivements}</p>
@@ -100,28 +103,33 @@ function TrainerProfileView() {
             </div>
           </div>
 
-          <div className="col-md-8 media-section text-center">
-            <div className="subscribe-button-container">
-              <SubscribeButton
-                trainerId={trainerId}
-                trainerName={trainerDetails?.name}
-                amount={trainerDetails?.feePerMonth}
-                setIsSubscribed={setIsSubscribed} 
-              />
-            </div>
-          </div>
-        </div>
+          <div className="col-md-9 media-section text-center">
+            <Tabs defaultActiveKey="videos" id="trainer-profile-tabs">
+              <Tab eventKey="videos" title="Videos">
+                <div className="subscribe-button-container">
+                  <SubscribeButton
+                    trainerId={trainerId}
+                    trainerName={trainerDetails?.name}
+                    amount={trainerDetails?.feePerMonth}
+                  />
+                </div>
+              </Tab>
 
-        <div className="row mt-4">
-          <div className="col-4 diet-plans-section">
-            <h3>Diet Plans</h3>
-            <TrainerDeits trainerId={trainerId}/>
-          </div>
+              <Tab
+                eventKey="diets"
+                title="Diets"
+                className="mt-5 diet-main-div"
+              >
+                <TrainerDeits trainerId={trainerId} />
+              </Tab>
 
-          <div className="col-md-8 media-section text-center">
-            <div className="subscribe-button-container">
-              <TrainerReviews trainerId={trainerId} reviewAdded={reviewAdded} />
-            </div>
+              <Tab eventKey="feedback" title="Feedback">
+                <TrainerReviews
+                  trainerId={trainerId}
+                  reviewAdded={reviewAdded}
+                />
+              </Tab>
+            </Tabs>
           </div>
         </div>
       </div>
@@ -131,7 +139,6 @@ function TrainerProfileView() {
         handleClose={handleCloseReviewModal}
         trainerDetails={trainerDetails}
         onReviewAdded={onReviewAdded}
-        allReview={allReview}
       />
     </div>
   );

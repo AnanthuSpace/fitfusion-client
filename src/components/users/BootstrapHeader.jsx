@@ -79,8 +79,8 @@ function BootstrapHeader() {
 
   return (
     <>
-      <div className="nav-bar d-flex justify-content-between align-items-center bg-transparent px-4 pb-3 mt-1 w-100">
-        <div className="header-logo">
+      <div className="nav-bar d-flex justify-content-between align-items-center bg-black px-4 pb-3 mt-1 w-100">
+        <div className="header-logo ps-5">
           <h1 className="mb-0 gradient-text">FitFusion</h1>
         </div>
         <div className="header-nav-list">
@@ -124,13 +124,13 @@ function BootstrapHeader() {
           </ul>
         </div>
         {!token ? (
-          <div className="signinButtn">
+          <div className="signinButtn pe-3">
             <button className="btn btn-outline-warning" onClick={handleSignIn}>
               Sign in
             </button>
           </div>
         ) : (
-          <div className="icon-div" onClick={toggleSidebar}>
+          <div className="icon-div pe-3" onClick={toggleSidebar}>
             <img
               src="/profile-icon.jpg"
               alt="Profile"

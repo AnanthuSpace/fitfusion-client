@@ -103,6 +103,13 @@ body,
   color: #ecedee;
 }
 
+.nav-link {
+  color: white;
+}
+.nav-link:hover {
+  color: white;
+}
+
 .background-gradient-main {
   background-image:
     radial-gradient(at 71% 61%, hsla(133, 0%, 0%, 1) 0px, transparent 50%),

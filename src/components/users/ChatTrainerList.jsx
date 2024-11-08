@@ -97,7 +97,7 @@ function ChatTrainerList({
                   <p style={{ color: "gray" }}>
                     {trainer.message
                       ? trainer.message.length > 15
-                        ? `${trainer.message.slice(0, 15)}...`
+                        ? `${trainer.message.slice(0, 15)}...` 
                         : trainer.message
                       : "No messages yet"}
                   </p>

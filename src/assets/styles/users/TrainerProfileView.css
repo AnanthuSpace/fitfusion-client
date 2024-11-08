@@ -2,7 +2,6 @@
     width: 100vw;
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
 }
 
 .background-container {
@@ -65,8 +64,7 @@
 }
 
 .bottom-sections {
-    gap: 1rem;
-    padding: 1rem;
+    padding: 0rem 4rem;
     justify-content: center;
 }
 
@@ -126,12 +124,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-  
-  .subscribe-button-container .glass-button {
+}
 
+.subscribe-button-container .glass-button {
     margin: auto;
-  }
-  
-
-  
+}

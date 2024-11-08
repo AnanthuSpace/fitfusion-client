@@ -58,28 +58,28 @@ function SubscribeButton({ trainerId, trainerName, amount }) {
         />
       )}
       {isSubscribed ? (
-        videos.length >= 0 ? (
-          <div className="video-thumbnails-container mt-5">
+        videos.length > 0 ? (
+          <div className="video-thumbnails-container mt-1">
             <div className="video-grid">
               {videos.map((video, index) => (
-                <div key={index} className="video-thumbnail">
-                  <img
-                    src={video.thumbnail}
-                    alt={
-                      typeof video.videoUrl === "string" &&
-                      video.videoUrl.includes("-")
-                        ? video.videoUrl.split("-")[1]
-                        : "Video"
-                    }
-                    onClick={() => handleThumbnailClick(video.videoUrl)}
-                  />
-                </div>
+                  <div key={index} className="video-thumbnail bg-transparent">
+                    <img
+                      src={video.thumbnail}
+                      alt={
+                        typeof video.videoUrl === "string" &&
+                        video.videoUrl.includes("-")
+                          ? video.videoUrl.split("-")[1]
+                          : "Video"
+                      }
+                      onClick={() => handleThumbnailClick(video.videoUrl)}
+                    />
+                  </div>
               ))}
             </div>
-            <button className="view-more-button">View More</button>
+              {/* <button className="view-more-button">View More</button> */}
           </div>
         ) : (
-          <p className="text-white text-center">
+          <p className="text-white text-center mt-5">
             No videos available at the moment.
           </p>
         )
@@ -88,6 +88,7 @@ function SubscribeButton({ trainerId, trainerName, amount }) {
       ) : (
         <button
           className="glass-button"
+          style={{ marginTop: "8rem" }}
           onClick={
             amount
               ? handleSubscribeClick

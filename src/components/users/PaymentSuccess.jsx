@@ -9,6 +9,7 @@ const PaymentSuccess = () => {
   const dispatch = useDispatch();
   const handleSubmit = () => {
     dispatch(fetchUserAndTrainer()).then((res) => {
+      console.log(res.meta.requestStatus )
       if(res.meta.requestStatus === "fulfilled"){    
         navigate(-3);
       }

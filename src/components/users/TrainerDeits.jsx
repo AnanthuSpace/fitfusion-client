@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Card, Button, Modal, ListGroup } from "react-bootstrap";
+import { Card, Button, Modal, ListGroup, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDeitPlans } from "../../redux/users/userThunk";
 
@@ -11,7 +11,9 @@ const TrainerDeits = ({ trainerId }) => {
 
   useEffect(() => {
     if (trainerId) {
-      dispatch(fetchDeitPlans({ trainerId })).then((res) => setDiet(res.payload));
+      dispatch(fetchDeitPlans({ trainerId })).then((res) =>
+        setDiet(res.payload)
+      );
     }
   }, [trainerId, dispatch]);
 
@@ -27,48 +29,58 @@ const TrainerDeits = ({ trainerId }) => {
           Please subscribe to access the diet plans.
         </h5>
       ) : (
-        <div 
-          className="diet-plan-cards" 
-          style={{ maxHeight: "200px", overflowY: "auto" }} 
-        >
+        <Row className="text-start">
           {diet && diet.length > 0 ? (
             diet.map((plan, index) => (
-              <Card
-                key={index}
-                className="mb-3 text-white"
-                style={{
-                  border: "1px solid white",
-                  borderRadius: "8px",
-                  background: "transparent",
-                }}
-              >
-                <Card.Body>
-                  <Card.Title>{plan?.dietName}</Card.Title>
-                  <Button
-                    className="gradient-button-global"
-                    onClick={() => handleShow(plan)}
-                  >
-                    View Details
-                  </Button>
-                </Card.Body>
-              </Card>
+              <Col key={index} xs={12} sm={6} md={4} lg={3}>
+                <Card
+                  className="text-white h-100 background-gradient-main"
+                  style={{
+                    border: "1px solid white",
+                    borderRadius: "8px",
+                    background: "transparent",
+                  }}
+                >
+                  <Card.Body className="d-flex flex-column">
+                    <Card.Title>{plan?.dietName}</Card.Title>
+                    <Card.Text>
+                      {plan?.description?.length > 15
+                        ? `${plan.description.substring(0, 45)}...`
+                        : plan.description}
+                    </Card.Text>
+
+                    <p
+                      onClick={() => handleShow(plan)}
+                      className="mt-2 mb-0 text-decoration-underline small"
+                      style={{ cursor: "pointer", alignSelf: "flex-end" }}
+                    >
+                      View Details
+                    </p>
+                  </Card.Body>
+                </Card>
+              </Col>
             ))
           ) : (
             <h5 className="text-center text-white mt-5">
               No diet plans are available
             </h5>
           )}
-        </div>
+        </Row>
       )}
 
       {selectedPlan && (
         <Modal show onHide={handleClose} centered>
-          <Modal.Header closeButton className="text-white">
+          <Modal.Header
+            closeButton
+            className="text-white"
+            style={{ background: "#333" }}
+          >
             <Modal.Title>{selectedPlan.dietName}</Modal.Title>
           </Modal.Header>
           <Modal.Body
             className="text-white"
             style={{
+              background: "#222",
               color: "#fff",
               maxHeight: "400px",
               overflowY: "auto",
@@ -76,7 +88,7 @@ const TrainerDeits = ({ trainerId }) => {
           >
             <p>{selectedPlan.description}</p>
             {selectedPlan.meals.map((meal, index) => (
-              <div key={index}>
+              <div key={index} className="mb-3">
                 <h5>
                   {meal.mealTime.charAt(0).toUpperCase() +
                     meal.mealTime.slice(1)}
@@ -94,7 +106,7 @@ const TrainerDeits = ({ trainerId }) => {
               </div>
             ))}
           </Modal.Body>
-          <Modal.Footer>
+          <Modal.Footer style={{ background: "#333" }}>
             <Button variant="secondary" onClick={handleClose}>
               Close
             </Button>

@@ -8,7 +8,7 @@ const TutorialsPage = () => {
 
   return (
     <>
-      <div className="top-0 w-100 background-gradient-main h-auto">
+      <div className="position-fixed top-0 w-100 h-100 background-gradient-main">
         <BootstrapHeader />
         {user && user.subscribeList && user.subscribeList.length > 0 ? (
           <TutorilasList />
@@ -25,38 +25,6 @@ const TutorialsPage = () => {
           </div>
         )}
       </div>
-
-      <style>
-        {`
-        @media (max-width: 768px) {
-          .background-gradient-main {
-            padding-top: 1rem;
-          }
-
-          h4 {
-            font-size: 1.5rem;
-          }
-
-          p {
-            font-size: 1rem;
-          }
-        }
-
-        @media (max-width: 576px) {
-          h4 {
-            font-size: 1.25rem;
-          }
-
-          p {
-            font-size: 0.9rem;
-          }
-
-          .d-flex {
-            height: 80vh;
-          }
-        }
-      `}
-      </style>
     </>
   );
 };

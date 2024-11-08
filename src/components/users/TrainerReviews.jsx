@@ -26,8 +26,8 @@ function TrainerReviews({ trainerId, reviewAdded }) {
       className="reviews-container"
       style={{
         width: "100%",
-        maxHeight: "300px", 
-        overflowY: "auto",  
+        maxHeight: "23rem",  
+        overflowY: "auto",
         paddingRight: "10px", 
       }}
     >
@@ -35,8 +35,7 @@ function TrainerReviews({ trainerId, reviewAdded }) {
         reviews.map((review, index) => (
           <Card
             key={review.id || index}
-            className="review-card glass-effect text-white"
-            style={{ height: "auto" }}
+            className="review-card bg-transparent text-white"
           >
             <Card.Body>
               <div className="d-flex">

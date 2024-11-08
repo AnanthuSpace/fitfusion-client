@@ -20,11 +20,12 @@ const ReviewModal = ({ show, handleClose, trainerDetails, onReviewAdded, allRevi
       feedback: review,
     };
 
-    dispatch(addReview({ trainerId: trainerDetails.trainerId, reviewDetails, curruntRating: trainerDetails.rating, reviewCount: allReview.length }))
+    dispatch(addReview({ trainerId: trainerDetails.trainerId, reviewDetails, curruntRating: trainerDetails.rating, reviewCount: allReview?.length }))
       .then((res) => {
         setRating(res.payload);
         dispatch(fetchUserAndTrainer());
         onReviewAdded();
+        setReview("")
       });
 
     handleClose();

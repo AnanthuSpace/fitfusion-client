@@ -4,7 +4,6 @@ import WhyChooseUs from "./WhyChooseUs";
 import TrainerContainer from "./TrainerContainer";
 import ReviewList from "./ReviewList";
 import Membership from "./Membership";
-import Header from "./Header";
 import CountingDiv from "./CountingDiv";
 import Reveal from "../common/animationConfig";
 
@@ -13,7 +12,6 @@ function Home() {
     <>
       <div className="home-container homepage-gradient-main ">
         <div className="enrty-container">
-          <Header />
           <div className="home-div">
             <p>THE BEST FITNESS ONLINE PLATFORM</p>
             <div className="home-heading">
@@ -52,9 +50,9 @@ function Home() {
           <Reveal>
             <TrainerContainer />
           </Reveal>
-          <Reveal>
+          {/* <Reveal>
             <ReviewList />
-          </Reveal>
+          </Reveal> */}
           <Reveal>
             <Membership />
           </Reveal>

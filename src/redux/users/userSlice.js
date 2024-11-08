@@ -6,6 +6,7 @@ const userData = localStorage.getItem("userData") ? JSON.parse(localStorage.getI
 const trainersData = localStorage.getItem("trainersData") ? JSON.parse(localStorage.getItem("trainersData")) : [];
 const alreadyChattedTrainer = localStorage.getItem("alreadyChattedTrainer") ? JSON.parse(localStorage.getItem("alreadyChattedTrainer")) : []
 const trainerDiet = localStorage.getItem("trainerDiet") ? JSON.parse(localStorage.getItem("trainerDiet")) : {}
+const validity = localStorage.getItem("timer") ? JSON.parse(localStorage.getItem("timer")) : 0
 
 const userSlice = createSlice({
   name: "userSlice",
@@ -16,9 +17,20 @@ const userSlice = createSlice({
     temperoryEmail: "",
     trainersData: trainersData,
     alreadyChattedTrainer: alreadyChattedTrainer,
-    trainerDiet: trainerDiet
+    trainerDiet: trainerDiet,
+    timer: validity
   },
   reducers: {
+    restartTimer: (state) => {
+      state.timer = 120
+    },
+    decreaseTime: (state) => {
+      if (state.timer > 0) {
+        state.timer -= 1;
+        localStorage.setItem("timer", JSON.stringify(state.timer));
+      }
+    },
+    
     userLogout: (state) => {
       state.userData = null;
       sessionStorage.removeItem("userAccessToken");
@@ -30,16 +42,16 @@ const userSlice = createSlice({
       state.temperoryEmail = action.payload;
     },
   },
+
   extraReducers: (builder) => {
     builder
-
       // Registration
       .addCase(registration.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(registration.fulfilled, (state, action) => {
         state.temperoryEmail = action.meta.arg.email;
-        toast.success(action.payload, { hideProgressBar: true, autoClose: 3000 });
+        toast.success(action.payload.msg, { hideProgressBar: true, autoClose: 3000 });
         state.isLoading = false;
       })
       .addCase(registration.rejected, (state, action) => {
@@ -316,5 +328,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { userLogout, setTemporaryData } = userSlice.actions;
+export const { userLogout, setTemporaryData, restartTimer, decreaseTime } = userSlice.actions;
 export default userSlice.reducer;
