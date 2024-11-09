@@ -4,7 +4,7 @@ import Signup from "../../components/users/Signup";
 function SignupPage() {
   return (
     <>
-      <div className="overflow-hidden">
+      <div className="overflow-hidden h-100">
         <Signup />
       </div>
     </>

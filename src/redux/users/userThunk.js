@@ -47,7 +47,7 @@ export const registration = createAsyncThunk(
                 if (response.data.message === "User already exists") {
                     return rejectWithValue("User already exists");
                 } else {
-                    localStorage.setItem("timer", response.data.validity);
+                    await localStorage.setItem("timer", response.data.validity);
                     return { validity: response.data.validity, msg: "OTP sent to your email" };
                 }
             } catch (error) {
@@ -61,12 +61,12 @@ export const registration = createAsyncThunk(
 export const resendOtp = createAsyncThunk(
     "user/resendOtp",
     async(temperoryEmail, {rejectWithValue}) => {
-        console.log(temperoryEmail)
         try {
             const response = await axios.post(`${localhostURL}/resent-otp`, { emailId: temperoryEmail });
-            console.log(response)
+            await localStorage.setItem("timer", response.data.validity);
+            return response.data
         } catch (error) {
-            return rejectWithValue("Registration failed, try again");
+            return rejectWithValue("Verification failed, try again");
         }
     }
 )

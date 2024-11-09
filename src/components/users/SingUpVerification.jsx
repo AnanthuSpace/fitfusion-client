@@ -3,25 +3,25 @@ import { Button, Form, InputGroup } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { resendOtp, signupVerification } from "../../redux/users/userThunk";
 import { useNavigate } from "react-router-dom";
-import { decreaseTime } from "../../redux/users/userSlice";
 
 function SignUpVerification() {
   const [otp, setOtp] = useState(["", "", "", ""]);
   const regex = /^[a-zA-Z0-9]$/;
-  const { isLoading, temperoryEmail, timer } = useSelector((state) => state.user);
+  const { isLoading, temperoryEmail } = useSelector((state) => state.user);
+  const [timer, setTimer] = useState(localStorage.getItem("timer"));
+  const [load, setLoad] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (timer === 0) return;
-
     const interval = setInterval(() => {
-      dispatch(decreaseTime());
+      setTimer(timer - 1);
+      localStorage.setItem("timer", timer);
     }, 1000);
 
     return () => clearInterval(interval);
   }, [timer, dispatch]);
-
 
   const handleOtpChange = (e, index) => {
     const value = e.target.value;
@@ -61,7 +61,13 @@ function SignUpVerification() {
   };
 
   const handleResendOtp = async () => {
-    dispatch(resendOtp(temperoryEmail)).then((res) => console.log(res));
+    setLoad(true)
+    dispatch(resendOtp(temperoryEmail)).then((res) => {
+      if (res.payload.message) {
+        setLoad(false)
+        setTimer(res.payload.validity);
+      }
+    });
   };
 
   return (
@@ -149,7 +155,7 @@ function SignUpVerification() {
                 style={{ textDecoration: "underline" }}
                 onClick={handleResendOtp}
               >
-                Didn't receive code?
+                {load ? "Loading" : "Didn't receive code?"}
               </Button>
             )}
           </span>

@@ -1,12 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registration, signupVerification, userLogin, googleSignUpUser, loginVerification, singleVideo, googleLoginUser, transactionnHistory, editUserData, fetchVideos, fetchDeitPlans, fetchAllVideos, fetchSingleTrainer, fetchReviewFeedback, inactive, addReview, changeUserPassword, fetchAlreadyChattedTrainer, addUserDetails, fetchTrainersData, createCheckoutSession, fetchUserAndTrainer, fetchChatMessages } from "./userThunk";
+import { registration, signupVerification, userLogin, googleSignUpUser,resendOtp , loginVerification, singleVideo, googleLoginUser, transactionnHistory, editUserData, fetchVideos, fetchDeitPlans, fetchAllVideos, fetchSingleTrainer, fetchReviewFeedback, inactive, addReview, changeUserPassword, fetchAlreadyChattedTrainer, addUserDetails, fetchTrainersData, createCheckoutSession, fetchUserAndTrainer, fetchChatMessages } from "./userThunk";
 import { toast } from "sonner";
 
 const userData = localStorage.getItem("userData") ? JSON.parse(localStorage.getItem("userData")) : null;
 const trainersData = localStorage.getItem("trainersData") ? JSON.parse(localStorage.getItem("trainersData")) : [];
 const alreadyChattedTrainer = localStorage.getItem("alreadyChattedTrainer") ? JSON.parse(localStorage.getItem("alreadyChattedTrainer")) : []
 const trainerDiet = localStorage.getItem("trainerDiet") ? JSON.parse(localStorage.getItem("trainerDiet")) : {}
-const validity = localStorage.getItem("timer") ? JSON.parse(localStorage.getItem("timer")) : 0
 
 const userSlice = createSlice({
   name: "userSlice",
@@ -18,18 +17,8 @@ const userSlice = createSlice({
     trainersData: trainersData,
     alreadyChattedTrainer: alreadyChattedTrainer,
     trainerDiet: trainerDiet,
-    timer: validity
   },
   reducers: {
-    restartTimer: (state) => {
-      state.timer = 120
-    },
-    decreaseTime: (state) => {
-      if (state.timer > 0) {
-        state.timer -= 1;
-        localStorage.setItem("timer", JSON.stringify(state.timer));
-      }
-    },
     
     userLogout: (state) => {
       state.userData = null;
@@ -60,6 +49,14 @@ const userSlice = createSlice({
           toast.error(action.payload || "Registration failed", { hideProgressBar: true, autoClose: 3000 });
         }
         state.isLoading = false;
+      })
+
+      .addCase(resendOtp.fulfilled, (state, action) => {
+        toast.success(action.payload.message, { hideProgressBar: true, autoClose: 3000 })
+      })
+      .addCase(resendOtp.rejected, (state, action)=> {
+        state.error = action.payload
+        toast.error(action.payload.message, { hideProgressBar: true, autoClose: 3000 })
       })
 
       // Signup verification
@@ -328,5 +325,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { userLogout, setTemporaryData, restartTimer, decreaseTime } = userSlice.actions;
+export const { userLogout, setTemporaryData } = userSlice.actions;
 export default userSlice.reducer;
