@@ -86,10 +86,10 @@ function Signup() {
             </ul>
           </div>
           <div className="signup-btns">
-            <div className="signup-signin-btn" onClick={() => navigate("/login")}>
+            <div className="signup-signup-btn" onClick={() => navigate("/login")}>
               Sign in
             </div>
-            <div className="signup-signup-btn" onClick={() => navigate("/signup")}>
+            <div className="new-signin-btn" onClick={() => navigate("/signup")}>
               Sign Up
             </div>
           </div>

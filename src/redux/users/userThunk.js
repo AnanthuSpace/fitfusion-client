@@ -60,7 +60,7 @@ export const registration = createAsyncThunk(
 
 export const resendOtp = createAsyncThunk(
     "user/resendOtp",
-    async(temperoryEmail, {rejectWithValue}) => {
+    async (temperoryEmail, { rejectWithValue }) => {
         try {
             const response = await axios.post(`${localhostURL}/resent-otp`, { emailId: temperoryEmail });
             await localStorage.setItem("timer", response.data.validity);
@@ -141,26 +141,30 @@ export const signupVerification = createAsyncThunk(
 // User Login
 export const userLogin = createAsyncThunk(
     "userSlice/userLogin",
-    async ({ email }, { rejectWithValue }) => {
+    async ({ email, password }, { rejectWithValue }) => {
         try {
-
-            email = email.trim();
+            const trimmedEmail = email.trim();
             const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailPattern.test(email)) {
+            if (!emailPattern.test(trimmedEmail)) {
                 return rejectWithValue("Please enter a valid email address");
             }
 
-            const response = await axios.post(`${localhostURL}/login`, { email });
-            if (response.data.success === false) {
-                return rejectWithValue("Invalid email");
-            } else {
-                return response.data;
+            const response = await axios.post(`${localhostURL}/login`, { email: trimmedEmail, password });
+            if (!response.data.success) {
+                return rejectWithValue(response.data.message); 
             }
+
+            const { accessToken, refreshToken, userData } = response.data.data;
+            sessionStorage.setItem("userAccessToken", accessToken);
+            localStorage.setItem("userRefreshToken", refreshToken);
+            return userData;
+
         } catch (error) {
-            return rejectWithValue(error.response?.data?.message || error.message);
+            return rejectWithValue(error.response?.data?.message || "An error occurred");
         }
     }
 );
+
 
 
 export const googleLoginUser = createAsyncThunk(
@@ -197,29 +201,29 @@ export const fetchTrainersData = createAsyncThunk(
 
 
 
-export const loginVerification = createAsyncThunk(
-    "userSlice/loginVerification",
-    async ({ completeOtp, temperoryEmail }, { rejectWithValue }) => {
-        if (completeOtp.length < 4) {
-            return rejectWithValue("All the fields are required!");
-        } else {
-            try {
-                const response = await axios.post(`${localhostURL}/login-verify`, { completeOtp, temperoryEmail });
-                if (response.data.message === "OTP verified") {
-                    console.log(response.data)
-                    const { accessToken, refreshToken } = response.data;
-                    sessionStorage.setItem("userAccessToken", accessToken);
-                    localStorage.setItem("userRefreshToken", refreshToken);
-                    return response.data.userData;
-                } else {
-                    return rejectWithValue(response.data.message);
-                }
-            } catch (error) {
-                return rejectWithValue("Verification failed, try again");
-            }
-        }
-    }
-)
+// export const loginVerification = createAsyncThunk(
+//     "userSlice/loginVerification",
+//     async ({ completeOtp, temperoryEmail }, { rejectWithValue }) => {
+//         if (completeOtp.length < 4) {
+//             return rejectWithValue("All the fields are required!");
+//         } else {
+//             try {
+//                 const response = await axios.post(`${localhostURL}/login-verify`, { completeOtp, temperoryEmail });
+//                 if (response.data.message === "OTP verified") {
+//                     console.log(response.data)
+//                     const { accessToken, refreshToken } = response.data;
+//                     sessionStorage.setItem("userAccessToken", accessToken);
+//                     localStorage.setItem("userRefreshToken", refreshToken);
+//                     return response.data.userData;
+//                 } else {
+//                     return rejectWithValue(response.data.message);
+//                 }
+//             } catch (error) {
+//                 return rejectWithValue("Verification failed, try again");
+//             }
+//         }
+//     }
+// )
 
 
 // Edit user data

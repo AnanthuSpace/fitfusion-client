@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/users/LoginPage";
 import SignupPage from "./pages/users/SignupPage";
 import SignUpVerification from "./components/users/SingUpVerification"
-import LoginVerification from "./components/users/LoginVerification";
+// import LoginVerification from "./components/users/LoginVerification";
 import UserProtecter from "./components/protucters/UserProtector";
 import HomePage from "./pages/users/HomePage";
 import ProfilePage from "./pages/users/ProfilePage";
@@ -57,7 +57,7 @@ function App() {
           <Route path="/login" element={<UserLoginProtector><LoginPage /></UserLoginProtector>} />
           <Route path="/signup" element={<UserLoginProtector><SignupPage /></UserLoginProtector>} />
           <Route path="/verify-otp" element={<UserLoginProtector><SignUpVerification /></UserLoginProtector>} />
-          <Route path="/login-verify" element={<UserLoginProtector><LoginVerification /></UserLoginProtector>} />
+          {/* <Route path="/login-verify" element={<UserLoginProtector><LoginVerification /></UserLoginProtector>} /> */}
           <Route path="/profile" element={<UserProtecter><ProfilePage /></UserProtecter>} />
           <Route path="/user-data" element={<UserProtecter><UserDetailsForm /></UserProtecter>} />
           <Route path="/trainer-view" element={<UserProtecter><TrainerViewPage /></UserProtecter>} />
