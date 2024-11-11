@@ -125,6 +125,13 @@
 
 .new-newform p {
     color: #ecedee;
+    font-size: .9rem;
+    /* cursor: pointer; */
+}
+.new-newform p span{
+    /* color: #007ffe; */
+    font-size: .9rem;
+    cursor: pointer;
 }
 
 .new-input-text {
@@ -177,7 +184,6 @@
 
 .new-allready {
     color: #ecedee;
-    cursor: pointer;
 }
 
 .error {

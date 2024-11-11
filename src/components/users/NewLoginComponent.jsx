@@ -3,18 +3,22 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
-import { Modal, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import "../../assets/styles/users/NewLogin.css";
-import { userLogin } from "../../redux/users/userThunk";
+import { forgotEmailSubmit, googleLoginUser, userLogin } from "../../redux/users/userThunk";
+import { Modal, Button, Form } from "react-bootstrap";
 
 const NewLoginComponent = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const [showEmailModal, setShowEmailModal] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
 
-  const toggleModal = () => setShowModal(!showModal);
+  const handleOpenEmailModal = () => setShowEmailModal(true);
+  const handleCloseEmailModal = () => setShowEmailModal(false);
+  const handleOpenPasswordModal = () => setShowPasswordModal(true);
+  const handleClosePasswordModal = () => setShowPasswordModal(false);
 
   const validationSchema = Yup.object({
     email: Yup.string()
@@ -32,7 +36,9 @@ const NewLoginComponent = () => {
       setIsLoading(true);
       const emailId = values.email.toLowerCase();
       try {
-        const result = await dispatch(userLogin({ email: emailId, password: values.password }));
+        const result = await dispatch(
+          userLogin({ email: emailId, password: values.password })
+        );
         if (result.meta.requestStatus === "fulfilled") {
           navigate("/");
         }
@@ -43,7 +49,29 @@ const NewLoginComponent = () => {
   });
 
   const handleGoogleResponse = (response) => {
-    console.log("Google login response:", response);
+    const token = response.credential;
+    if (token) {
+      dispatch(googleLoginUser(token)).then((response) => {
+        if (response.meta.requestStatus !== "rejected") {
+          navigate("/");
+        }
+      });
+    }
+  };
+
+  const handleForgotPassword = () => {
+    handleOpenEmailModal();
+  };
+
+  const handleEmailSubmit = () => {
+    dispatch(forgotEmailSubmit())
+    handleCloseEmailModal();
+    handleOpenPasswordModal();
+  };
+
+  const handlePasswordSubmit = () => {
+    handleClosePasswordModal();
+    // Process the new password submission
   };
 
   return (
@@ -74,7 +102,8 @@ const NewLoginComponent = () => {
           <span className="gradient-text fw-bold">Welcome Back</span>
           <h2 className="pt-4">Perfect Fitness App</h2>
           <p>
-            Let's continue your fitness journey! Log in to access personalized <br /> plans and track your progress.
+            Let's continue your fitness journey! Log in to access personalized{" "}
+            <br /> plans and track your progress.
           </p>
         </div>
         <div className="new-newform">
@@ -101,42 +130,149 @@ const NewLoginComponent = () => {
             ) : null}
 
             {!isLoading ? (
-              <button type="submit" className="new-join">Login</button>
+              <button type="submit" className="new-join">
+                Login
+              </button>
             ) : (
-              <button className="new-join" disabled>Loading...</button>
+              <button className="new-join" disabled>
+                Loading...
+              </button>
             )}
           </form>
-          <p className="pt-3">By continuing, you agree to accept our privacy policy & Terms of Service.</p>
+          <p className="pt-2">
+            By continuing, you agree to accept our privacy policy & Terms of
+            Service.
+          </p>
           OR
-          <div className="mt-4 d-flex flex-column align-items-center">
-            <GoogleLogin onSuccess={handleGoogleResponse} onFailure={handleGoogleResponse} useOneTap />
+          <div className="mt-2 d-flex flex-column align-items-center">
+            <GoogleLogin
+              onSuccess={handleGoogleResponse}
+              onFailure={handleGoogleResponse}
+              useOneTap
+            />
           </div>
-          <p className="new-allready pt-3" onClick={() => navigate("/new")}>Don't have an account? Sign Up</p>
+          <p className="new-allready pt-3">
+            Don't have an account?{" "}
+            <span className="text-decoration-underline" onClick={() => navigate("/signup")}>Sign Up </span>
+            {" "} ,{" "}
+            <span
+              onClick={handleForgotPassword}
+              className="text-decoration-underline"
+            >
+              Forgot Password?
+            </span>
+          </p>
+          <p className="new-allready pt-1" onClick={() => navigate("/trainer")}>
+            Are you a Trainer? <span>Sign in</span>
+          </p>
         </div>
       </div>
 
-      <Modal show={showModal} onHide={toggleModal} centered>
-        <Modal.Header className="bg-black text-white">
-          <Modal.Title>Enter Password</Modal.Title>
+      {/* Email and OTP Modal */}
+      <Modal
+  show={showEmailModal}
+  onHide={handleCloseEmailModal}
+  centered
+  contentClassName="p-0"
+  className="text-white"
+>
+  <Modal.Header
+    style={{ backgroundColor: "black", borderBottom: "none" }}
+  >
+    <Modal.Title className="w-100 text-center text-white">
+      Forgot Password
+    </Modal.Title>
+  </Modal.Header>
+  <Modal.Body style={{ backgroundColor: "black", color: "white" }}>
+    <Form style={{ borderBottom: "none" }}>
+      {/* Email input and Send button on the same row */}
+      <Form.Group className="mb-3">
+        <div className="d-flex">
+          <Form.Control
+            type="email"
+            placeholder="Enter your email"
+            required
+            className="custom-placeholder me-2"
+          />
+          <Button className="gradient-blue-white-modal">
+            Send
+          </Button>
+        </div>
+      </Form.Group>
+      
+      <Form.Group className="mb-3">
+        <Form.Control
+          type="text"
+          placeholder="Enter the OTP"
+          required
+          className="custom-placeholder"
+        />
+      </Form.Group>
+    </Form>
+  </Modal.Body>
+  <Modal.Footer style={{ backgroundColor: "black", borderTop: "none" }}>
+    <Button
+      className="gradient-red-white me-1"
+      onClick={handleCloseEmailModal}
+    >
+      Cancel
+    </Button>
+    <Button className="gradient-blue-white" onClick={handleEmailSubmit}>
+      Submit
+    </Button>
+  </Modal.Footer>
+</Modal>
+
+
+      {/* New Password Modal */}
+      <Modal
+        show={showPasswordModal}
+        onHide={handleClosePasswordModal}
+        centered
+        contentClassName="p-0"
+        className="text-white"
+        z
+      >
+        <Modal.Header
+          style={{ backgroundColor: "black", borderBottom: "none" }}
+        >
+          <Modal.Title className="w-100 text-center text-white">
+            Reset Password
+          </Modal.Title>
         </Modal.Header>
-        <Modal.Body className="bg-dark">
-          <div className="form-group mb-3">
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              className="form-control"
-              id="password"
-              placeholder="Password"
-              {...formik.getFieldProps("password")}
-            />
-            {formik.touched.password && formik.errors.password ? (
-              <div className="error">{formik.errors.password}</div>
-            ) : null}
-          </div>
+        <Modal.Body style={{ backgroundColor: "black", color: "white" }}>
+          <Form style={{ borderBottom: "none" }}>
+            <Form.Group>
+              <Form.Control
+                type="password"
+                placeholder="Enter new password"
+                required
+                className="custom-placeholder"
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Control
+                type="password"
+                placeholder="Confirm new password"
+                required
+                className="custom-placeholder"
+              />
+            </Form.Group>
+          </Form>
         </Modal.Body>
-        <Modal.Footer className="bg-dark">
-          <Button variant="secondary" onClick={toggleModal}>Cancel</Button>
-          <Button className="gradient-button-global" onClick={formik.handleSubmit}>Submit</Button>
+        <Modal.Footer style={{ backgroundColor: "black", borderTop: "none" }}>
+          <Button
+            className="gradient-red-white me-1"
+            onClick={handleClosePasswordModal}
+          >
+            Cancel
+          </Button>
+          <Button
+            className="gradient-blue-white"
+            onClick={handlePasswordSubmit}
+          >
+            Submit
+          </Button>
         </Modal.Footer>
       </Modal>
     </div>

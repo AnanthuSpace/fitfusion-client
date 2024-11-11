@@ -34,11 +34,25 @@ body,
   box-shadow: 0 23px 45px -11px rgba(20, 20, 20, 0.25) !important;
 }
 
+.custom-placeholder::placeholder {
+  color: white !important;
+  opacity: 1; 
+}
 
 .gradient-blue-white {
   background: linear-gradient(to right, #4B63DD 0%, #0524BF 99%);
   border: none;
   color: white;
+  font-size: 16px;
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+.gradient-blue-white-modal {
+  background: linear-gradient(to right, #4B63DD 0%, #0524BF 99%);
+  border: none;
+  color: white;
+  height: 3.6rem;
   font-size: 16px;
   border-radius: 4px;
   transition: background 0.3s ease;

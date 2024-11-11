@@ -168,7 +168,7 @@ export const userLogin = createAsyncThunk(
 
 
 export const googleLoginUser = createAsyncThunk(
-    "trainer/googleLoginUser",
+    "user/googleLoginUser",
     async (token, { rejectWithValue }) => {
         try {
             const response = await axios.post(`${localhostURL}/google-login`, { token })
@@ -180,6 +180,17 @@ export const googleLoginUser = createAsyncThunk(
                 localStorage.setItem("userRefreshToken", refreshToken);
                 return response.data.userData;
             };
+        } catch (error) {
+            return rejectWithValue(error.response?.data?.message || error.message);
+        }
+    }
+)
+
+export const forgotEmailSubmit = createAsyncThunk(
+    "user/forgotEmailSubmit",
+    async(_, {rejectWithValue}) => {
+        try {
+            console.log("hiiiiiiiiiiiiiiiiiiiiii")
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || error.message);
         }
