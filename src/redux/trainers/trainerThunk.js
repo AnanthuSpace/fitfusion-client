@@ -46,6 +46,9 @@ export const trainerRegistration = createAsyncThunk(
                 if (response.data.message === "User already exists") {
                     return rejectWithValue("User already exists");
                 } else {
+                    localStorage.setItem("temperoryEmail", email);
+                    localStorage.setItem("timer", response.data.validity);
+                    console.log(response.data)
                     return "OTP sent to your email";
                 }
             } catch (error) {
@@ -54,6 +57,61 @@ export const trainerRegistration = createAsyncThunk(
         }
     }
 );
+
+export const trainerResendOTP = createAsyncThunk(
+    "trainer/trainerResendOTP",
+    async (email, { rejectWithValue }) => {
+        try {
+            const response = await axios.post(`${localhostURL}/trainer/resent-otp`, { emailId: email });
+            localStorage.setItem("timer", response.data.validity);
+            return response.data
+        } catch (error) {
+            return rejectWithValue(error.response.data.message)
+        }
+    }
+)
+
+export const forgotOtp = createAsyncThunk(
+    "trainer/forgotOtp",
+    async (email, { rejectWithValue }) => {
+        try {
+            const response = await axios.post(`${localhostURL}/trainer/forgot-otp`, { emailId: email });
+            localStorage.setItem("timer", response.data.validity);
+            return response.data
+        } catch (error) {
+            return rejectWithValue(error.response.data.message);
+        }
+    }
+)
+
+export const forgotEmailSubmit = createAsyncThunk(
+    "trainer/forgotEmailSubmit",
+    async ({ email, otpSent }, { rejectWithValue }) => {
+        try {
+            const response = await axios.post(`${localhostURL}/trainer/otp-email`, { email, otp: otpSent })
+            if (response.data.success) {
+                return response.data.success
+            } else {
+                return rejectWithValue("OTP is not valid")
+            }
+        } catch (error) {
+            return rejectWithValue(error.response.data.message);
+        }
+    }
+)
+
+export const passwordSubmit = createAsyncThunk(
+    "trainer/passwordSubmit",
+    async ({ values, email }, { rejectWithValue }) => {
+        try {
+            console.log(values)
+            const response = await axios.post(`${localhostURL}/trainer/resett-password`, { values, email })
+            return response.data
+        } catch (error) {
+            return rejectWithValue(error.response.data.message);
+        }
+    }
+)
 
 
 export const googleSignUp = createAsyncThunk(
@@ -93,12 +151,12 @@ export const googleSignUp = createAsyncThunk(
 
 export const trainerVerification = createAsyncThunk(
     "trainerSlice/trainerVerification",
-    async ({ completeOtp, temperoryEmail }, { rejectWithValue }) => {
+    async ({ completeOtp, email }, { rejectWithValue }) => {
         if (completeOtp.length < 4) {
             return rejectWithValue("All the fields are required!");
         } else {
             try {
-                const response = await axios.post(`${localhostURL}/trainer/verify`, { completeOtp, temperoryEmail });
+                const response = await axios.post(`${localhostURL}/trainer/verify`, { completeOtp, temperoryEmail: email });
                 if (response.data.message === "OTP verified") {
                     return response.data.trainerData;
                 } else {
@@ -494,6 +552,18 @@ export const singleTrainerVideo = createAsyncThunk(
         try {
             const response = await trainerAxiosInstance.get(`${localhostURL}/trainer/single-video`, { params: { videoUrl: videoUrl } })
             return response.data.data
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+)
+
+export const updateDietPlan = createAsyncThunk(
+    "trainer/updateDietPlan",
+    async (editFormData, { rejectWithValue }) => {
+        try {
+            const response = await trainerAxiosInstance.post(`${localhostURL}/trainer/edit-diet`, { editFormData })
+            return response.data
         } catch (error) {
             return rejectWithValue(error.response.data);
         }

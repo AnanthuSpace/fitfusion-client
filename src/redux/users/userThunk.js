@@ -47,7 +47,7 @@ export const registration = createAsyncThunk(
                 if (response.data.message === "User already exists") {
                     return rejectWithValue("User already exists");
                 } else {
-                    await localStorage.setItem("timer", response.data.validity);
+                    localStorage.setItem("timer", response.data.validity);
                     return { validity: response.data.validity, msg: "OTP sent to your email" };
                 }
             } catch (error) {
@@ -67,6 +67,20 @@ export const resendOtp = createAsyncThunk(
             return response.data
         } catch (error) {
             return rejectWithValue("Verification failed, try again");
+        }
+    }
+)
+
+export const forgotOtpUser = createAsyncThunk(
+    "user/forgotOtpUser",
+    async (email, { rejectWithValue }) => {
+        try {
+            console.log(".........",email)
+            const response = await axios.post(`${localhostURL}/forgot-otp`, { emailId: email });
+            localStorage.setItem("timer", response.data.validity);
+            return response.data
+        } catch (error) {
+            return rejectWithValue(error.response.data.message);
         }
     }
 )
@@ -168,7 +182,7 @@ export const userLogin = createAsyncThunk(
 
 
 export const googleLoginUser = createAsyncThunk(
-    "user/googleLoginUser",
+    "userSlice/googleLoginUser",
     async (token, { rejectWithValue }) => {
         try {
             const response = await axios.post(`${localhostURL}/google-login`, { token })
@@ -186,13 +200,31 @@ export const googleLoginUser = createAsyncThunk(
     }
 )
 
-export const forgotEmailSubmit = createAsyncThunk(
+export const forgotEmailSubmitUser = createAsyncThunk(
     "user/forgotEmailSubmit",
-    async(_, {rejectWithValue}) => {
+    async({ email, otpSent }, {rejectWithValue}) => {
         try {
-            console.log("hiiiiiiiiiiiiiiiiiiiiii")
+            const response = await axios.post(`${localhostURL}/otp-email`, { email, otp: otpSent })
+            if (response.data.success) {
+                return response.data.success
+            } else {
+                return rejectWithValue("OTP is not valid")
+            }
         } catch (error) {
-            return rejectWithValue(error.response?.data?.message || error.message);
+            return rejectWithValue(error.response.data.message);
+        }
+    }
+)
+
+export const passwordSubmitUser = createAsyncThunk(
+    "user/passwordSubmitUser",
+    async ({ values, email }, { rejectWithValue }) => {
+        try {
+            console.log(values)
+            const response = await axios.post(`${localhostURL}/reset-password`, { values, email })
+            return response.data
+        } catch (error) {
+            return rejectWithValue(error.response.data.message);
         }
     }
 )

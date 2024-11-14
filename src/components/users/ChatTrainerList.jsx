@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import userAxiosInstance from "../../config/axiosConfig";
 import { useSelector } from "react-redux";
-const localhostURL = import.meta.env.VITE_BASE_URL
+const localhostURL = import.meta.env.VITE_BASE_URL;
 
 function ChatTrainerList({
   searchTerm,
@@ -13,6 +13,7 @@ function ChatTrainerList({
   directChatName,
 }) {
   const userId = useSelector((state) => state.user.userData.userId);
+  const [directChat, setDirectChat] = useState(null);
 
   const [sortedAlreadyChattedTrainer, setSortedAlreadyChattedTrainer] =
     useState(
@@ -46,6 +47,10 @@ function ChatTrainerList({
 
   useEffect(() => {
     if (directChatId) {
+      const trainer = alreadyChattedTrainer.find(
+        (trainer) => trainer.trainerId === directChatId
+      );
+      setDirectChat(trainer);
       handleTrainerClick(directChatId, directChatName);
     }
   }, [directChatId]);
@@ -56,7 +61,7 @@ function ChatTrainerList({
         (a, b) => new Date(b.time) - new Date(a.time)
       )
     );
-  }, [ alreadyChattedTrainer]);
+  }, [alreadyChattedTrainer]);
 
   const noTrainersFound =
     !directChatId && sortedAlreadyChattedTrainer.length === 0;
@@ -72,37 +77,89 @@ function ChatTrainerList({
       />
       {directChatId && (
         <ul className="list-group">
-          <li
-            className="list-group-item user-item"
-            onClick={() => handleTrainerClick(directChatId, directChatName)}
-          >
-            {directChatName}
-          </li>
+          {directChat ? (
+            <li
+              key={directChat.trainerId}
+              className="list-group-item user-item"
+              onClick={() =>
+                handleTrainerClick(directChat.trainerId, directChat.name)
+              }
+              style={{ cursor: "pointer" }}
+            >
+                 <div>{directChat.name}</div>
+              <div
+                className="d-flex justify-content-between align-items-center"
+                style={{ color: "gray" }}
+              >
+                <p style={{ color: "gray", marginBottom: "0" }}>
+                  {directChat.message
+                    ? directChat.message.length > 15
+                      ? `${directChat.message.slice(0, 15)}...`
+                      : directChat.message
+                    : "No messages yet"}
+                </p>
+                {directChat.time && (
+                  <small style={{ color: "lightgray" }}>
+                    {new Date(directChat.time).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </small>
+                )}
+              </div>
+            </li>
+          ) : (
+            <li
+              className="list-group-item user-item"
+              onClick={() => handleTrainerClick(directChatId, directChatName)}
+            >
+              {console.log(directChat)}
+              {directChatName}
+              <div
+                className="d-flex justify-content-between align-items-center"
+                style={{ color: "gray" }}
+              >
+                 <p style={{ color: "gray", marginBottom: "0" }}>No messages yet</p>
+              </div>
+            </li>
+          )}
         </ul>
       )}
       {sortedAlreadyChattedTrainer.length > 0 ? (
         <ul className="list-group">
-          {sortedAlreadyChattedTrainer.map(
-            (trainer) =>
-              directChatId !== trainer.trainerId && (
-                <li
-                  key={trainer.trainerId}
-                  className="list-group-item user-item"
-                  onClick={() =>
-                    handleTrainerClick(trainer.trainerId, trainer.name)
-                  }
-                  style={{ cursor: "pointer" }}
+          {sortedAlreadyChattedTrainer.map((trainer) =>
+            directChatId !== trainer.trainerId ? (
+              <li
+                key={trainer.trainerId}
+                className="list-group-item user-item"
+                onClick={() =>
+                  handleTrainerClick(trainer.trainerId, trainer.name)
+                }
+                style={{ cursor: "pointer" }}
+              >
+                <div>{trainer.name}</div>
+                <div
+                  className="d-flex justify-content-between align-items-center"
+                  style={{ color: "gray" }}
                 >
-                  {trainer.name}
-                  <p style={{ color: "gray" }}>
+                  <p style={{ color: "gray", marginBottom: "0" }}>
                     {trainer.message
                       ? trainer.message.length > 15
-                        ? `${trainer.message.slice(0, 15)}...` 
+                        ? `${trainer.message.slice(0, 15)}...`
                         : trainer.message
                       : "No messages yet"}
                   </p>
-                </li>
-              )
+                  {trainer.time && (
+                    <small style={{ color: "lightgray" }}>
+                      {new Date(trainer.time).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </small>
+                  )}
+                </div>
+              </li>
+            ) : null
           )}
         </ul>
       ) : (

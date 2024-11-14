@@ -11,7 +11,7 @@ const TrainerTransactionHistory = () => {
 
   useEffect(() => {
     dispatch(TrainerransactionHistory()).then((res) => {
-      setHistory(res.payload.data.transactionHistory || []);
+      setHistory(res.payload.data || []);
     });
   }, [dispatch]);
 
@@ -29,7 +29,7 @@ const TrainerTransactionHistory = () => {
       <div className="d-flex justify-content-center align-items-center w-100 h-100 mt-5">
         <div className="glass-effect p-3" style={{ width: "95%", height: "90%" }}>
           <h3 className="text-white m-0 mb-3">Transaction History</h3>
-          <Table responsive bordered hover className="table-dark text-white">
+          <Table responsive hover className="table-dark text-white">
             <thead>
               <tr>
                 <th>Date</th>

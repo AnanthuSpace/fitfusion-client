@@ -76,7 +76,7 @@ function App() {
           <Route path="/diet" element={<TrainerProtector><TrainerIsVerified><TrainerDietPage /></TrainerIsVerified></TrainerProtector>} />
           <Route path="/videos" element={<TrainerProtector><TrainerIsVerified><TutorialVideoPage/></TrainerIsVerified></TrainerProtector>} />
           <Route path="/transaction-history" element={<TrainerProtector><TrainerIsVerified><TrainerHistoryPage/></TrainerIsVerified></TrainerProtector>} />
-          <Route path="//trainer-review" element={<TrainerProtector><TrainerIsVerified><TrainerReviewPage/></TrainerIsVerified></TrainerProtector>} />
+          <Route path="/trainer-review" element={<TrainerProtector><TrainerIsVerified><TrainerReviewPage/></TrainerIsVerified></TrainerProtector>} />
 
 
           {/* Admin Routes */}

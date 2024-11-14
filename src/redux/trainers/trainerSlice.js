@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "sonner";
-import { trainerRegistration, trainerVerification, trainerLogin, trainerDashBoardData, deletDiet, singleTrainerVideo, fetchAllReview, trainerDataCount, toggleVideoListing, EditVideos, googleLogin, TrainerransactionHistory, googleSignUp, getPersonalVideos, editTrainer, changeTrainerPassword, updateProfilePicture, fetchTrainerProfile, uploadVideo, fetchAlreadyChattedCustomer, AddDietPlan, fetchDeitPlans } from "./trainerThunk";
+import { trainerRegistration, trainerVerification, trainerLogin, trainerResendOTP, trainerDashBoardData, forgotEmailSubmit, forgotOtp, updateDietPlan, deletDiet, singleTrainerVideo, fetchAllReview, trainerDataCount, toggleVideoListing, EditVideos, googleLogin, TrainerransactionHistory, googleSignUp, getPersonalVideos, editTrainer, changeTrainerPassword, updateProfilePicture, fetchTrainerProfile, uploadVideo, fetchAlreadyChattedCustomer, AddDietPlan, fetchDeitPlans } from "./trainerThunk";
 
 
 const trainerData = localStorage.getItem("trainerData") ? JSON.parse(localStorage.getItem("trainerData")) : null;
@@ -45,6 +45,30 @@ const trainerSlice = createSlice({
                     toast.error(action.payload || "Registration failed", { hideProgressBar: true, autoClose: 3000 });
                 }
                 state.isLoading = false;
+            })
+
+            .addCase(trainerResendOTP.fulfilled, (state, action) => {
+                toast.success(action.payload.message, { hideProgressBar: true, autoClose: 3000 })
+            })
+            .addCase(trainerResendOTP.rejected, (state, action) => {
+                state.error = action.payload
+                toast.error(action.payload.message, { hideProgressBar: true, autoClose: 3000 })
+            })
+
+            .addCase(forgotOtp.fulfilled, (state, action) => {  
+                toast.success(action.payload.message, { hideProgressBar: true, autoClose: 3000 })
+            })
+            .addCase(forgotOtp.rejected, (state, action) => {
+                state.error = action.payload
+                toast.error(action.payload, { hideProgressBar: true, autoClose: 3000 })
+            })
+
+            .addCase(forgotEmailSubmit.fulfilled, (state) => {  
+                state.isLoading = false
+            })
+            .addCase(forgotEmailSubmit.rejected, (state, action) => {
+                state.error = action.payload
+                toast.error(action.payload, { hideProgressBar: true, autoClose: 3000 })
             })
 
             .addCase(googleSignUp.fulfilled, (state, action) => {
@@ -275,6 +299,18 @@ const trainerSlice = createSlice({
             })
             .addCase(deletDiet.rejected, (state, action) => {
                 state.isLoading = false;
+                toast.error(action.payload.message, { hideProgressBar: true, autoClose: 3000 });
+            })
+
+            .addCase(updateDietPlan.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(updateDietPlan.fulfilled, (state, action) => {
+                state.isLoading = false
+                toast.success(action.payload.message, { hideProgressBar: true, autoClose: 3000 })
+            })
+            .addCase(updateDietPlan.rejected, (state, action) => {
+                state.isLoading = false
                 toast.error(action.payload.message, { hideProgressBar: true, autoClose: 3000 });
             })
     }

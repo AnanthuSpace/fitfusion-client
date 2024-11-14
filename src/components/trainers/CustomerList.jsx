@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import trainerAxiosInstance from "../../config/axiosTrainerConfig";
-const localhostURL = import.meta.env.VITE_BASE_URL
+const localhostURL = import.meta.env.VITE_BASE_URL;
 import { useSelector } from "react-redux";
 
 const CustomerList = ({
@@ -12,9 +12,10 @@ const CustomerList = ({
   directChatId,
   directChatName,
   setSelectedId,
-  rerender
+  rerender,
 }) => {
   const trainerId = useSelector((state) => state.trainer.trainerData.trainerId);
+  const [directChat, setDirectChat] = useState(null);
 
   const [sortedAlreadyChattedCustomer, setSortedAlreadyChattedCustomer] =
     useState(
@@ -49,6 +50,10 @@ const CustomerList = ({
 
   useEffect(() => {
     if (directChatId) {
+      const user = alreadyChattedCustomer.find(
+        (user) => user.userId === directChatId
+      );
+      setDirectChat(user);
       handleCreateRoom(directChatId, directChatName);
     }
   }, [directChatId]);
@@ -77,12 +82,53 @@ const CustomerList = ({
       />
       {directChatId && (
         <ul className="list-group">
-          <li
-            className="glass-effect p-3 mb-2"
-            onClick={() => handleCreateRoom(directChatId, directChatName)}
-          >
-            {directChatName}
-          </li>
+          {directChat ? (
+            <li
+              key={directChat.userId}
+              className="glass-effect p-3 mb-2"
+              onClick={() =>
+                handleTrainerClick(directChat.userId, directChat.name)
+              }
+              style={{ cursor: "pointer" }}
+            >
+              <div>{directChat.name}</div>
+              <div
+                className="d-flex justify-content-between align-items-center"
+                style={{ color: "gray" }}
+              >
+                <p style={{ color: "gray", marginBottom: "0" }}>
+                  {directChat.message
+                    ? directChat.message.length > 15
+                      ? `${directChat.message.slice(0, 15)}...`
+                      : directChat.message
+                    : "No messages yet"}
+                </p>
+                {directChat.time && (
+                  <small style={{ color: "lightgray" }}>
+                    {new Date(directChat.time).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </small>
+                )}
+              </div>
+            </li>
+          ) : (
+            <li
+              className="list-group-item user-item"
+              onClick={() => handleTrainerClick(directChatId, directChatName)}
+            >
+              {directChatName}
+              <div
+                className="d-flex justify-content-between align-items-center"
+                style={{ color: "gray" }}
+              >
+                <p style={{ color: "gray", marginBottom: "0" }}>
+                  No messages yet
+                </p>
+              </div>
+            </li>
+          )}
         </ul>
       )}
       {sortedAlreadyChattedCustomer.length > 0 ? (
@@ -98,13 +144,26 @@ const CustomerList = ({
                   }
                 >
                   {customer.name}
-                  <p style={{ color: "gray" }}>
-                    {customer.message
-                      ? customer.message.length > 15
-                        ? `${customer.message.slice(0, 15)}...`
-                        : customer.message
-                      : "No messages yet"}
-                  </p>
+                  <div
+                    className="d-flex justify-content-between align-items-center"
+                    style={{ color: "gray" }}
+                  >
+                    <p style={{ color: "gray" }}>
+                      {customer.message
+                        ? customer.message.length > 15
+                          ? `${customer.message.slice(0, 15)}...`
+                          : customer.message
+                        : "No messages yet"}
+                    </p>
+                    {customer?.time && (
+                      <small style={{ color: "lightgray" }}>
+                        {new Date(customer.time).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </small>
+                    )}
+                  </div>
                 </li>
               )
           )}

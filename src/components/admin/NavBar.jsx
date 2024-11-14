@@ -34,7 +34,7 @@ const NavBar = () => {
       </nav>
 
       {/* Logout Modal */}
-      <Modal show={showModal} centered contentClassName="p-0">
+      <Modal show={showModal} centered content ClassName="p-0">
         <Modal.Header
           style={{ backgroundColor: "black", borderBottom: "none" }}
         >

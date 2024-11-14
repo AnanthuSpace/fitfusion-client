@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registration, signupVerification, userLogin, googleSignUpUser,resendOtp, singleVideo, googleLoginUser, transactionnHistory, editUserData, fetchVideos, fetchDeitPlans, fetchAllVideos, fetchSingleTrainer, fetchReviewFeedback, inactive, addReview, changeUserPassword, fetchAlreadyChattedTrainer, addUserDetails, fetchTrainersData, createCheckoutSession, fetchUserAndTrainer, fetchChatMessages } from "./userThunk";
+import { registration, signupVerification, userLogin, forgotOtpUser, googleSignUpUser,resendOtp, singleVideo, googleLoginUser, transactionnHistory, editUserData, fetchVideos, fetchDeitPlans, fetchAllVideos, fetchSingleTrainer, fetchReviewFeedback, inactive, addReview, changeUserPassword, fetchAlreadyChattedTrainer, addUserDetails, fetchTrainersData, createCheckoutSession, fetchUserAndTrainer, fetchChatMessages } from "./userThunk";
 import { toast } from "sonner";
 
 const userData = localStorage.getItem("userData") ? JSON.parse(localStorage.getItem("userData")) : null;
@@ -59,6 +59,14 @@ const userSlice = createSlice({
         toast.error(action.payload.message, { hideProgressBar: true, autoClose: 3000 })
       })
 
+      .addCase(forgotOtpUser.fulfilled, (state, action) => {
+        toast.success(action.payload.message, { hideProgressBar: true, autoClose: 3000 })
+      })
+      .addCase(forgotOtpUser.rejected, (state, action)=> {
+        state.error = action.payload
+        toast.error(action.payload.message, { hideProgressBar: true, autoClose: 3000 })
+      })
+
       // Signup verification
       .addCase(signupVerification.pending, (state) => {
         state.isLoading = true;
@@ -96,7 +104,7 @@ const userSlice = createSlice({
       .addCase(userLogin.fulfilled, (state, action) => {
         // state.temperoryEmail = action.meta.arg.email;
         state.userData = action.payload;
-        localStorage.setItem('userData', JSON.stringify(state.userData));
+        localStorage.setItem('userData', JSON.stringify(action.payload));
         toast.success("Login verification completed successfully", { hideProgressBar: true, autoClose: 3000 });
         state.isLoading = false;
       })
@@ -105,22 +113,6 @@ const userSlice = createSlice({
         state.isLoading = false;
         toast.error(state.error, { hideProgressBar: true, autoClose: 3000 });
       })
-
-      // .addCase(loginVerification.pending, (state) => {
-      //   state.isLoading = true;
-      // })
-      // .addCase(loginVerification.fulfilled, (state, action) => {
-      //   state.userData = action.payload;
-      //   localStorage.setItem('userData', JSON.stringify(state.userData));
-      //   toast.success("Login verification completed successfully", { hideProgressBar: true, autoClose: 3000 });
-      //   state.temperoryEmail = ""
-      //   state.isLoading = false;
-      // })
-      // .addCase(loginVerification.rejected, (state, action) => {
-      //   state.error = action.payload;
-      //   toast.error(action.payload || "Verification failed", { hideProgressBar: true, autoClose: 3000 });
-      //   state.isLoading = false;
-      // })
 
       .addCase(googleLoginUser.fulfilled, (state, action) => {
         state.userData = action.payload;
