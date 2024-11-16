@@ -419,6 +419,7 @@ export const uploadVideo = createAsyncThunk(
             formData.append("description", videoData.description);
             formData.append("videoFile", videoData.videoFile);
             formData.append("thumbnail", videoData.thumbnail);
+            formData.append("category", videoData.category);
 
             const response = await trainerAxiosInstance.put(`${localhostURL}/trainer/upload-video`, formData, {
                 headers: {
@@ -470,11 +471,12 @@ export const TrainerransactionHistory = createAsyncThunk(
 
 export const EditVideos = createAsyncThunk(
     "trainer/EditVideos",
-    async ({ videoId, title, description, formData }, { rejectWithValue }) => {
+    async ({ videoId, title, description, category, formData }, { rejectWithValue }) => {
         try {
             formData.append("videoId", videoId);
             formData.append("title", title);
             formData.append("description", description);
+            formData.append("category", category);
 
             const response = await trainerAxiosInstance.put(
                 `${localhostURL}/trainer/edit-video`,

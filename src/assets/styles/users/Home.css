@@ -114,16 +114,15 @@
 
 .beamember,
 .learn {
-        background: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
+        background: rgba(255, 255, 255, 0.2); 
         color: #ecedee;
         border-radius: 1rem;
         border: none;
-        width: 7rem;
         height: 2.5rem;
-        backdrop-filter: blur(10px); /* Blur effect for glassmorphism */
-        -webkit-backdrop-filter: blur(10px); /* For Safari support */
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
-        border: 1px solid rgba(255, 255, 255, 0.3); /* Border to enhance glass effect */
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px); 
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+        border: 1px solid rgba(255, 255, 255, 0.3); 
         text-transform: uppercase;
         font-weight: lighter;
         transition: all 0.3s ease;

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registration, signupVerification, userLogin, forgotOtpUser, googleSignUpUser,resendOtp, singleVideo, googleLoginUser, transactionnHistory, editUserData, fetchVideos, fetchDeitPlans, fetchAllVideos, fetchSingleTrainer, fetchReviewFeedback, inactive, addReview, changeUserPassword, fetchAlreadyChattedTrainer, addUserDetails, fetchTrainersData, createCheckoutSession, fetchUserAndTrainer, fetchChatMessages } from "./userThunk";
+import { registration, signupVerification, userLogin, forgotOtpUser, googleSignUpUser,resendOtp, singleVideo, googleLoginUser, transactionnHistory, editUserData, fetchVideos, fetchDeitPlans, fetchFilteredVideos, fetchSingleTrainer, fetchReviewFeedback, inactive, addReview, changeUserPassword, fetchAlreadyChattedTrainer, addUserDetails, fetchTrainersData, createCheckoutSession, fetchUserAndTrainer, fetchChatMessages } from "./userThunk";
 import { toast } from "sonner";
 
 const userData = localStorage.getItem("userData") ? JSON.parse(localStorage.getItem("userData")) : null;
@@ -292,10 +292,10 @@ const userSlice = createSlice({
         toast.error(action.payload || "Failed to fetch videos", { hideProgressBar: true, autoClose: 3000 });
       })
 
-      .addCase(fetchAllVideos.fulfilled, (state) => {
+      .addCase(fetchFilteredVideos.fulfilled, (state) => {
         state.isLoading = false;
       })
-      .addCase(fetchAllVideos.rejected, (state, action) => {
+      .addCase(fetchFilteredVideos.rejected, (state, action) => {
         state.isLoading = false;
         toast.error(action.payload || "Failed to fetch videos", { hideProgressBar: true, autoClose: 3000 });
       })

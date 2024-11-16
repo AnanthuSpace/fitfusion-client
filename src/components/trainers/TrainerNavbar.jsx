@@ -22,6 +22,7 @@ function TrainerNavbar() {
   const [videoData, setVideoData] = useState({
     title: "",
     description: "",
+    category: "",
     file: null,
   });
 
@@ -29,8 +30,8 @@ function TrainerNavbar() {
     if (socket) {
       socket.on("incomingCall", (data) => {
         const { callerName, callerId } = data;
-        console.log(callerId)
-        console.log(trainerId)
+        console.log(callerId);
+        console.log(trainerId);
 
         if (callerId === trainerId) {
           toast.info(`Incoming call from ${callerName}`, {
@@ -76,10 +77,10 @@ function TrainerNavbar() {
 
   const handleVideoUpload = (e) => {
     e.preventDefault();
-    console.log(videoData);
     dispatch(uploadVideo(videoData)).then((res) => {
       console.log(res.payload);
       handleVideoUploadClose();
+      setVideoData({ title: "", description: "", category: "", file: null });
     });
   };
 

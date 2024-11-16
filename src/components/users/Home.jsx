@@ -1,13 +1,26 @@
-import React from "react";
+import React, { useRef } from "react";
 import "../../assets/styles/users/Home.css";
 import WhyChooseUs from "./WhyChooseUs";
 import TrainerContainer from "./TrainerContainer";
-import ReviewList from "./ReviewList";
+// import ReviewList from "./ReviewList";
 import Membership from "./Membership";
 import CountingDiv from "./CountingDiv";
 import Reveal from "../common/animationConfig";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.user.userData);
+  console.log(user);
+  const whyChooseUsRef = useRef(null);
+
+  const handleLearnMoreClick = () => {
+    if (whyChooseUsRef.current) {
+      whyChooseUsRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <>
       <div className="home-container homepage-gradient-main ">
@@ -20,8 +33,19 @@ function Home() {
               </h1>
               <div className="buttons">
                 <div className="empty ">
-                  <button className="beamember">BE A MEMBER</button>
-                  <button className="learn">LEARN MORE</button>
+                  {user ? (
+                    <button
+                      className="beamember"
+                      onClick={() => navigate("/trainer-list")}
+                    >
+                      SEE TRAINER
+                    </button>
+                  ) : (
+                    <button className="beamember">BE A MEMBER</button>
+                  )}
+                  <button className="learn" onClick={handleLearnMoreClick}>
+                    LEARN MORE
+                  </button>
                 </div>
               </div>
             </div>
@@ -46,7 +70,9 @@ function Home() {
           <Reveal>
             <CountingDiv />
           </Reveal>
-          <WhyChooseUs />
+          <div ref={whyChooseUsRef}>
+            <WhyChooseUs />
+          </div>
           <Reveal>
             <TrainerContainer />
           </Reveal>

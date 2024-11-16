@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Button, Form, Spinner } from "react-bootstrap"; 
+import { Modal, Button, Form, Spinner } from "react-bootstrap";
 import { EditVideos } from "../../redux/trainers/trainerThunk";
 import { useDispatch } from "react-redux";
 
 const EditVideoModal = ({ show, onHide, video, onSave }) => {
   const [title, setTitle] = useState(video?.title || "");
   const [description, setDescription] = useState(video?.description || "");
+  const [category, setCategory] = useState(video?.category || "");
   const [thumbnail, setThumbnail] = useState(null);
   const [videoFile, setVideoFile] = useState(null);
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -35,7 +36,7 @@ const EditVideoModal = ({ show, onHide, video, onSave }) => {
   };
 
   const handleSave = async () => {
-    setLoading(true); 
+    setLoading(true);
     const formData = new FormData();
 
     if (thumbnail) {
@@ -43,35 +44,42 @@ const EditVideoModal = ({ show, onHide, video, onSave }) => {
     }
 
     if (videoFile) {
-      formData.append("videoFile", videoFile); 
+      formData.append("videoFile", videoFile);
     }
 
     try {
-      
-      await dispatch(EditVideos({
-        videoId: video.videoId,
-        title: title,
-        description: description,
-        formData: formData,
-      }));
+      await dispatch(
+        EditVideos({
+          videoId: video.videoId,
+          title: title,
+          description: description,
+          category: category,
+          formData: formData,
+        })
+      );
 
-      
       const updatedVideo = { ...video, title, description };
       onSave(updatedVideo);
       onHide();
     } catch (error) {
       console.error("Error updating video:", error);
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
   return (
-    <Modal show={show} onHide={onHide} centered>
-      <Modal.Header closeButton>
-        <Modal.Title>Edit Video</Modal.Title>
+    <Modal
+      show={show}
+      onHide={onHide}
+      centered
+      contentClassName="p-0"
+      backdrop="static"
+    >
+      <Modal.Header style={{ backgroundColor: "black", borderBottom: "none" }}>
+        <Modal.Title className="text-white">Edit Video</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body style={{ backgroundColor: "black" }}>
         <Form>
           <Form.Group controlId="formVideoTitle">
             <Form.Label>Title</Form.Label>
@@ -90,6 +98,29 @@ const EditVideoModal = ({ show, onHide, video, onSave }) => {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label className="text-white">Category</Form.Label>
+            <Form.Select
+              className="bg-black text-white"
+              name="category"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              required
+            >
+              <option value="">Select Category</option>
+              <option value="Upper Body">Upper Body</option>
+              <option value="Lower Body">Lower Body</option>
+              <option value="Core & Abs">Core & Abs</option>
+              <option value="Cardio & Conditioning">
+                Cardio & Conditioning
+              </option>
+              <option value="Mobility & Flexibility">
+                Mobility & Flexibility
+              </option>
+              <option value="Functional Training">Functional Training</option>
+            </Form.Select>
           </Form.Group>
 
           <Form.Group controlId="formThumbnail" className="mt-3">
@@ -111,11 +142,19 @@ const EditVideoModal = ({ show, onHide, video, onSave }) => {
           </Form.Group>
         </Form>
       </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={onHide} disabled={loading}>
+      <Modal.Footer className="bg-black" style={{ borderTop: "none" }}>
+        <Button
+          className="gradient-red-white"
+          onClick={onHide}
+          disabled={loading}
+        >
           Cancel
         </Button>
-        <Button variant="primary" onClick={handleSave} disabled={loading}>
+        <Button
+          className="gradient-blue-white"
+          onClick={handleSave}
+          disabled={loading}
+        >
           {loading ? (
             <>
               <Spinner

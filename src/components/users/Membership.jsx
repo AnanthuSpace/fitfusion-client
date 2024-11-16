@@ -8,7 +8,7 @@ function Membership() {
       Family</h1>
       <p>Gym session or brisk walk can help. Physical activity stimulates <br />
       many brain chemicals that may leave you</p>
-      <button>BE A MEMBER</button>
+      {/* <button>BE A MEMBER</button> */}
     </div>
   );
 }

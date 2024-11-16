@@ -75,7 +75,7 @@ export const forgotOtpUser = createAsyncThunk(
     "user/forgotOtpUser",
     async (email, { rejectWithValue }) => {
         try {
-            console.log(".........",email)
+            console.log(".........", email)
             const response = await axios.post(`${localhostURL}/forgot-otp`, { emailId: email });
             localStorage.setItem("timer", response.data.validity);
             return response.data
@@ -165,7 +165,7 @@ export const userLogin = createAsyncThunk(
 
             const response = await axios.post(`${localhostURL}/login`, { email: trimmedEmail, password });
             if (!response.data.success) {
-                return rejectWithValue(response.data.message); 
+                return rejectWithValue(response.data.message);
             }
 
             const { accessToken, refreshToken, userData } = response.data.data;
@@ -202,7 +202,7 @@ export const googleLoginUser = createAsyncThunk(
 
 export const forgotEmailSubmitUser = createAsyncThunk(
     "user/forgotEmailSubmit",
-    async({ email, otpSent }, {rejectWithValue}) => {
+    async ({ email, otpSent }, { rejectWithValue }) => {
         try {
             const response = await axios.post(`${localhostURL}/otp-email`, { email, otp: otpSent })
             if (response.data.success) {
@@ -241,32 +241,6 @@ export const fetchTrainersData = createAsyncThunk(
         }
     }
 );
-
-
-
-// export const loginVerification = createAsyncThunk(
-//     "userSlice/loginVerification",
-//     async ({ completeOtp, temperoryEmail }, { rejectWithValue }) => {
-//         if (completeOtp.length < 4) {
-//             return rejectWithValue("All the fields are required!");
-//         } else {
-//             try {
-//                 const response = await axios.post(`${localhostURL}/login-verify`, { completeOtp, temperoryEmail });
-//                 if (response.data.message === "OTP verified") {
-//                     console.log(response.data)
-//                     const { accessToken, refreshToken } = response.data;
-//                     sessionStorage.setItem("userAccessToken", accessToken);
-//                     localStorage.setItem("userRefreshToken", refreshToken);
-//                     return response.data.userData;
-//                 } else {
-//                     return rejectWithValue(response.data.message);
-//                 }
-//             } catch (error) {
-//                 return rejectWithValue("Verification failed, try again");
-//             }
-//         }
-//     }
-// )
 
 
 // Edit user data
@@ -564,16 +538,23 @@ export const fetchVideos = createAsyncThunk(
     }
 )
 
-export const fetchAllVideos = createAsyncThunk(
-    "user/fetchAllVideos",
-    async (subcriptionList, { rejectWithValue }) => {
+export const fetchFilteredVideos = createAsyncThunk(
+    "user/fetchFilteredVideos",
+    async (payload, { rejectWithValue }) => {
+        const { subscriptionList, searchTerm, categories, sortOption } = payload;
         try {
             const response = await userAxiosInstance.get(`${localhostURL}/fetch-all-videos`, {
-                params: { subcriptionList: subcriptionList }
+                params: {
+                    subscriptionList,
+                    searchTerm,
+                    categories,
+                    sortOption,
+                },
             })
             return response.data
         } catch (error) {
-            return rejectWithValue(error.response ? error.response.data : error.message);
+            console.log(error.response)
+            // return rejectWithValue(error.response ? error.response.data : error.message);
         }
     }
 )
