@@ -570,6 +570,22 @@ export const transactionnHistory = createAsyncThunk(
         }
     }
 )
+
+export const unsubscribeTrainer = createAsyncThunk(
+    "user/unsubscribeTrainer",
+    async (selectedTrainerId, { rejectWithValue }) => {
+        try {
+            const response = await userAxiosInstance.post(`${localhostURL}/unsubscribe`, { transactionId: selectedTrainerId })
+            console.log("hiiiiiiiiiiiiiii", response.data.response.userDataAfterRefund.updatedUser)
+            await localStorage.setItem('userData', JSON.stringify(response.data.response.userDataAfterRefund.updatedUser));
+            return response.data
+        } catch (error) {
+            return rejectWithValue(error.response ? error.response.data : error.message);
+        }
+    }
+)
+
+
 export const singleVideo = createAsyncThunk(
     "user/singleVideo",
     async (videoUrl, { rejectWithValue }) => {

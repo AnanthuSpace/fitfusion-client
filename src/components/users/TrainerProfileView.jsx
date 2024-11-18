@@ -99,7 +99,9 @@ function TrainerProfileView() {
             <p>Gender: {trainerDetails?.gender}</p>
             <div>
               <span>Rating:</span>
-              <StarRating rating={trainerDetails?.rating} />
+              <StarRating
+                rating={trainerDetails.rating ? trainerDetails.rating : 0}
+              />
             </div>
           </div>
 

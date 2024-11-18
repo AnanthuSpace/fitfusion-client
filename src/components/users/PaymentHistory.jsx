@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Table, Button, Row, Col } from "react-bootstrap";
+import { Table, Button, Row, Col, Modal } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { transactionnHistory } from "../../redux/users/userThunk";
-import { Modal } from "react-bootstrap";
+import { toast } from "sonner";
+import {
+  transactionnHistory,
+  unsubscribeTrainer,
+} from "../../redux/users/userThunk";
 
 const PaymentHistory = () => {
   const dispatch = useDispatch();
   const [history, setHistory] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [selectedTrainerId, setSelectedTrainerId] = useState(null);
   const [page, setPage] = useState(1);
   const limit = 8;
 
@@ -24,14 +28,52 @@ const PaymentHistory = () => {
     }
   };
 
-  const handleUnsubcribe = (transactionId) => {
+  const handleUnsubscribeModal = (transactionId) => {
+    setSelectedTrainerId(transactionId);
     setShowModal(true);
-    console.log(transactionId);
   };
 
-  const handleClose = (transactionId) => {
+  const handleCloseModal = () => {
     setShowModal(false);
-    console.log(transactionId);
+    setSelectedTrainerId(null);
+  };
+
+  const handleUnsubscribe = () => {
+    if (selectedTrainerId) {
+      dispatch(unsubscribeTrainer(selectedTrainerId))
+        .then((response) => {
+          if (response.payload.success) {
+            setHistory((prevHistory) =>
+              prevHistory.map((transaction) =>
+                transaction._id === selectedTrainerId
+                  ? { ...transaction, status: "canceled" }
+                  : transaction
+              )
+            );
+            setShowModal(false);
+            setSelectedTrainerId(null);
+            toast.success("Unsubscription successful!");
+          } else {
+            toast.error("Unsubscription failed. Please try again.");
+          }
+        })
+        .catch((error) => {
+          console.error("Unsubscription error:", error);
+          alert("Something went wrong!");
+        });
+    }
+  };
+
+  const calculateRemainingDays = (expiredAt) => {
+    const currentDate = new Date();
+    const expirationDate = new Date(expiredAt);
+    const timeDiff = expirationDate - currentDate;
+    const remainingDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+    return remainingDays;
+  };
+
+  const hasExpired = (expiredAt) => {
+    return new Date(expiredAt) < new Date();
   };
 
   return (
@@ -46,6 +88,7 @@ const PaymentHistory = () => {
             <thead>
               <tr>
                 <th>Date</th>
+                <th>Expired</th>
                 <th>Trainer Name</th>
                 <th>Amount</th>
                 <th>Status</th>
@@ -59,22 +102,49 @@ const PaymentHistory = () => {
                     <td>
                       {new Date(transaction?.createdAt).toLocaleDateString()}
                     </td>
+                    <td>
+                      {!hasExpired(transaction?.expiredAt) ? (
+                        <span className="text-white">
+                          {calculateRemainingDays(transaction?.expiredAt)} days
+                          remaining
+                        </span>
+                      ) : (
+                        <p className="error">Expired</p>
+                      )}
+                    </td>
                     <td>{transaction?.trainerName}</td>
                     <td>${transaction?.amount.toFixed(2)}</td>
-                    <td className="text-success">Completed</td>
+
+                    <td
+                      className={
+                        transaction?.status === "valid"
+                          ? "text-success"
+                          : transaction?.status === "canceled"
+                          ? "text-danger"
+                          : "text-warning"
+                      }
+                    >
+                      {transaction?.status.charAt(0).toUpperCase() +
+                        transaction?.status.slice(1)}
+                    </td>
+
                     <td>
-                      <button
-                        className="gradient-red-white"
-                        onClick={() => handleUnsubcribe(transaction._id)}
-                      >
-                        unsubscribe
-                      </button>
+                      {!hasExpired(transaction?.expiredAt) && (
+                        <button
+                          className="gradient-red-white"
+                          onClick={() =>
+                            handleUnsubscribeModal(transaction._id)
+                          }
+                        >
+                          Cancel
+                        </button>
+                      )}
                     </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan={4} className="text-center">
+                  <td colSpan={6} className="text-center">
                     No transactions found.
                   </td>
                 </tr>
@@ -108,36 +178,29 @@ const PaymentHistory = () => {
         </div>
       </div>
 
+      {/* Confirmation Modal */}
       <Modal show={showModal} centered contentClassName="p-0">
         <Modal.Header
           style={{ backgroundColor: "black", borderBottom: "none" }}
         >
           <Modal.Title className="w-100 text-center text-white">
-            Confirmation of UnSubscription
+            Unsubscription Confirmation
           </Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ backgroundColor: "black", color: "white" }}>
-          <h5>Warning: Unsubscription Terms</h5>
-          <p>Are you sure you want to unsubscribe from the trainer?</p>
-          <p>
-            Please note: If you unsubscribe, the amount will be deducted based
-            on the number of days you have used the subscription:
-          </p>
+          <h5 className="pb-3">Unsubscription and Refund Policy</h5>
+          <p>Are you sure you want to unsubscribe from this trainer?</p>
+          <p>Your refund will be calculated based on the days used:</p>
           <ul>
-            <li>
-              Unsubscribing within 10 days will result in a 25% deduction.
-            </li>
-            <li>
-              Unsubscribing after 10 days but within 15 days will result in a
-              50% deduction.
-            </li>
+            <li className="pb-1">75% refund if within 10 days.</li>
+            <li className="pb-1">50% refund if between 10-20 days.</li>
+            <li className="pb-1">No refund after 20 days.</li>
           </ul>
           <p>
-            The deduction will be calculated based on the remaining days of your
-            subscription.
+            The refund will be based on the remaining days of your subscription.
           </p>
           <p style={{ color: "yellow" }}>
-            Please confirm if you want to proceed.
+            Please confirm if you wish to proceed.
           </p>
         </Modal.Body>
 
@@ -149,17 +212,16 @@ const PaymentHistory = () => {
           }}
         >
           <Button
-            variant="secondary"
-            onClick={handleClose}
+            onClick={handleCloseModal}
             style={{ width: "30%", border: "none" }}
-            className="gradient-blue-white ms-1"
+            className="gradient-red-white ms-1"
           >
             Cancel
           </Button>
           <Button
             variant="danger"
-            className="gradient-red-white me-1"
-            // onClick={}
+            className="gradient-blue-white me-1"
+            onClick={handleUnsubscribe}
             style={{ width: "30%" }}
           >
             Unsubscribe
