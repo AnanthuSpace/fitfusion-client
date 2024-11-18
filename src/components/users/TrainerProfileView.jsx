@@ -32,9 +32,19 @@ function TrainerProfileView() {
   }, [trainerId, dispatch]);
 
   const handleChat = () => {
-    navigate("/user-chat", {
-      state: { trainerId, trainerName: trainerDetails.name },
-    });
+    if (userData?.subscribeList) {
+      if (userData?.subscribeList.includes(trainerId)) {
+        navigate("/user-chat", {
+          state: { trainerId, trainerName: trainerDetails.name },
+        });
+      } else {
+        toast.warning(
+          "You need to subscribe to this trainer before go to chat."
+        );
+      }
+    } else {
+      toast.warning("You need to subscribe to this trainer before go to chat.");
+    }
   };
 
   const handleReviewClick = () => {
