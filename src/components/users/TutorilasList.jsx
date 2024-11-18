@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useDispatch, useSelector } from "react-redux";
 import { Card, Row, Col, Form, InputGroup } from "react-bootstrap";
-import { fetchFilteredVideos } from "../../redux/users/userThunk";
+import { fetchFilteredVideos, singleVideo } from "../../redux/users/userThunk";
 import VideoPlayerModal from "../common/VideoPlayer";
 import Reveal from "../common/animationConfig";
 
@@ -48,7 +48,7 @@ const TutorialsList = () => {
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
       setDebouncedSearchTerm(searchTerm);
-    }, 500); 
+    }, 500);
 
     return () => clearTimeout(delayDebounce);
   }, [searchTerm]);
@@ -101,7 +101,11 @@ const TutorialsList = () => {
               className="text-white ms-2 me-2"
             />
           </InputGroup>
-          <Form.Select value={sortOption} className="sorted" onChange={handleSortChange}>
+          <Form.Select
+            value={sortOption}
+            className="sorted"
+            onChange={handleSortChange}
+          >
             <option value="AtoZ">A to Z</option>
             <option value="ZtoA">Z to A</option>
             <option value="Latest">Latest Videos</option>
@@ -186,6 +190,11 @@ const TutorialsList = () => {
                       No videos available.
                     </Col>
                   )}
+                  <div className="text-center d-flex justify-content-between">
+
+                    <button className="gradient-button-global me-2">Previous</button>
+                    <button className="gradient-button-global">Next</button>
+                  </div>
                 </Row>
               </Col>
               <Col md={3}>
