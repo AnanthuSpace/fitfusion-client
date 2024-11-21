@@ -321,7 +321,7 @@ const userSlice = createSlice({
       })
       .addCase(singleVideo.rejected, (state, action) => {
         state.isLoading = false;
-        toast.error(action.payload || "Failed to fetch video", { hideProgressBar: true, autoClose: 3000 });
+        // toast.error(action.payload || "Failed to fetch video", { hideProgressBar: true, autoClose: 3000 });
       })
 
 

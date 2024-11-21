@@ -54,9 +54,10 @@ const TutorialsList = () => {
   }, [searchTerm]);
 
   const handleThumbnailClick = (videoUrl) => {
-    dispatch(singleVideo(videoUrl)).then((res) =>
-      setSelectedVideo(res.payload.data)
-    );
+    dispatch(singleVideo(videoUrl)).then((res) => {
+      const url = URL.createObjectURL(res.payload.data)
+      setSelectedVideo(url);
+    });
   };
 
   const handleCloseVideoPlayer = () => {
@@ -191,8 +192,9 @@ const TutorialsList = () => {
                     </Col>
                   )}
                   <div className="text-center d-flex justify-content-between">
-
-                    <button className="gradient-button-global me-2">Previous</button>
+                    <button className="gradient-button-global me-2">
+                      Previous
+                    </button>
                     <button className="gradient-button-global">Next</button>
                   </div>
                 </Row>

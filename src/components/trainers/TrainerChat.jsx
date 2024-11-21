@@ -69,7 +69,7 @@ function TrainerChat() {
       })
       console.log(afterResult)
       setAlreadyChattedCustomer(afterResult)
-      setChatHistory([{ ...messageDetails }, ...chatHistory]);
+      setChatHistory([{ ...afterResult }, ...chatHistory]);
     });
     return () => {
       socket.off("receiveMessage");

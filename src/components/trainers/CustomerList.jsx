@@ -150,8 +150,8 @@ const CustomerList = ({
                   >
                     <p style={{ color: "gray" }}>
                       {customer.message
-                        ? customer.message.length > 15
-                          ? `${customer.message.slice(0, 15)}...`
+                        ? customer.message.length > 10
+                          ? `${customer.message.slice(0, 10)}...`
                           : customer.message
                         : "No messages yet"}
                     </p>

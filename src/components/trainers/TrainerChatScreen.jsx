@@ -55,7 +55,7 @@ const TrainerChatScreen = ({
         socket.off("userIsOffline");
       };
     }
-  }, [socket, trainerId, currentCustomerId,  directChatId]);
+  }, [socket, trainerId, currentCustomerId, directChatId]);
 
   return (
     <div className="col-9 p-3 chat-window d-flex flex-column">
@@ -93,6 +93,7 @@ const TrainerChatScreen = ({
             />
           </div>
           <div className="chat-messages flex-grow-1 d-flex flex-column-reverse overflow-auto mb-3">
+            {console.log(chatHistory)}
             {chatHistory.map((message, index) => (
               <div
                 key={index}
