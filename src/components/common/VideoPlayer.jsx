@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-// import { getVideos } from "../../utils/awsConfig";
 
 
 function VideoPlayerModal({ videoUrl, onClose }) {

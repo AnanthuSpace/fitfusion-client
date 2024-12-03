@@ -55,8 +55,7 @@ const TutorialsList = () => {
 
   const handleThumbnailClick = (videoUrl) => {
     dispatch(singleVideo(videoUrl)).then((res) => {
-      const url = URL.createObjectURL(res.payload.data)
-      setSelectedVideo(url);
+      setSelectedVideo(res.payload.data);
     });
   };
 

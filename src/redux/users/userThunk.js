@@ -590,8 +590,8 @@ export const singleVideo = createAsyncThunk(
     "user/singleVideo",
     async (videoUrl, { rejectWithValue }) => {
         try {
-            const response = await userAxiosInstance.get(`${localhostURL}/single-video`, { params: { videoUrl: videoUrl }, responseType: 'blob' })
-            return response
+            const response = await userAxiosInstance.get(`${localhostURL}/single-video`, { params: { videoUrl: videoUrl }})
+            return response.data
         } catch (error) {
             return rejectWithValue(error.response ? error.response.data : error.message);
         }
